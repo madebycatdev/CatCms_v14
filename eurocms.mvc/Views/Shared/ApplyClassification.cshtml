@@ -1,0 +1,112 @@
+﻿@model EuroCMS.Admin.entity.cms_asp_select_classification_details_Result
+ 
+@if(Model !=null)
+{
+    <script type="text/javascript">
+    @{
+    
+        System.Reflection.BindingFlags flags = System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance;
+        Type t = typeof(EuroCMS.Admin.entity.cms_asp_select_classification_details_Result);
+        foreach (System.Reflection.PropertyInfo p in Model.GetType().GetProperties(flags))
+        {
+            string[] itNames = p.Name.Split('_');
+            string itNamePrefix = itNames[0];
+            string itNameSuffix = itNames[1];
+            object pValue = p.GetValue(Model, null);
+      
+            if (!itNamePrefix.Contains("article") && itNameSuffix.Equals("cb"))
+            {
+                if (Convert.ToBoolean(pValue))
+                {
+                    @: var req_@itNamePrefix = true;
+                    @: $("#label_@itNamePrefix").addClass("search_a required");
+                }
+                else
+                {
+                    @: var req_@itNamePrefix = false;
+                    @: $("#label_@itNamePrefix").addClass("search_a");
+                }
+            }
+            else if(itNamePrefix.Contains("article"))
+            {
+                if (itNamePrefix.Contains("article") && itNameSuffix.Equals("cb"))
+                {
+                     if (Convert.ToBoolean(pValue))
+                     {
+                        @: var req_@itNamePrefix = true;
+                        @: $("#label_@itNamePrefix").addClass("label-cnt required");
+                     }
+                     else
+                     {  
+                        @: var req_@itNamePrefix = true;
+                        @: $("#label_@itNamePrefix").addClass("label-cnt");
+                     }
+                }
+                else if (itNamePrefix.Contains("article") && itNameSuffix.Equals("text"))
+                {
+                    if (Convert.ToString(pValue) != "")
+                    {
+                        @: $("#label_@itNamePrefix").html("@Convert.ToString(pValue)");
+                    }
+                    else
+                    {
+                        @: $("#label_@itNamePrefix").html("Content#@itNamePrefix.Replace("article", "")");
+                    }
+                }
+            }
+            else if (itNameSuffix== "text")
+            {
+                if(itNameSuffix.Contains("custom") || itNameSuffix.Contains("date") || itNameSuffix.Contains("flag"))
+                {
+                    @: $("#label_@itNamePrefix").html("@Convert.ToString(pValue)");
+
+                    if(Convert.ToString(pValue) != "")
+                    {
+                        @: $("#div_@itNamePrefix").show();
+                    }
+                    else
+                    {
+                         @: $("#div_@itNamePrefix").hide();
+                    }
+                }
+                else
+                {
+                    if(Convert.ToString(pValue) != "")
+                    {
+                        @: $("#label_@itNamePrefix").html("@Convert.ToString(pValue)");
+                        @: $("#div_@itNamePrefix").show();
+                    }
+                    else
+                    {
+                        @: var d = "@itNamePrefix";
+                        @: switch (d)
+                        @: {
+                        @:        case "summary":
+                        @:            $("#label_summary").html("Summary");
+                        @:            break;
+                        @:        case "enddate":
+                        @:            $("#label_enddate").html("Publishing End Date");
+                        @:            break;
+                        @:        case "keywords":
+                        @:            $("#label_keywords").html("Keywords");
+                        @:        break;
+                        @:}
+                    }
+
+                }
+
+            }
+            else if (itNameSuffix == "type")
+            {
+                @: var type_@itNamePrefix = "@Convert.ToString(pValue)";
+                string inID = itNameSuffix.Replace("custom","");
+                if (pValue == "c")
+                {
+                    //string x = "<select name=\"custom_" + inID + "\" id=\"custom_" + inID + "\" onChange=\"return chainCombo(\'custom_" + inID + "\',\'custom_" + p.GetValue(Model.custom1_subcolumn, null) + "\'), false;\"><option value=\"\">Please Select</option>";
+                }
+            }
+
+        }
+    }
+    </script>
+}

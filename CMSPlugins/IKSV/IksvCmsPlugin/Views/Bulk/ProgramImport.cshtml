@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewBag.Title = "Program Import";
+}
+
+
+
+    <div class="portlet box grey">
+        <div class="portlet-title">
+            <div class="caption"><i class="icon-reorder"></i>Bulk Import</div>
+        </div>
+        <div class="portlet-body">
+            @using (Html.BeginForm("ProgramImport", "Bulk", FormMethod.Post, new { @class = "form-horizontal", @id = "zEdit" }))
+            {
+                @Html.ValidationSummary(true)
+
+                <div class="row-fluid">
+                    <div class="control-group">
+                        <label class="control-label" for="user">Zone List:</label>
+                        <div class="controls">
+                            @Html.DropDownList("zoneid", new SelectList(ViewBag.ZoneList, "Id", "Name"), new { @class = "user span12 m-wrap" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button class="btn blue">Save <i class="icon-save"></i></button>
+                </div>
+
+            }
+        </div>
+    </div>

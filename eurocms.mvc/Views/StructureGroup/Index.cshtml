@@ -1,0 +1,66 @@
+﻿@model List<EuroCMS.Admin.Common.Group<EuroCMS.Admin.entity.cms_asp_admin_select_structure_group_Result, string>>
+
+
+<!-- BEGIN SAMPLE FORM PORTLET-->
+<p>
+	<a class="btn blue openModal" href="@Url.Action("Create")">Create New Structure Group <i class="icon-circle-arrow-right"></i></a>
+</p>
+
+<div class="row-fluid">
+	<div class="span12">
+		<div class="portlet box grey">
+			<div class="portlet-title">
+				<div class="caption"><i class="icon-reorder"></i>Structure Group List</div>
+			</div>
+			<div class="portlet-body">
+				<a href="#structureGroupEdit" data-toggle="modal" id="modalOpen" class="hide">Edit Structure Group</a>
+				<div class="no-more-tables">
+					<table class="table table-striped table-hover">
+						<thead>
+							<tr>
+								<th>Group ID</th>
+								<th>Group Name</th>
+								<th>Created</th>
+								<th>Created by</th>
+								<th>Actions</th>
+							</tr>
+						</thead>
+						<tbody>
+							@if (Model.Count > 0)
+							{
+								int i = 1;
+								foreach (var group in Model)
+								{
+									<tr><td colspan="5"><strong>@group.Key Group</strong></td></tr>
+									foreach (var structure in group.Values)
+									{
+										<tr>
+											<td data-title="#">@structure.group_id</td>
+											<td data-title="Group Name"><strong>@structure.group_name</strong></td>
+											<td data-title="Created"> @structure.created</td>
+											<td data-title="Created by">@structure.publisher_name</td>
+											<td data-title="Actions">
+												<a href="@Url.Action("Edit", new { id= @structure.group_id,GroupType=@structure.group_type })" class="btn icn-only openModal" title="Edit Structure Group"><i class="icon-edit"></i></a>
+												@using (Html.BeginForm("Delete", "StructureGroup", new { id = @structure.group_id, GroupType = @structure.group_type }))
+												{
+													@Html.AntiForgeryToken()
+													<button type="submit" class="btn icn-only red" data-message="Are you sure want to delete this group?" onclick="return deleteObject(this);"><i class="icon-trash"></i></button>
+												}
+											</td>
+										</tr>
+												i++;
+									}
+								}
+							}
+							else
+							{
+								<tr><td colspan="4">No Result Found!</td></tr>
+							}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- END SAMPLE TABLE PORTLET-->

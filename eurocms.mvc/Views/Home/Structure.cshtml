@@ -1,0 +1,118 @@
+﻿@model IEnumerable<EuroCMS.Admin.entity.SiteStructureModel>
+
+@{
+    ViewBag.Title = "Site Structure";
+}
+
+<div class="alert alert-info">
+	<div class="row-fluid font12">
+        <div class="span2">
+            <span><i class="icon-folder-close"></i> Zone Group</span>
+        </div>
+        <div class="span2">
+            <span><i class="icon-folder-open"></i> Zone</span>
+        </div>
+        <div class="span2">
+            <span><i class="icon-file"></i> Article</span>
+        </div>
+    </div>
+</div>
+
+
+@helper TreeView(IEnumerable<EuroCMS.Admin.entity.SiteStructureModel> items)
+{
+    foreach (var item in items)
+    {
+        <li class="clearfix">
+            @if (item.IsChild)
+            {
+                <div>
+                    <div class="childDiv clearfix">
+                        <span class="@item.Type" id="@item.Id">
+                            @if(item.Type == "ZoneGroup")
+                            {
+                                <i class="icon-folder-close"></i>
+                            }
+                            else if(item.Type == "Zone")
+                            {
+                                <i class="icon-folder-open"></i>
+                            }
+                            else if(item.Type == "Article")
+                            {
+                                <i class="icon-file"></i>
+                            }
+                            @item.Name <b> @item.Status </b>
+
+                        </span><!-- aktif veya pasif oldugunu belirtmek gerek -->
+                        <div class="margin-bottom-5" style="float:right; clear:right;">
+                            <div class="btn-group">
+                                <a data-toggle="dropdown" href="#" class="btn black">
+                                    <i class="icon-plus"></i> Add
+                                    <i class="icon-angle-down"></i>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="@Url.Action("QuickCreate", item.Type, new { ParentID = item.ParentId, ReturnUrl = Request.Url.PathAndQuery })"><i class="icon-pencil"></i> New Item This Level</a></li>
+                                    @if(!string.IsNullOrEmpty(item.ChildType))
+                                    {
+                                        <li><a href="@Url.Action("QuickCreate", item.ChildType, new {  ItemType = item.Type, ParentID = item.Id, ReturnUrl = Request.Url.PathAndQuery } )"><i class="icon-plus"></i> Add Child</a></li>
+                                    }
+                                </ul>
+                            </div>
+                            <a class="btn black" href="@Url.Action("QuickEdit", item.Type, new { id=item.Id.ToString(), ParentID = item.ParentId, ReturnUrl = Request.Url.PathAndQuery })" title="Edit"><i class="icon-pencil"></i> Edit</a>
+                            <a class="btn black delete" href="@Url.Action("Delete", item.Type, new { id=item.Id.ToString(), ForceApprove=true, ReturnUrl = Request.Url.PathAndQuery })" title="Delete" data-message="Are you sure want to delete this object?" onclick="deleteObject(this); return false;"><i class="icon-trash"></i> Delete</a>
+                            @*<a class="btn mini" href="@Url.Action("QuickCreate", item.Type, new { ParentID = item.ParentId, ReturnUrl = Request.Url.PathAndQuery })" title="New Item This Level"><i class="icon-plus"></i> New Item This Level</a>*@
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div>
+                    <div class="childDiv clearfix">
+                        <span class="@item.Type">
+                            @if(item.Type == "ZoneGroup")
+                            {
+                                <i class="icon-folder-close"></i>
+                            }
+                            else if(item.Type == "Zone")
+                            {
+                                <i class="icon-folder-open"></i>
+                            }
+                            else if(item.Type == "Article")
+                            {
+                                <i class="icon-file"></i>
+                            }
+                            @item.Name
+                        </span>
+                        <div class="margin-bottom-5" style="float:right; clear:right;">
+                            <div class="btn-group">
+                                <a data-toggle="dropdown" href="#" class="btn black">
+                                    <i class="icon-plus"></i> Add
+                                    <i class="icon-angle-down"></i>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="@Url.Action("QuickCreate", item.Type, new { ParentID = item.ParentId, ReturnUrl = Request.Url.PathAndQuery  })" title="New Item This Level"><i class="icon-paste"></i> New Item This Level</a></li>
+                                    @if(!string.IsNullOrEmpty(item.ChildType))
+                                    {
+                                        <li><a href="@Url.Action("QuickCreate", item.ChildType, new { ItemType = item.Type, ParentID = item.Id, ReturnUrl = Request.Url.PathAndQuery })"><i class="icon-file"></i> Add Child</a></li>
+                                    }
+                                </ul>
+                            </div>
+
+                            <a class="btn black" href="@Url.Action("QuickEdit", item.Type, new { id=item.Id.ToString(), ParentID = item.ParentId, ReturnUrl = Request.Url.PathAndQuery })" title="Edit"><i class="icon-pencil"></i> Edit</a>
+                            <a class="btn black delete" href="@Url.Action("Delete", item.Type, new { id=item.Id.ToString(), ForceApprove=true, ReturnUrl = Request.Url.PathAndQuery })" title="Delete" data-message="Are you sure want to delete this object?" onclick="deleteObject(this); return false;"><i class="icon-trash"></i>Delete</a>
+
+                            @*<a class="btn mini" href="@Url.Action("QuickCreate", item.Type, new { ParentID = item.ParentId, ReturnUrl = Request.Url.PathAndQuery  })" title="New Item This Level"><i class="icon-plus"></i>New Item This Level</a>*@
+                        </div>
+                    </div>
+                    <ul class="clear">
+                        @TreeView(item.List)
+                    </ul>
+                </div>
+            }
+        </li>
+    }
+}
+<ul class="clearfix no-margin" id="quickStructure">
+    @TreeView(Model)
+</ul>

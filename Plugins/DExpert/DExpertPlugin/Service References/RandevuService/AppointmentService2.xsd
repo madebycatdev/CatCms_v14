@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="https://diatest.d-teknoloji.com.tr/Dexp_Appointment/AppointmentService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/D_Expert_AppointmentWService_Lib" />
+  <xs:import schemaLocation="https://diatest.d-teknoloji.com.tr/Dexp_Appointment/AppointmentService.svc?xsd=xsd3" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:element name="Test">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="TestResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="TestResult" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetCities">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetCitiesResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/D_Expert_AppointmentWService_Lib" minOccurs="0" name="GetCitiesResult" nillable="true" type="q1:ArrayOfResponseCities" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SendSms">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/D_Expert_AppointmentWService_Lib" minOccurs="0" name="request" nillable="true" type="q2:RequestSendSms" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SendSmsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/D_Expert_AppointmentWService_Lib" minOccurs="0" name="SendSmsResult" nillable="true" type="q3:Respond2" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ControlSms">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/D_Expert_AppointmentWService_Lib" minOccurs="0" name="request" nillable="true" type="q4:RequestControlSms" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ControlSmsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ControlSmsResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetTowns">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="cityCode" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetTownsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/D_Expert_AppointmentWService_Lib" minOccurs="0" name="GetTownsResult" nillable="true" type="q5:ArrayOfResponseTowns" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetProducts">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetProductsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/D_Expert_AppointmentWService_Lib" minOccurs="0" name="GetProductsResult" nillable="true" type="q6:ArrayOfResponseProducts" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetProductDetail">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="productCode" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetProductDetailResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/D_Expert_AppointmentWService_Lib" minOccurs="0" name="GetProductDetailResult" nillable="true" type="q7:ArrayOfResponseProductDetails" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetContactChannels">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetContactChannelsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/D_Expert_AppointmentWService_Lib" minOccurs="0" name="GetContactChannelsResult" nillable="true" type="q8:ArrayOfResponseContactChannels" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="HoldSession">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/D_Expert_AppointmentWService_Lib" minOccurs="0" name="req_holdBranch" nillable="true" type="q9:RequestHoldBranch" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="HoldSessionResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="HoldSessionResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CreateAppointment">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/D_Expert_AppointmentWService_Lib" minOccurs="0" name="req_CreateAppointment" nillable="true" type="q10:RequestCreateAppointment" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CreateAppointmentResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/D_Expert_AppointmentWService_Lib" minOccurs="0" name="CreateAppointmentResult" nillable="true" type="q11:Respond2" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CancelAppointment">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q12="http://schemas.datacontract.org/2004/07/D_Expert_AppointmentWService_Lib" minOccurs="0" name="req_CancelAppointment" nillable="true" type="q12:RequestCancelAppointment" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CancelAppointmentResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q13="http://schemas.datacontract.org/2004/07/D_Expert_AppointmentWService_Lib" minOccurs="0" name="CancelAppointmentResult" nillable="true" type="q13:Respond2" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CreateContactForm">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q14="http://schemas.datacontract.org/2004/07/D_Expert_AppointmentWService_Lib" minOccurs="0" name="req_ContactForm" nillable="true" type="q14:RequestContactForm" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CreateContactFormResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q15="http://schemas.datacontract.org/2004/07/D_Expert_AppointmentWService_Lib" minOccurs="0" name="CreateContactFormResult" nillable="true" type="q15:Respond2" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="getSuitableDates">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="branchCode" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="productTime" type="xs:int" />
+        <xs:element minOccurs="0" name="minutePeriod" type="xs:int" />
+        <xs:element minOccurs="0" name="dayLength" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="getSuitableDatesResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q16="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="getSuitableDatesResult" nillable="true" type="q16:ArrayOfstring" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="getSuitableHours">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="date" type="xs:dateTime" />
+        <xs:element minOccurs="0" name="branchCode" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="productTime" type="xs:int" />
+        <xs:element minOccurs="0" name="minutePeriod" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="getSuitableHoursResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q17="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="getSuitableHoursResult" nillable="true" type="q17:ArrayOfstring" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetAppointment">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="formGlobalId" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetAppointmentResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q18="http://schemas.datacontract.org/2004/07/D_Expert_AppointmentWService_Lib" minOccurs="0" name="GetAppointmentResult" nillable="true" type="q18:ResponseGetAppointment" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UpdateAppointment">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q19="http://schemas.datacontract.org/2004/07/D_Expert_AppointmentWService_Lib" minOccurs="0" name="req_updateAppointment" nillable="true" type="q19:RequestUpdateAppointment" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UpdateAppointmentResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q20="http://schemas.datacontract.org/2004/07/D_Expert_AppointmentWService_Lib" minOccurs="0" name="UpdateAppointmentResult" nillable="true" type="q20:Respond2" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetExpertiseAim">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetExpertiseAimResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q21="http://schemas.datacontract.org/2004/07/D_Expert_AppointmentWService_Lib" minOccurs="0" name="GetExpertiseAimResult" nillable="true" type="q21:ArrayOfResponseExpertiseAim" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CreateSurvey">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q22="http://schemas.datacontract.org/2004/07/D_Expert_AppointmentWService_Lib" minOccurs="0" name="req_CreateSurvey" nillable="true" type="q22:RequestCreateSurvey" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CreateSurveyResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q23="http://schemas.datacontract.org/2004/07/D_Expert_AppointmentWService_Lib" minOccurs="0" name="CreateSurveyResult" nillable="true" type="q23:Respond2" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetOTPStatus">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetOTPStatusResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="GetOTPStatusResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetProductsByAim">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="aimID" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetProductsByAimResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q24="http://schemas.datacontract.org/2004/07/D_Expert_AppointmentWService_Lib" minOccurs="0" name="GetProductsByAimResult" nillable="true" type="q24:ArrayOfResponseProducts" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

@@ -1,0 +1,50 @@
+﻿@model  EuroCMS.Admin.entity.cms_asp_select_domain_details_Result 
+ 
+@{   
+    Layout = null;
+}
+ 
+<div id="domainEdit" class="modal hide" tabindex="-1" data-width="760">
+     @using (Html.BeginForm("Edit", "Domain", FormMethod.Post))
+     {
+        @Html.ValidationSummary(true)
+         @Html.AntiForgeryToken()
+        <input type="hidden" id="domain_id" value="@Model.domain_id" />
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+            <h3>Edit Domains:</h3>
+        </div>
+        <div class="modal-body">
+            <div class="row-fluid">
+                    <div class="control-group">
+                        <label class="control-label" for="domain_names">Domain Names:<span class="red">*</span></label>
+                        <div class="controls">
+                            <textarea id="domain_names" rows="3" name="domain_names" class="span12 m-wrap" required>@Model.domain_names</textarea>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="home_page_article">Home Page Article:<span class="red">*</span></label>
+                        <div class="controls">
+                            <select id="home_page_article" name="home_page_article" tabindex="1" class="span12 m-wrap" readonly required>
+                                <option value="@Model.home_page_article">@ViewBag.home_page_article_text</option>
+                            </select>
+                            <a class="changeButton btn icn-only" href="#selectArticle" data-toggle="modal" onclick="openModal('homeArticle','#domainEdit',this)"><i class="icon-tasks"></i> Change</a>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="error_page_article">404 Page Article:<span class="red">*</span></label>
+                        <div class="controls">
+							<select id="error_page_article" name="error_page_article" tabindex="1" class="span12 m-wrap" readonly required>
+								<option value="@Model.error_page_article">@ViewBag.error_page_article_text</option>
+							</select>
+                            <a class="changeButton btn icn-only" href="#selectArticle" data-toggle="modal" onclick="openModal('errorArticle','#domainEdit',this)"><i class="icon-tasks"></i> Change</a>
+                        </div>
+                    </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" data-dismiss="modal" class="btn"><i class="icon-remove"></i> Close</button>
+            <button type="submit" class="btn green" id="saveClose"><i class="icon-save"></i> Save & Close</button>
+        </div>
+     }
+</div>

@@ -1,0 +1,27 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="EuroCMS.FrontEnd.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="EuroCMS_FrontEnd_Salesforce_SforceService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">https://login.salesforce.com/services/Soap/c/41.0/0DF36000000UUb2</Value>
+    </Setting>
+    <Setting Name="EuroCMS_FrontEnd_com_euromsg_member_Member" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">https://api.relateddigital.com/live/member.asmx</Value>
+    </Setting>
+    <Setting Name="EuroCMS_FrontEnd_com_euromsg_sendlist_SendList" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">https://api.relateddigital.com/live/sendlist.asmx</Value>
+    </Setting>
+    <Setting Name="EuroCMS_FrontEnd_com_euromsg_post_Post" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">https://api.relateddigital.com/live/post.asmx</Value>
+    </Setting>
+    <Setting Name="EuroCMS_FrontEnd_com_euromsg_campaign_Campaign" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">https://api.relateddigital.com/live/campaign.asmx</Value>
+    </Setting>
+    <Setting Name="EuroCMS_FrontEnd_com_euromsg_report_Report" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">https://api.relateddigital.com/live/report.asmx</Value>
+    </Setting>
+    <Setting Name="EuroCMS_FrontEnd_com_euromsg_auth_Auth" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://ws.euromsg.com/liveb/auth.asmx</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

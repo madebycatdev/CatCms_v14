@@ -1,0 +1,61 @@
+﻿@model IList<EuroCMS.Model.Site>
+ 
+@if (Model !=null && Model.Count > 0)
+{
+    @*<div class="btn-group">
+	    <button data-toggle="dropdown" class="btn red dropdown-toggle"><i class="icon-sitemap"></i> @( Session["CurrentSiteName"] ?? "All Sites") <i class="icon-angle-down"></i></button>
+	    <ul class="dropdown-menu">
+            <li>
+                <a href="@Url.Action("ChangeSite", "Home", new { ReturnUrl = Request.Url.PathAndQuery  })">All Sites</a>
+            </li>
+		    @foreach (var s in Model)
+            { 
+                <li class="@(Convert.ToInt32(Session["CurrentSiteID"]) == s.site_id ? "active" : "")">
+		            @Html.ActionLink(s.site_name, "ChangeSite", "Home", new { SiteID = s.site_id, ReturnUrl = Request.Url.PathAndQuery },null)
+                    @Html.ActionLink("Preview", "PreviewSite", "Home", new { SiteID = s.site_id }, new { @target = "_blank" })
+	            </li>
+            }
+	    </ul>
+    </div>*@
+ 
+    <div class="navbar hor-menu hidden-phone hidden-tablet">
+        <div class="navbar-inner">
+            <ul class="nav">
+                <li class="active">
+                    <a data-hover="dropdown" data-close-others="true" class="dropdown-toggle" href="javascript:;">
+					    <span class="selected"></span>
+					        @( Session["CurrentSiteName"] ?? "All Sites")
+					    <span class="arrow"></span>     
+					</a>
+                    <ul class="dropdown-menu">
+                        @foreach (var s in Model)
+                        { 
+                            <li class="dropdown-submenu">
+							    @Html.ActionLink(HttpUtility.UrlDecode(HttpUtility.HtmlDecode(s.Name)), "ChangeSite", "Home", new { SiteID = s.Id, ReturnUrl = Request.Url.PathAndQuery },null)
+                                <ul class="dropdown-menu">
+                                    <li>@Html.ActionLink("Preview", "PreviewSite", "Home", new { SiteID = s.Id }, new { @target = "_blank" })</li>
+                                </ul>
+						    </li>
+                        }
+                    </ul>
+                </li>
+				@*<li>
+					<a href="/cms/Tool/FileManager">
+				        <span class="title">File Manager</span> <i class="icon-upload-alt"></i> 
+				    </a>
+				</li>*@
+            </ul>
+        </div>
+    </div>
+    
+}
+
+
+
+
+
+					
+					
+						 
+					
+			

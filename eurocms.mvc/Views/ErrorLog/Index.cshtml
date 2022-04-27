@@ -1,0 +1,238 @@
+﻿@*@model PagedList.IPagedList<EuroCMS.Model.ErrorLog>*@
+@model PagedList.IPagedList<EuroCMS.Model.ErrorLog>
+@using PagedList.Mvc;
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#StartDate').datetimepicker({
+            dateFormat: 'dd/mm/yy',
+            onClose: function (selectedDate) {
+                $("#EndDate").datepicker("option", "minDate", selectedDate);
+            }
+        });
+
+        $('#EndDate').datetimepicker({
+            dateFormat: 'dd/mm/yy',
+            onClose: function (selectedDate) {
+                $("#StartDate").datepicker("option", "maxDate", selectedDate);
+            }
+        });
+    });
+</script>
+
+@*<fieldset>
+    <legend>Filter Errors</legend>*@
+<div class="portlet box grey">
+	<div class="portlet-title">
+		<div class="caption"><i class="icon-reorder"></i>Filter Errors</div>
+	</div>
+	<div class="portlet-body">
+		@using (Html.BeginForm("Index", "ErrorLog", FormMethod.Get, new { @class = "form-horizontal", @id = "zEdit" }))
+		{
+			@Html.ValidationSummary(true)
+			<div class="row-fluid">
+				<div class="control-group">
+					<label class="control-label" for="Keyword">Keyword:</label>
+					<div class="controls">
+						<input class="m-wrap span5" type="text" name="Keyword" id="Keyword" value="@ViewBag.Keyword" />
+					</div>
+				</div>
+			</div>
+			<div class="row-fluid">
+				<div class="control-group">
+					<label class="control-label" for="UserId">User: </label>
+					<div class="controls">
+						<select class="m-wrap span5" name="UserId" id="UserId">
+							<option value="">All Users</option>
+							@{
+								if (ViewBag.Users != null)
+								{
+									List<EuroCMS.Model.vAspNetMembershipUser> listUser = new List<EuroCMS.Model.vAspNetMembershipUser>();
+									listUser = (List<EuroCMS.Model.vAspNetMembershipUser>)ViewBag.Users;
+									foreach (EuroCMS.Model.vAspNetMembershipUser user in listUser)
+									{
+										string userFullName = "";
+										var userProfile = System.Web.Profile.ProfileBase.Create(user.UserName, false);
+										userFullName = userProfile.GetPropertyValue("System.FullName").ToString().Trim();
+										if (!string.IsNullOrEmpty(userFullName))
+										{
+											if ((string)ViewBag.UserId == user.UserId.ToString())
+											{
+												<option value="@user.UserId" selected="selected">@HttpUtility.HtmlDecode(userFullName)</option>
+											}
+											else
+											{
+												<option value="@user.UserId">@HttpUtility.HtmlDecode(userFullName)</option>
+											}
+										}
+									}
+								}
+							}
+
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="row-fluid">
+				<div class="control-group">
+					<label class="control-label" for="Keyword">Start Date:</label>
+					<div class="controls">
+						<input class="m-wrap span5" type="text" name="StartDate" id="StartDate" />
+					</div>
+				</div>
+			</div>
+			<div class="row-fluid">
+				<div class="control-group">
+					<label class="control-label" for="Keyword">End Date:</label>
+					<div class="controls">
+						<input class="m-wrap span5" type="text" name="EndDate" id="EndDate" />
+					</div>
+				</div>
+			</div>
+			<div class="row-fluid">
+				<div class="control-group">
+					<label class="control-label" for="Status0"></label>
+					<div class="controls">
+						<label class="smallWrap">
+							<input type="checkbox" name="Status0" value="True" @(ViewBag.Status0 == true ? "checked=checked" : "")>
+							Only Cms
+						</label>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-actions">
+				<button class="btn">Search Error Logs <i class="icon-search"></i></button> 
+			</div>
+			
+		}
+	</div>
+</div>
+@*</fieldset>*@
+<style>
+   /* th, td {
+        border: 1px solid black;
+    }*/
+</style>
+@*<div class="portlet box grey">
+    <div class="portlet-title">
+        <div class="caption"><i class="icon-reorder"></i>Error Logs</div>
+    </div>
+    <div class="portlet-body">*@
+        <p><b>Number of Errors Logged : </b> @ViewBag.ErrorCount</p>
+		<div class="no-more-tables">
+			<table class="table dataTable table-striped table-hover">
+				<thead>
+					<tr>
+						<th style="width:15%">Date & Time</th>
+						<th>UserName</th>
+						<th>Message</th>
+						<th style="width:15%">Controller / Action</th>
+						<th>Details</th>
+					</tr>
+				</thead>
+				<tbody>
+					@if (Model.Count > 0)
+					{
+						List<EuroCMS.Model.vAspNetMembershipUser> users = ViewBag.Users as List<EuroCMS.Model.vAspNetMembershipUser>;
+						foreach (var log in @Model)
+						{
+							//cms/Account/Details/emrey
+							<tr>
+								<td data-title="Date & Time">@log.LogDate</td>
+								@if (log.UserId != null)
+								{
+									try
+									{
+										<td data-title="UserName"><a target="_blank" href="~/Account/Details/@users.Where(x => x.UserId == log.UserId).FirstOrDefault().UserName">@users.Where(x => x.UserId == log.UserId).FirstOrDefault().UserName</a> </td>
+									}
+									catch (Exception ex)
+									{
+										//kullanıcıyı bulamazsa
+										<td data-title="UserName">-</td>
+									}
+								}
+								else
+								{
+									<td data-title="UserName"> - </td>
+								}
+								@if (string.IsNullOrEmpty(log.Comment))
+								{
+									<td data-title="Message">@log.Message</td>
+								}
+								else
+								{
+									<td data-title="Message">@log.Comment</td>
+								}
+								<td style="width:15%" data-title="Controller / Action">@log.ControllerName / @log.ActionName</td>
+								<td data-title="Details"><a title="Details" class="btn icn-only mini logDetail" href="#" onclick="showHide(this); return false;"><i class="icon-sort-up"></i></a></td>
+							</tr>
+							<tr class="hide">
+								<td colspan="5" class="details">
+									<b>ID :</b> @log.Id
+									<br />
+									<b>Controller Name :</b> @log.ControllerName
+									<br />
+									<b>Action Name : </b> @log.ActionName
+									<br />
+									@if (log.UserId != null)
+									{
+										try
+										{
+											<b>User :</b> <a target="_blank" href="~/Account/Details/@users.Where(x => x.UserId == log.UserId).FirstOrDefault().UserName">@users.Where(x => x.UserId == log.UserId).FirstOrDefault().UserName</a>
+										}
+										catch (Exception ex)
+										{
+											//kullanıcıyı bulamazsa
+											<b>User :</b>
+										}
+									}
+									else
+									{
+										<b>User :</b>
+									}
+									<br />
+									<b>Log Date : </b> @log.LogDate
+									<br />
+									<b>Comment : </b> @log.Comment
+									<br />
+									<b>IP : </b> @log.IP
+									<br />
+									<b>Message : </b> @log.Message
+									<br />
+									<b>Inner Exception : </b> @log.InnerException
+									<br />
+									<b>Is In Cms : </b> @log.IsInCms
+									<br />
+									<b>Stack Trace : </b> @log.StackTrace
+									<br />
+									<b>Absolute Url : </b> @log.AbsolutePath
+									<br />
+									<b>Line Number : </b> @log.LineNumber
+									<br />
+									@*<a title="Hide" class="btn icn-only black" href="#" onclick="$(this).parents('tr').hide(); return false;"><i class="m-icon-swapup m-icon-white"></i></a>*@
+								</td>
+							</tr>
+						}
+					}
+					else
+					{
+						<tr>
+							<td colspan="5">No Result Found!</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+    @*</div>*@
+    @Html.PagedListPager(Model, page => Url.Action("Index",
+		new
+		{
+			page,
+			Keyword = ViewBag.Keyword,
+			UserId = ViewBag.UserId,
+			StartDate = ViewBag.StartDate,
+			EndDate = ViewBag.EndDate,
+			Status0 = ViewBag.Status0
+		}))
+</div>

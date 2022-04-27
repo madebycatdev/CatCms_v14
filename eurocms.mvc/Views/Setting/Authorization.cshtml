@@ -1,0 +1,66 @@
+﻿@model EuroCMS.Core.Configuration.AccessRuleSection
+ 
+
+<h3>Create</h3>
+@using (Html.BeginForm("CreateAccessRule", "Setting", FormMethod.Post ))
+{
+    @Html.AntiForgeryToken()
+    <div class="row-fluid">
+        <div class="control-group">
+            <label for="Name">Name:</label>
+            <div class="controls">
+                @Html.TextBox("Name", "")
+            </div>
+        </div>
+        <div class="control-group">
+            <button class="btn red" type="submit"><i class="icon-save"></i> Save</button>
+        </div>
+    </div>
+}
+
+
+<h3>Access Rule Settings</h3>
+
+@if(Model !=null)
+{
+    <table class="table table-striped table-hover System">
+        <thead>
+            <tr>
+                <td>
+                    <b>Rule Name</b>
+                </td>
+                @*<td>
+                    <b>Setting Value</b>
+                </td>
+                <td>
+                    <b>Actions</b>
+                </td>*@
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Rules.GetAllKeys())
+            { 
+                <tr>
+                    <td>
+                        @Model.Rules[item.ToString()].Name
+                    </td>
+                    @*<td>
+                        @value.Substring(0, valueLength).PadRight(valueLength + 3, '.')
+                    </td>
+                    <td>
+                        <a href="@Url.Action("CreateAppSetting", "Setting", new { id=key })" class="btn icn-only black openModal"><i class="icon-pencil"></i></a> 
+                        @if (!key.StartsWith("EuroCMS"))
+                        {
+                            using (Html.BeginForm("DeleteAppSetting", "Setting", FormMethod.Post))
+                            { 
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" value="@key" name="id" />
+                                <button type="submit"  class="btn icn-only black" data-message="Are you sure want to delete this setting?"><i class="icon-trash"></i></button>
+                            }
+                        }
+                    </td>*@
+                </tr>
+            }
+        </tbody>
+    </table>
+}

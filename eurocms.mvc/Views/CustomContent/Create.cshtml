@@ -1,0 +1,48 @@
+﻿@{
+    Layout = null;
+}
+
+<script type="text/javascript">
+    CKEDITOR.replace('cc_html');
+</script>
+
+@using (Html.BeginForm("Create", "CustomContent", FormMethod.Post, new { @class = "form-horizontal", @id = "customContentCreate" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+        <h3>Create New Custom Content:</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row-fluid">
+            <div class="control-group">
+                <label class="control-label" for="cc_name">Custom Content Name: <span class="red">*</span></label>
+                <div class="controls">
+                    <input class="span11 m-wrap" type="text" id="cc_name" name="cc_name">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="structure_description">Description:</label>
+                <div class="controls">
+                    <textarea class="span11 m-wrap" id="structure_description" name="structure_description" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="group_id">Group:</label> 
+                <div class="controls">
+                    @Html.DropDownList("group_id", ViewBag.Groups as IEnumerable<SelectListItem>, "Not Grouped", new { @class ="span11 m-wrap"})
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="cc_html">Custom Content HTML:</label>
+            </div>
+            <div class="control-group">
+                <textarea class="span11 m-wrap" id="cc_html" name="cc_html" rows="3"></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" data-dismiss="modal" class="btn"><i class="icon-remove"></i> Close</button>
+        <button type="submit" class="btn blue"><i class="icon-save"></i> Save & Close</button>
+    </div>
+}

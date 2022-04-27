@@ -1,0 +1,259 @@
+﻿@model MembershipUser
+
+<h2>Details For <em>"@Html.Encode(Model.UserName)"</em>  </h2>
+
+<div class="tabbable tabbable-custom">
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#tab_1_1">Account</a></li>
+        <li class=""><a data-toggle="tab" href="#tab_1_2">Profile</a></li>
+        <li class=""><a data-toggle="tab" href="#tab_1_3">Password</a></li>
+        <li class=""><a data-toggle="tab" href="#tab_1_4">Role</a></li>
+    </ul>
+    <div class="tab-content">
+        <div id="tab_1_1" class="tab-pane active">
+            <div class="row-fluid">
+                @{
+                    var profile = System.Web.Profile.ProfileBase.Create(Model.UserName, false);
+                    var avatar = (byte[])profile.GetPropertyValue("System.Avatar");
+                }
+
+                @if (avatar != null)
+                {
+                    <img id="Avatar" src="data:image/png;base64,@System.Convert.ToBase64String(avatar)" width="73" height="73" />
+                }
+                else
+                {
+                    <img src="~/Content/img/avatar.png" width="24" height="24" />
+                }
+
+                <p>
+                    <strong>User Name:</strong><br />
+                    @Html.Encode(Model.UserName)
+                </p>
+
+                @if (Model.LastActivityDate == Model.CreationDate)
+                {
+                    <p>
+                        <strong>Last Active:</strong><br />
+                        Never
+                    </p>
+                    <p>
+                        <strong>Last Login:</strong><br />
+                        Never
+                    </p>
+                }
+                else
+                {
+                    <p>
+                        <strong>Last Active:</strong><br />
+                        @Model.LastActivityDate.ToString("f")
+                    </p>
+                    <p>
+                        <strong>Last Login:</strong><br />
+                        @Model.LastLoginDate.ToString("f")
+                    </p>
+                }
+                <p>
+                    <strong>Created:</strong><br />
+                    @Model.CreationDate.ToString("f")
+                </p>
+                <p>
+                    <strong>ProviderUserKey:</strong><br />
+                    @Model.ProviderUserKey
+                </p>
+                <p>
+                    <strong>IsOnline:</strong><br />
+                    @Model.IsOnline
+                </p>
+                <div class="form-actions">
+                    @using (Html.BeginForm("ChangeApproval", "Account", new { id = Model.UserName }, FormMethod.Post, new { @class = "inline" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.Hidden("isApproved", !Model.IsApproved)
+                        if (Model.IsApproved)
+                        {
+                            <button class="btn red" type="submit" value="Unapprove Account">
+                                <i class="icon-flag"></i> Unapprove Account
+                            </button>
+                        }
+                        else
+                        {
+                            <button class="btn green" type="submit" value="Approve Account">
+                                <i class="icon-flag"></i> Approve Account
+                            </button>
+                        }
+                    }
+                    @*@using (Html.BeginForm("Delete", "Account", new { id = Model.UserName }, FormMethod.Post, new { @class = "inline " }))
+                        {
+                                @Html.AntiForgeryToken()
+                                <button class="btn red" type="submit" value="Delete Account" data-message="Are you sure want to delete this publisher?" onclick="return deleteObject(this);">
+                                    <i class="icon-remove"></i> Delete Account
+                                </button>
+                        }*@
+                </div>
+            </div>
+        </div>
+        <div id="tab_1_2" class="tab-pane">
+            <div class="row-fluid">
+                @using (Html.BeginForm("ChangeUserProfile", "Account", new { id = Model.UserName }, FormMethod.Post, new { @class = "form-horizontal" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="control-group">
+                        <label class="control-label" for="System_FullName">Full Name:</label>
+                        <div class="controls">
+                            @Html.TextBox("System.FullName", Html.Raw(profile.GetPropertyValue("System.FullName")), new { @class = "m-wrap span6 required" })
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="email">Email Address:</label>
+                        <div class="controls">
+                            @Html.TextBox("email", Model.Email, new { @class = "m-wrap span6 required email" })
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="comment">Comments:</label>
+                        <div class="controls">
+                            @Html.TextArea("comment", Model.Comment, new { @class = "m-wrap span6", @rows = "4" })
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button class="btn green" type="submit" value="Save">
+                            <i class="icon-save"></i> Save
+                        </button>
+                    </div>
+                }
+            </div>
+        </div>
+        <div id="tab_1_3" class="tab-pane">
+            <div class="row-fluid">
+                @if (Model.IsLockedOut)
+                {
+                    <p>Locked out since @Model.LastLockoutDate.ToString("MMMM dd, yyyy h:mm:ss tt", System.Globalization.CultureInfo.InvariantCulture) </p>
+
+                    using (Html.BeginForm("Unlock", "Account", new { id = Model.UserName }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <button class="btn red" type="submit" value="Unlock Account">
+                            <i class="icon-flag"></i> Unlock Account
+                        </button>
+                    }
+                }
+                else
+                {
+                    if (Model.LastPasswordChangedDate == Model.CreationDate)
+                    {
+                        <p>
+                            <strong>Last Changed:</strong><br />
+                            Never
+                        </p>
+                    }
+                    else
+                    {
+                        <p>
+                            <strong>Last Changed:</strong><br />
+                            @Model.LastPasswordChangedDate.ToString("MMMM dd, yyyy h:mm:ss tt", System.Globalization.CultureInfo.InvariantCulture)
+                        </p>
+                    }
+
+                    using (Html.BeginForm("ResetPassword", "Account", new { id = Model.UserName }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <p>
+                            <strong>Password Question:</strong><br />
+                            @if (string.IsNullOrEmpty(Model.PasswordQuestion) || string.IsNullOrEmpty(Model.PasswordQuestion.Trim()))
+                            {
+                                <em>No password question defined.</em>
+                            }
+                            else
+                            {
+                                <em>@Html.Encode(Model.PasswordQuestion)</em>
+                            }
+                        </p>
+
+                        <p>
+                            <label for="answer">Password Answer:</label>
+                            @Html.TextBox("answer")
+                        </p>
+                        <div class="form-actions">
+                            <button class="btn red" type="submit" value="Reset Password">
+                                <i class="icon-repeat"></i> Reset Password
+                            </button>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+        <div id="tab_1_4" class="tab-pane">
+            <div class="row-fluid">
+                <p>
+                    @if (ViewBag.userRole)
+                    {
+                        foreach (var role in Roles.GetAllRoles())
+                        {
+                            @*<a href="@Url.Action("Index", "Account", new { role = role})">role</a>*@
+
+                            if (Roles.IsUserInRole(Model.UserName, role))
+                            {
+                                using (Html.BeginForm("RemoveFromRole", "Account", new { id = Model.UserName }, FormMethod.Post, new { @class = "inline margin-right-10  margin-bottom-10" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <button class="btn red" type="submit" value="Remove From" title="Remove @role from @Model.UserName">
+                                        <i class="icon-minus"></i>  @role
+                                    </button>
+                                    <input type="hidden" name="roleName" id="roleName" value="@role" />
+                                }
+                            }
+                            else
+                            {
+                                using (Html.BeginForm("AddToRole", "Account", new { id = Model.UserName }, FormMethod.Post, new { @class = "inline margin-right-10  margin-bottom-10" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <button class="btn default" type="submit" value="Add to" title="Add @role to @Model.UserName">
+                                        <i class="icon-plus"></i>  @role
+                                    </button>
+                                    <input type="hidden" name="roleName" id="roleName" value="@role" />
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        foreach (var role in Roles.GetAllRoles())
+                        {
+                            if(role == "Administrator")
+                            {
+                                continue;
+                            }
+                            @*<a href="@Url.Action("Index", "Account", new { role = role})">role</a>*@
+
+                            if (Roles.IsUserInRole(Model.UserName, role))
+                            {
+                                using (Html.BeginForm("RemoveFromRole", "Account", new { id = Model.UserName }, FormMethod.Post, new { @class = "inline margin-right-10  margin-bottom-10" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <button class="btn red" type="submit" value="Remove From" title="Remove @role from @Model.UserName">
+                                        <i class="icon-minus"></i>  @role
+                                    </button>
+                                    <input type="hidden" name="roleName" id="roleName" value="@role" />
+                                }
+                            }
+                            else
+                            {
+                                using (Html.BeginForm("AddToRole", "Account", new { id = Model.UserName }, FormMethod.Post, new { @class = "inline margin-right-10  margin-bottom-10" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <button class="btn default" type="submit" value="Add to" title="Add @role to @Model.UserName">
+                                        <i class="icon-plus"></i>  @role
+                                    </button>
+                                    <input type="hidden" name="roleName" id="roleName" value="@role" />
+                                }
+                            }
+                        }
+                    }
+
+                </p>
+
+            </div>
+        </div>
+    </div>
+</div>

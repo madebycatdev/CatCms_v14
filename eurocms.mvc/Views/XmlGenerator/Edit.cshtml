@@ -1,0 +1,138 @@
+﻿@model EuroCMS.Admin.entity.cms_asp_select_xml_details_Result
+ 
+@using (Html.BeginForm("Edit", "XmlGenerator", FormMethod.Post, new { @class = "form-horizontal", @id = "xmlEdit" }))
+{
+    @Html.AntiForgeryToken()
+	<div class="tabbable tabbable-custom">
+		<div class="tab-content new-tab-content">
+			<div class="row-fluid">
+				<div class="control-group">
+					<label class="control-label" for="xml_name">XML Name: <span class="red">*</span></label>
+					<div class="controls">
+						<input class="span12 m-wrap" type="text" id="xml_name" name="xml_name" value="@Model.xml_name" required>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="structure_description">Description:</label>
+					<div class="controls">
+						<textarea class="span12 m-wrap" id="structure_description" name="structure_description">@Model.structure_description</textarea>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="group_id">Group:</label>
+					<div class="controls">
+						@Html.DropDownListFor(d=>d.group_id, ViewBag.Groups as IEnumerable<SelectListItem>, "Not Grouped", new { @class ="span12"})
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="xml_main_node">XML Root Node: <span class="red">*</span></label>
+					<div class="controls">
+						<input class="span12 m-wrap" type="text" id="xml_main_node" name="xml_main_node" value="@Model.xml_main_node" required>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="xml_main_node_attrib">Root Node Attributes:</label>
+					<div class="controls">
+						<input class="span12 m-wrap" type="text" id="xml_main_node_attrib" name="xml_main_node_attrib" value="@Model.xml_main_node_attrib">
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="xml_per_node">XML Per Item Node: <span class="red">*</span></label>
+					<div class="controls">
+						<input class="span12 m-wrap" type="text" id="xml_per_node" name="xml_per_node" value="@Model.xml_per_node" required>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="xml_per_node_attrib">Per Item Attributes: </label>
+					<div class="controls">
+						<input class="span12 m-wrap" type="text" id="xml_per_node_attrib" name="xml_per_node_attrib" value="@Model.xml_per_node_attrib">
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="xml_related_line">Related Article Line: </label>
+					<div class="controls">
+						<input class="span12 m-wrap" type="text" id="xml_related_line" name="xml_related_line" value="@Model.xml_related_line">
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="xml_sub_node">Second Level Line: </label>
+					<div class="controls">
+						<input class="span12 m-wrap" type="text" id="xml_sub_node" name="xml_sub_node" value="@Model.xml_sub_node">
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="xml_sub_template">Second Level Template: </label>
+					<div class="controls">
+						@Html.DropDownList("xml_sub_template", ViewBag.XmlList as IEnumerable<SelectListItem>, "- Upper Level Template -", new { @class ="span12 m-wrap"})
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">XML Data Items:</label>
+				</div>
+				<div class="xmlWrap">
+					@{
+						System.Xml.XmlDocument doc = new System.Xml.XmlDocument();
+						doc.LoadXml(Model.xml_xml);
+						for (int i = 1; i < doc.DocumentElement.ChildNodes.Count; i++)
+						{
+							var xx = doc.DocumentElement.ChildNodes[i];
+							var name = xx.ChildNodes[0].InnerText;
+							var attr = xx.ChildNodes[1].InnerText;
+							var value = xx.ChildNodes[2].InnerText;
+							var cdata = xx.ChildNodes[3].InnerText;
+							var afile = xx.ChildNodes[4].InnerText;
+
+							if (name != "")
+							{
+								<div class="xmlItem">
+									<div class="control-group">
+										<label class="control-label"><b class="dataName">XML Data @i:</b></label>
+									</div>
+									<div class="control-group">
+										<div class="row-fluid margin-bottom-5">
+											<label class="control-label dataXmlName" for="name_@i">Name:<span class="red">*</span></label>
+											<div class="controls">
+												<input class="span4 m-wrap dataNameInput" type="text" id="name_@i" name="name_@i" value="@name" required />
+												<label class="smallWrap">
+													<input class="margin-left-10 dataNameCheck" type="checkbox" id="afiles_@i" name="afiles_v" @(!string.IsNullOrEmpty(afile)? "checked=checked":string.Empty) /> 
+													Article File
+												</label>
+											</div>
+										</div>
+										<div class="row-fluid margin-bottom-5">
+											<label class="control-label dataAttr" for="attribute_@i">Attribute:</label>
+											<div class="controls">
+												<input class="span4 m-wrap dataAttrInput" type="text" id="attribute_@i" name="attribute_@i" value="@attr" />
+											</div>
+										</div>
+										<div class="row-fluid margin-bottom-5">
+											<label class="control-label dataValue" for="value_@i">Value:<span class="red">*</span></label>
+											<div class="controls">
+												<input class="span4 m-wrap dataValueInput" type="text" id="value_@i" name="value_@i" value="@value" required />
+												<label class="smallWrap">
+													<input class="margin-left-10 dataValueCheck" type="checkbox" id="cdata_@i" name="cdata_@i" @(!string.IsNullOrEmpty(cdata)? "checked=checked":string.Empty) /> 
+													cData
+												 </label>
+											</div>
+										</div>
+									</div>
+								</div>      
+							}
+						}
+					}
+				</div>
+				<div class="control-group">
+					<div class="controls">
+						<button type="button" class="btn" title="Add Xml Data" onclick="return addXmlData(this),false;"><i class="icon-plus"></i> Add Xml Data</button>
+					</div>
+				</div>
+				<div class="form-actions">
+					<button class="btn" type="button" title="Cancel Changes" onclick="discardChanges('@Url.Action("Index")'),false;"><i class="icon-remove"></i> Cancel</button>
+					<button class="btn green" type="submit" title="Save This XML"><i class="icon-save"></i> Save</button>
+				</div>
+			</div>
+		</div>
+	</div>
+    
+
+}

@@ -1,0 +1,333 @@
+﻿@model List<EuroCMS.Model.WidgetConfig>
+<style>
+/*
+Fix for Google Analytics Viewselectors
+*/
+.ViewSelector{
+display: block;
+}
+
+.ViewSelector table {
+    display: block;
+    margin-bottom: 1em;
+    width: 100%;
+}
+
+.ViewSelector td:first-child {
+    font-weight: 700;
+    margin: 0 .25em .25em 0;
+    display: block;
+}
+
+.ViewSelector table, .ViewSelector tbody, .ViewSelector td, .ViewSelector tr {
+    display: block;
+}
+
+.ViewSelector table {
+    height: auto !important;
+}
+
+.ViewSelector table, .ViewSelector td {
+    width: auto !important;
+}
+
+.ViewSelector td:last-child * {
+    display: block;
+    text-align: left;
+}
+
+.ViewSelector td:last-child > div {
+    font-weight: 400;
+    margin: 0;
+}
+
+@@media (min-width: 570px) {
+    .ViewSelector{
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        margin: 0 0 0 -1em;
+        width: -webkit-calc(100% + 1em);
+        width: calc(100% + 1em);
+    }
+    .ViewSelector table {
+        -webkit-box-flex: 1;
+        -webkit-flex: 1 1 -webkit-calc(100%/3 - 1em);
+        -ms-flex: 1 1 calc(100%/3 - 1em);
+        flex: 1 1 calc(100%/3 - 1em);
+        margin-left: 1em;
+    }
+}
+.ViewSelector--stacked {
+    display: block;
+    margin: 0;
+    width: auto;
+}
+
+.ViewSelector--stacked table {
+    margin-left: 0;
+}
+#timeline {
+    overflow:hidden;
+}
+#auth-button div:nth-child(2) {
+    color:#999;
+    text-align:right;
+    margin-bottom:10px;
+}
+#dashboard-ga, #dashboard-ga-content {
+    display:none;
+}
+</style>
+
+@{
+    var config = System.Web.Configuration.WebConfigurationManager.OpenWebConfiguration("~/");
+    string GaClientId = config.AppSettings.Settings["GoogleAnalyticsClientId"] != null && !string.IsNullOrEmpty(config.AppSettings.Settings["GoogleAnalyticsClientId"].Value) ? config.AppSettings.Settings["GoogleAnalyticsClientId"].Value : "";
+    if (Model != null && Model.Count > 0)
+    {
+        @Html.HiddenFor(x => x[0].WidgetUserID) 
+    }
+}
+
+<script>
+    (function (w, d, s, g, js, fjs) {
+        g = w.gapi || (w.gapi = {}); g.analytics = { q: [], ready: function (cb) { this.q.push(cb) } };
+        js = d.createElement(s); fjs = d.getElementsByTagName(s)[0];
+        js.src = 'https://apis.google.com/js/platform.js';
+        fjs.parentNode.insertBefore(js, fjs); js.onload = function () { g.load('analytics') };
+    }(window, document, 'script'));
+
+    String.prototype.toHHMMSS = function () {
+        var sec_num = parseInt(this, 10); // don't forget the second param
+        var hours = Math.floor(sec_num / 3600);
+        var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+        var seconds = sec_num - (hours * 3600) - (minutes * 60);
+
+        if (hours < 10) { hours = "0" + hours; }
+        if (minutes < 10) { minutes = "0" + minutes; }
+        if (seconds < 10) { seconds = "0" + seconds; }
+        var time = hours + ':' + minutes + ':' + seconds;
+        return time;
+    }
+
+    gapi.analytics.ready(function () {
+
+        // Step 3: Authorize the user.
+
+        //var CLIENT_ID = '468435086708-ps3cmo1ra8q9oof4j1l5nn62qftib2hq.apps.googleusercontent.com';
+        var CLIENT_ID = '@GaClientId'
+
+        if (CLIENT_ID == null || CLIENT_ID == "") {
+            $("#dashboard-ga").show();
+            $("#dashboard-ga").html("Please contact with Madebycat. hello@madebycat.com")
+            return;
+        }
+        gapi.analytics.auth.authorize({
+            container: 'auth-button',
+            clientid: CLIENT_ID,
+        });
+
+        // Step 4: Create the view selector.
+
+        var viewSelector = new gapi.analytics.ViewSelector({
+            container: 'view-selector'
+        });
+        //console.log(viewSelector);
+        // Step 5: Create the timeline chart.
+        var totalSessions = new gapi.analytics.report.Data({
+            query: {
+                'metrics': 'ga:sessions,ga:users,ga:pageviews,ga:pageviewsPerSession,ga:avgSessionDuration,ga:bounceRate,ga:percentNewSessions',
+                'start-date': '30daysAgo',
+                'container': 'total-Sessions',
+                'end-date': 'yesterday'
+            }
+        });
+
+        var timeline = new gapi.analytics.googleCharts.DataChart({
+            reportType: 'ga',
+            query: {
+                'dimensions': 'ga:date',
+                'metrics': 'ga:sessions,ga:pageviews,ga:users',
+                //'metrics': 'ga:sessions',
+                'start-date': '30daysAgo',
+                'end-date': 'yesterday'
+            },
+            chart: {
+                type: 'LINE',
+                container: 'timeline',
+                options: {
+                    width: '100%'
+                }
+            }
+        });
+
+
+        // Step 6: Hook up the components to work together.
+
+        gapi.analytics.auth.on('success', function (response) {
+            viewSelector.execute();
+        });
+
+        viewSelector.on('change', function (ids) {
+            //console.log(ids);
+            var newIds = {
+                query: {
+                    ids: ids
+                }
+            }
+            //console.log(newIds.query.ids);
+            timeline.set(newIds).execute();
+            totalSessions.set(newIds).execute();
+
+        });
+        //$("#dashboard").hide();
+        totalSessions.on('success', function (response) {
+            var analResults = response.totalsForAllResults;
+            var cms_profileId = response.profileInfo['profileId'];
+            var cms_accountId = response.profileInfo['accountId'];
+            var cms_profileName = response.profileInfo['profileName'];
+            var cms_sessions = parseInt(analResults['ga:sessions']);
+            var cms_users = parseInt(analResults['ga:users']);
+            var cms_pageviews = parseInt(analResults['ga:pageviews']);
+            var cms_pageviewsPerSession = parseInt(analResults['ga:pageviewsPerSession']);
+            var cms_avgSessionDuration = analResults['ga:avgSessionDuration'];
+            var cms_bounceRate = parseInt(analResults['ga:bounceRate']);
+            var cms_percentNewSessions = analResults['ga:percentNewSessions'];
+
+            $("#analytics-sessions .number").html(cms_sessions);
+            $("#analytics-users .number").html(cms_users);
+            $("#analytics-pageviews .number").html(cms_pageviews);
+            $("#analytics-pageviews-sessions .number").html(cms_pageviewsPerSession.toFixed(2));
+            $("#analytics-average-session-duration .number").html(cms_avgSessionDuration.toHHMMSS());
+            $("#analytics-bounce-rate .number").html(cms_bounceRate.toFixed(2));
+            $("#dashboard-ga-content").show();
+        })
+        $("#dashboard-ga").show();
+        
+    });
+    $(document).ready(function () {
+        $('#dvPanelTitle@((Model == null || Model.Count == 0) ? "" : Model.FirstOrDefault().WidgetUserID.ToString())').html('<i class="icon-reorder"></i>Google Analytics');
+    });
+</script>
+
+
+<!-- Step 1: Create the containing elements. -->
+<div id="dashboard-ga">
+    <section class="row-fluid" id="config-error"></section>
+    <div class="row-fluid">
+        <section class="row-fluid" id="auth-button"></section>
+        <section class="row-fluid ViewSelector" id="view-selector"></section>
+        <section class="row-fluid" id="total-Sessions"></section>
+    </div>
+
+    <!-- BEGIN DASHBOARD STATS -->
+    <div class="row-fluid" id="dashboard-ga-content">
+        <div class="row-fluid">
+            <div class="span4 responsive" data-tablet="span6" data-desktop="span4" id="analytics-sessions">
+                <div class="dashboard-stat blue">
+                    <div class="visual">
+                        <i class="icon-cogs"></i>
+                    </div>
+                    <div class="details">
+                        <div class="number">
+
+                        </div>
+                        <div class="desc">
+                            Sessions
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="span4 responsive" data-tablet="span6" data-desktop="span4" id="analytics-users">
+                <div class="dashboard-stat green">
+                    <div class="visual">
+                        <i class="icon-group"></i>
+                    </div>
+                    <div class="details">
+                        <div class="number">
+
+                        </div>
+                        <div class="desc">
+                            Users
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="span4 responsive" data-tablet="span6" data-desktop="span4" id="analytics-pageviews">
+                <div class="dashboard-stat purple">
+                    <div class="visual">
+                        <i class="icon-file-text"></i>
+                    </div>
+                    <div class="details">
+                        <div class="number">
+
+                        </div>
+                        <div class="desc">
+                            Pageviews
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="span4 responsive" data-tablet="span6" data-desktop="span4" id="analytics-pageviews-sessions">
+                <div class="dashboard-stat yellow">
+                    <div class="visual">
+                        <i class="icon-sitemap"></i>
+                    </div>
+                    <div class="details">
+                        <div class="number">
+
+                        </div>
+                        <div class="desc">
+                            Pagev./Sessions
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="span4 responsive" data-tablet="span6" data-desktop="span4" id="analytics-average-session-duration">
+                <div class="dashboard-stat purple">
+                    <div class="visual">
+                        <i class="icon-random"></i>
+                    </div>
+                    <div class="details">
+                        <div class="number">
+
+                        </div>
+                        <div class="desc">
+                            Av. Session Dur.
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="span4 responsive" data-tablet="span6" data-desktop="span4" id="analytics-bounce-rate">
+                <div class="dashboard-stat red">
+                    <div class="visual">
+                        <i class="icon-share"></i>
+                    </div>
+                    <div class="details">
+                        <div class="number">
+
+                        </div>
+                        <div class="desc">
+                            Bounce Rate
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row-fluid">
+                <section id="timeline" class="row-fluid"></section>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Step 2: Load the library. -->
+

@@ -1,0 +1,124 @@
+﻿@model System.Net.Configuration.SmtpSection
+
+<script type="text/ecmascript">
+    $(document).ready(function () {
+        $("input[name=authentication]").click(function () {
+            if ($(this).val() == "Basic") {
+                $(".sender").show();
+            } else {
+                $(".sender").hide();
+            }
+        });
+    });
+</script>
+
+@using (Html.BeginForm("SaveSmtp", "Setting", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="row-fluid">
+        <div class="span12">
+            <blockquote>
+                <p>
+                    Use this page to manage SMTP settings, which determine how your Web application sends e-mail. If your e-mail server requires you to log on before you can send an e-mail message, specify the type of authentication that the server requires, and if necessary, the user name and password to use.
+                </p>
+                <p>
+                    <strong>Note:</strong> For more information on authentication with your e-mail server, contact your network administrator.
+                </p>
+            </blockquote>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class="span6">
+            <h4>
+                General:
+            </h4>
+            <div class="control-group">
+                <label for="host">Server Host:</label>
+                @Html.TextBox("host", Model.Network.Host, new { data_rule_required = "true", @class = "span10" })
+            </div>
+            <div class="control-group">
+                <label for="port">Server Port:</label>
+                @Html.TextBox("port", Model.Network.Port, new { @class = "span6" })
+            </div>
+            <div class="control-group">
+                <label for="from">From Address:</label>
+                @Html.TextBox("from", Model.From, new { data_rule_required = "true", @class = "span10" })
+            </div>
+            <div class="control-group">
+                <label for="clientDomain">Client Domain:</label>
+                @Html.TextBox("clientDomain", Model.Network.ClientDomain, new { @class = "span10" })
+            </div>
+            <div class="control-group">
+                <label class="smallWrap" for="enableSsl">
+                    @Html.CheckBox("enableSsl", Model.Network.EnableSsl)
+                    Enable SSL
+                </label>
+            </div>
+        </div>
+        <div class="span6">
+            <!--NTLM -->
+            <h4>
+                Authentication:
+            </h4>
+            <div class="control-group">
+                <label for="authentication_none">
+                    @Html.RadioButton("authentication", "None", !Model.Network.DefaultCredentials && string.IsNullOrEmpty(Model.Network.UserName), new { id = "authentication_none" })
+                    None
+                </label>
+                <label for="authentication_basic">
+                    @Html.RadioButton("authentication", "Basic", !string.IsNullOrEmpty(Model.Network.UserName), new { id = "authentication_basic" })
+                    Basic <small class="muted">(Choose this option if your e-mail server requires you to explicitly pass a user name and password when sending an e-mail message.)</small>
+                </label>
+            </div>
+            <div class="sender @(!string.IsNullOrEmpty(Model.Network.UserName) ? "show" : "hide")">
+                <div class="control-group">
+                    <label for="userName">
+                        Sender's user name:
+                    </label>
+                    @Html.TextBox("userName", Model.Network.UserName)
+                </div>
+                <div class="control-group">
+                    <label for="password">
+                        Sender's password:
+                    </label>
+                    @Html.TextBox("password", Model.Network.Password)
+                </div>
+            </div>
+            <label for="defaultCredentials">
+                @Html.RadioButton("authentication", "Ntlm", Model.Network.DefaultCredentials, new { id = "defaultCredentials" })
+                NTLM <small class="muted">(Choose this option if your e-mail server is on a local area network and you connect to it using windows credentials.)</small>
+            </label>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class="form-actions">
+            <button class="btn green" type="submit" value="Save"><i class="icon-save"></i> Save</button>
+        </div>
+    </div>
+
+}
+
+
+<div class="row-fluid">
+    <div class="span12">
+        <div class="portlet box">
+            <div class="portlet-body">
+                @using (Html.BeginForm("SendTestMail", "Setting", FormMethod.Post, new { @class = "form-horizontal" }))
+            {
+                    @Html.AntiForgeryToken()
+                    <h4>Send a test e-mail</h4>
+                    <div class="control-group">
+                        <label class="control-label" for="email">Recipient:<span class="red">*</span></label>
+                        <div class="controls">
+                            @Html.TextBox("email", "", new { @class = "span6", data_rule_required = "true", data_rule_email = "true" })
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button class="btn default" type="submit" value="Save"><i class="icon-save"></i> Send</button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

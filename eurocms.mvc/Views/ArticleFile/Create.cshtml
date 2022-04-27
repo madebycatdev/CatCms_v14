@@ -1,0 +1,287 @@
+﻿@model  EuroCMS.Admin.entity.cms_asp_admin_select_file_type_details_Result
+
+<form id="fileTypeList" class="form-horizontal no-margin">
+    <div class="row-fluid">
+        <div class="control-group">
+            <label class="control-label" for="Keyword">File Type:</label>
+            <div class="controls">
+                <input type="hidden" name="ArticleId" value="@ViewBag.ArticleId" />
+                <input type="hidden" name="RevisionId" value="@ViewBag.RevisionId" />
+                <input type="hidden" name="FileRevisionId" value="@ViewBag.FileRevisionId" />
+                @* Af *@
+                @Html.DropDownList("TypeId", ViewBag.FileTypes as List<SelectListItem>, "Please Select", new { @class = "span3", @name = "TypeId", @onchange = "formPost(this.id)" })
+
+            </div>
+        </div>
+    </div>
+</form>
+
+@if (ViewBag.TypeId != -1)
+{
+    using (Html.BeginForm("Create", "ArticleFile", new { ArticleId = Request["ArticleId"], RevisionId = Request["RevisionId"], FileRevisionId = Request["FileRevisionId"], TypeId = Request["TypeId"] }, FormMethod.Post, new { @enctype = "multipart/form-data", @id = "fileTypeProperties", @class = "form-horizontal" }))
+    {
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="article_id" value="@ViewBag.ArticleId" />
+        <input type="hidden" name="arid" value="@ViewBag.RevisionId" />
+        <input type="hidden" name="rev_id" value="@ViewBag.FileRevisionId" />
+        <input type="hidden" name="af_rf_id" value="-1" />
+        <input type="hidden" name="selFileType" value="@ViewBag.TypeId" />
+        <input type="hidden" name="rev_status" value="@ViewBag.RevisionStatus" />
+        <input type="hidden" name="FileID" value="@ViewBag.RevisionStatus" />
+  
+        if (@Model.file1_name != "")
+        {
+			<div class="portlet box grey">
+				<div class="portlet-title">
+					<div class="caption"><i class="icon-reorder"></i>@Model.type_name (@Model.type_alias)</div>	
+				</div>
+				<div class="portlet-body">	
+					@*<div class="row-fluid">
+						<div class="control-group">
+							<label class="control-label">@Model.type_name (@Model.type_alias)</label>
+						</div>
+					</div>*@
+
+				@if (!string.IsNullOrEmpty(@Model.file1_name))
+				{
+					<div class="row-fluid">
+						<div class="control-group">
+							<label class="control-label" for="File1">@Model.file1_name</label>
+							<div class="controls">
+								<div class="span12 fileInput">
+									<input class="" id="File1" name="File1" type="file" />
+									@Html.DropDownList("Ftp1", ViewBag.FtpFiles as IEnumerable<SelectListItem>, "Please Select", new { @class = "m-wrap dn " })
+                                 
+									<br />
+									<strong>Valid Ext:</strong> @Model.file1_extension
+								</div>
+								<div class="span12 no-margin">
+									<input class="smallElement" id="FtpChk1" name="FtpChk1" type="checkbox" value="true" onclick="changeFtp(1);" />
+									<label class="smallElement" for="FtpChk1">Upload From FTP</label>
+								</div>
+							</div>
+						</div>
+					</div>  
+				}
+				@if (!string.IsNullOrEmpty(@Model.file2_name))
+				{
+					<div class="row-fluid">
+					<div class="control-group">
+						<label class="control-label" for="File2">@Model.file2_name</label>
+						<div class="controls">
+							<div class="span12 fileInput">
+								<input id="File2" name="File2" type="file" />
+								@Html.DropDownList("Ftp2", ViewBag.FtpFiles as IEnumerable<SelectListItem>, "Please Select", new { @class ="m-wrap dn"})
+								<br />
+								<strong>Valid Ext:</strong> @Model.file2_extension
+							</div>
+							<div class="span12 no-margin">
+								<input class="smallElement" id="FtpChk2" name="FtpChk2" type="checkbox" value="true" onclick="changeFtp(2);" />
+								<label class="smallElement" for="FtpChk2">Upload From FTP</label>
+							</div>
+						</div>
+					</div>
+				</div>  
+				}
+				@if (!string.IsNullOrEmpty(@Model.file3_name))
+				{
+					<div class="row-fluid">
+					<div class="control-group">
+						<label class="control-label" for="File3">@Model.file3_name</label>
+						<div class="controls">
+							<div class="span12 fileInput">
+								<input id="File3" name="File3" type="file" />
+								@Html.DropDownList("Ftp3", ViewBag.FtpFiles as IEnumerable<SelectListItem>, "Please Select", new { @class ="m-wrap dn"})
+								<br />
+								<strong>Valid Ext:</strong> @Model.file3_extension
+							</div>
+							<div class="span12 no-margin">
+								<input class="smallElement" id="FtpChk3" name="FtpChk3" type="checkbox" value="true" onclick="changeFtp(3);" />
+								<label class="smallElement" for="FtpChk3">Upload From FTP</label>
+							</div>
+						</div>
+					</div>
+				</div>  
+				}
+				@if (!string.IsNullOrEmpty(@Model.file4_name))
+				{
+					<div class="row-fluid">
+					<div class="control-group">
+						<label class="control-label" for="File4">@Model.file4_name</label>
+						<div class="controls">
+							<div class="span12 fileInput">
+								<input id="File4" name="File4" type="file" />
+								@Html.DropDownList("Ftp4", ViewBag.FtpFiles as IEnumerable<SelectListItem>, "Please Select", new { @class ="m-wrap dn"})
+								<br />
+								<strong>Valid Ext:</strong> @Model.file4_extension
+							</div>
+							<div class="span12 no-margin">
+								<input class="smallElement" id="FtpChk4" name="FtpChk4" type="checkbox" value="true" onclick="changeFtp(4);" />
+								<label class="smallElement" for="FtpChk4">Upload From FTP</label>
+							</div>
+						</div>
+					</div>
+				</div>  
+				}
+				@if (!string.IsNullOrEmpty(@Model.file5_name))
+				{
+					<div class="row-fluid">
+					<div class="control-group">
+						<label class="control-label" for="File5">@Model.file5_name</label>
+						<div class="controls">
+							<div class="span12 fileInput">
+								<input id="File5" name="File5" type="file" />
+								@Html.DropDownList("Ftp5", ViewBag.FtpFiles as IEnumerable<SelectListItem>, "Please Select", new { @class ="m-wrap dn"})
+								<br />
+								<strong>Valid Ext:</strong> @Model.file5_extension
+							</div>
+							<div class="span12 no-margin">
+								<input class="smallElement" id="FtpChk5" name="FtpChk5" type="checkbox" value="true" onclick="changeFtp(5);" />
+								<label class="smallElement" for="FtpChk5">Upload From FTP</label>
+							</div>
+						</div>
+					</div>
+				</div>  
+				}
+				@if (!string.IsNullOrEmpty(@Model.file6_name))
+				{
+					<div class="row-fluid">
+					<div class="control-group">
+						<label class="control-label" for="File6">@Model.file6_name</label>
+						<div class="controls">
+							<div class="span12 fileInput">
+								<input id="File6" name="File6" type="file" />
+								@Html.DropDownList("Ftp6", ViewBag.FtpFiles as IEnumerable<SelectListItem>, "Please Select", new { @class ="m-wrap dn"})
+								<br />
+								<strong>Valid Ext:</strong> @Model.file6_extension
+							</div>
+							<div class="span12 no-margin">
+								<input class="smallElement" id="FtpChk6" name="FtpChk6" type="checkbox" value="true" onclick="changeFtp(6);" />
+								<label class="smallElement" for="FtpChk6">Upload From FTP</label>
+							</div>
+						</div>
+					</div>
+				</div>  
+				}
+				@if (!string.IsNullOrEmpty(@Model.file7_name))
+				{
+					<div class="row-fluid">
+					<div class="control-group">
+						<label class="control-label" for="File7">@Model.file7_name</label>
+						<div class="controls">
+							<div class="span12 fileInput">
+								<input id="File7" name="File7" type="file" />
+								@Html.DropDownList("Ftp7", ViewBag.FtpFiles as IEnumerable<SelectListItem>, "Please Select", new { @class ="m-wrap dn"})
+								<br />
+								<strong>Valid Ext:</strong> @Model.file7_extension
+							</div>
+							<div class="span12 no-margin">
+								<input class="smallElement" id="FtpChk7" name="FtpChk7" type="checkbox" value="true" onclick="changeFtp(7);" />
+								<label class="smallElement" for="FtpChk7">Upload From FTP</label>
+							</div>
+						</div>
+					</div>
+				</div>  
+				}
+				@if (!string.IsNullOrEmpty(@Model.file8_name))
+				{
+					<div class="row-fluid">
+					<div class="control-group">
+						<label class="control-label" for="File8">@Model.file8_name</label>
+						<div class="controls">
+							<div class="span12 fileInput">
+								<input id="File8" name="File8" type="file" />
+								@Html.DropDownList("Ftp8", ViewBag.FtpFiles as IEnumerable<SelectListItem>, "Please Select", new { @class ="m-wrap dn"})
+								<br />
+								<strong>Valid Ext:</strong> @Model.file8_extension
+							</div>
+							<div class="span12 no-margin">
+								<input class="smallElement" id="FtpChk8" name="FtpChk8" type="checkbox" value="true" onclick="changeFtp(8);" />
+								<label class="smallElement" for="FtpChk8">Upload From FTP</label>
+							</div>
+						</div>
+					</div>
+				</div>  
+				}
+				@if (!string.IsNullOrEmpty(@Model.file9_name))
+				{
+					<div class="row-fluid">
+					<div class="control-group">
+						<label class="control-label" for="File9">@Model.file9_name</label>
+						<div class="controls">
+							<div class="span12 fileInput">
+								<input id="File9" name="File9" type="file" />
+								@Html.DropDownList("Ftp9", ViewBag.FtpFiles as IEnumerable<SelectListItem>, "Please Select", new { @class ="m-wrap dn"})
+								<br />
+								<strong>Valid Ext:</strong> @Model.file9_extension
+							</div>
+							<div class="span12 no-margin">
+								<input class="smallElement" id="FtpChk9" name="FtpChk9" type="checkbox" value="true" onclick="changeFtp(9);" />
+								<label class="smallElement" for="FtpChk9">Upload From FTP</label>
+							</div>
+						</div>
+					</div>
+				</div>  
+				}
+				@if (!string.IsNullOrEmpty(@Model.file10_name))
+				{
+					<div class="row-fluid">
+					<div class="control-group">
+						<label class="control-label" for="File10">@Model.file10_name</label>
+						<div class="controls">
+							<div class="span12 fileInput">
+								<input id="File10" name="File10" type="file" />
+								@Html.DropDownList("Ftp10", ViewBag.FtpFiles as IEnumerable<SelectListItem>, "Please Select", new { @class ="m-wrap dn"})
+								<br />
+								<strong>Valid Ext:</strong> @Model.file10_extension
+							</div>
+							<div class="span12 no-margin">
+								<input class="smallElement" id="FtpChk10" name="FtpChk10" type="checkbox" value="true" onclick="changeFtp(9);" />
+								<label class="smallElement" for="FtpChk10">Upload From FTP</label>
+							</div>
+						</div>
+					</div>
+				</div>  
+				}
+		
+				<!-- File Title -->
+				<div class="row-fluid">
+					<div class="control-group">
+						<label class="control-label" for="filetitle">Title</label>
+						<div class="controls">
+							<input id="filetitle" name="filetitle" maxlength="500" type="text" class="span3" value="@ViewData["file_title"]" />
+						</div>
+					</div>
+				</div>
+				<!--// File Title -->
+				<!-- File Comment -->
+				<div class="row-fluid">
+					<div class="control-group">
+						<label class="control-label" for="filecomment">Comment</label>
+						<div class="controls">
+							@*<input id="filecomment" name="filecomment" type="text" class="span3" value="@ViewData["file_comment"]" />*@
+
+                            <textarea id="filecomment" name="filecomment">@ViewData["file_comment"]</textarea>
+						</div>
+					</div>
+				</div>
+				<!--// File Comment -->
+				<!-- File Order -->
+				<div class="row-fluid">
+					<div class="control-group">
+						<label class="control-label" for="fileorder">Order</label>
+						<div class="controls">
+							<input id="fileorder" name="fileorder" type="text" class="span1" value="@ViewData["file_order"]" />
+						</div>
+					</div>
+				</div>
+				<!--// File Order -->
+				<div class="form-actions">
+					<button class="btn green" type="submit"><i class="icon-save"></i> Save</button>
+					<button onclick="javascript: location.href='@Url.Action("Index", new { @ArticleId = Request["ArticleId"], @RevisionId = Request["RevisionId"], @FileRevisionId=Request["FileRevisionId"]  })';" class="btn" type="button"><i class="icon-remove"></i> Cancel</button>
+				</div>      
+			</div>
+		</div>
+		}
+    }
+}

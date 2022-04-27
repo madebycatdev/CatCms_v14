@@ -1,0 +1,311 @@
+﻿@model eurocms.entity.cms_asp_admin_select_zone_revision_details_Result
+
+<div class="row-fluid">
+    @using (Html.BeginForm("Create", "Zone", FormMethod.Post, new { @class = "form-horizontal", @id = "zCreate" }))
+    {
+        @Html.ValidationSummary(true)
+        @Html.AntiForgeryToken()
+        <div class="control-group">
+            <label class="control-label" for="zone_status">Site:</label>
+            <div class="controls">
+                <input type="radio" name="zone_status" value="A" id="zone_status_A" @(Model.zone_status.ToString() == "A" ? "checked=checked" : "") />
+                Active
+                <input type="radio" name="zone_status" value="P" id="zone_status_P" @(Model.zone_status.ToString() == "P" ? "checked=checked" : "") />
+                Passive
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="zone_type_id">Zone Type:</label>
+            <div class="controls">
+                <select id="zone_type_id" name="zone_type_id" class="span4 m-wrap">
+                    <option value="0" @(Model.zone_type_id.ToString() == "0" ? "selected=selected" : "")>Content Zone</option>
+                    <option value="1" @(Model.zone_type_id.ToString() == "1" ? "selected=selected" : "")>Navigation Zone</option>
+                    <option value="2" @(Model.zone_type_id.ToString() == "2" ? "selected=selected" : "")>Tag Zone</option>
+                </select>
+            </div>
+        </div>
+
+        if (ViewBag.ZoneGroupID == 0 || ViewBag.ZoneGroupID == null)
+        {
+            <div class="control-group">
+                <label class="control-label" for="zone_group_id">Zone Group:</label>
+                <div class="controls">
+                    @Html.GroupDropList("zone_group_id", ViewBag.ZoneGroups as List<GroupDropListItem>, Model.zone_group_id.ToString(), new { @class = "span4 m-wrap" }, "Please Select")
+                </div>
+            </div>
+        }
+        <input type="hidden" name="CurrentObjID" id="CurrentObjID" value="-1" />
+        <div class="control-group">
+            <label class="control-label" for="lang_id">Language:</label>
+            <div class="controls">
+                @Html.DropDownListFor(d => d.lang_id, ViewBag.Languages as List<SelectListItem>, "Please Select", new { @class = "span4 m-wrap" })
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="zone_name">Zone Name:</label>
+            <div class="controls">
+                <input type="text" name="zone_name" id="zone_name" class="m-wrap span4" value="@HttpUtility.HtmlDecode(Model.zone_name)" onblur="getAlias(this, false, 'zone')" />
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="site_name">Zone Alias:</label>
+            <div class="controls">
+                <input type="text" name="site_alias" id="zone_alias" class="getAlias m-wrap span12" value="@HttpUtility.HtmlDecode(Model.Alias)" onblur="getAlias(this, true, 'zone')">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="zone_name_display">Zone Display Name:</label>
+            <div class="controls">
+                <input type="text" name="zone_name_display" id="zone_name_display" class="m-wrap span4" value="@HttpUtility.HtmlDecode(Model.zone_name_display)" />
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="zone_desc">Zone Description:</label>
+            <div class="controls">
+                <textarea class="span4 m-wrap" rows="4" name="zone_desc" id="zone_desc">@HttpUtility.HtmlDecode(Model.zone_desc)</textarea>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="template_id">Layout:</label>
+            <div class="controls">
+                @Html.GroupDropList("template_id", ViewBag.Layouts as List<GroupDropListItem>, Model.template_id.ToString(), new { @class = "span4 m-wrap" }, "Please Select")
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="template_id_mobile">Mobile Layout:</label>
+            <div class="controls">
+                @Html.GroupDropList("template_id_mobile", ViewBag.Layouts as List<GroupDropListItem>, Model.template_id_mobile.ToString(), new { @class = "span4 m-wrap" }, "Please Select")
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="zone_keywords">Keywords:</label>
+            <div class="controls">
+                <textarea class="span4 m-wrap" rows="4" name="zone_keywords" id="zone_keywords">value="@HttpUtility.HtmlDecode(Model.zone_keywords)"</textarea>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="">Site:</label>
+            <div class="controls">
+                <input type="radio" name="keywords_ao" value="A" id="keywords_ao_A" @(!HttpUtility.HtmlDecode(Model.zone_keywords).StartsWith("|") ? "checked=checked" : "") />
+                Append
+                <input type="radio" name="keywords_ao" value="O" id="keywords_ao_O" @(HttpUtility.HtmlDecode(Model.zone_keywords).StartsWith("|") ? "checked=checked" : "") />
+                Overwrite
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="meta_description">Meta Description:</label>
+            <div class="controls">
+                <textarea class="span4 m-wrap" rows="4" name="meta_description" id="meta_description">@HttpUtility.HtmlDecode(Model.meta_description)</textarea>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="omniture_code">Omniture Code:</label>
+            <div class="controls">
+                <textarea class="span4 m-wrap" rows="4" name="omniture_code" id="omniture_code">@HttpUtility.HtmlDecode(Model.omniture_code)</textarea>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="analytics">Analytics:</label>
+            <div class="controls">
+                <textarea class="span4 m-wrap" rows="4" name="analytics" id="analytics">@HttpUtility.HtmlDecode(Model.analytics)</textarea>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="default_article">Default Article:</label>
+            <div class="controls">
+                <select id="default_article" name="default_article" tabindex="1" disabled="disabled" class="span4 m-wrap">
+                    <option value="@HttpUtility.HtmlDecode(Model.default_article)">@HttpUtility.HtmlDecode(ViewBag.default_article)</option>
+                </select>
+                <a class="openModal btn icn-only" href="@Url.Action("SelectZoneGroup", "ZoneGroup", new { objName = "default_article" })" title="Change Default Article"><i class="icon-tasks"></i> Change</a>
+                <a class="btn icn-only" href="#" onclick="removeTarget('#default_article'); return false;"><i class="icon-trash"></i> Remove</a>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="custom_body">Custom Body:</label>
+            <div class="controls">
+                <input type="text" name="custom_body" id="custom_body" class="m-wrap span4" value="@HttpUtility.HtmlDecode(Model.custom_body)" />
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="zone_group_content">Zone Content:</label>
+            <div class="controls">
+                <div class="span7">
+                    <div class="span2">
+                        <a class="btn icn-only" href="#editContent" data-toggle="modal" onclick="editContent('1','#editContent'),false"><i class="icon-edit"></i></a>
+                        <em>Container #1</em>
+                    </div>
+                    <div class="span5">
+                        <label class="smallWrap">
+                            <input type="radio" name="append_1" value="0" id="append_1_0" @(HttpUtility.HtmlDecode(Model.append_1.ToString()) == "0" ? "checked=checked" : "") />
+                            None
+                        </label>
+                        <label class="smallWrap">
+                            <input type="radio" name="append_1" value="1" id="append_1_1" @(HttpUtility.HtmlDecode(Model.append_1.ToString()) == "1" ? "checked=checked" : "") />
+                            Top
+                        </label>
+                        <label class="smallWrap">
+                            <input type="radio" name="append_1" value="2" id="append_1_2" @(HttpUtility.HtmlDecode(Model.append_1.ToString()) == "2" ? "checked=checked" : "") />
+                            Bottom
+                        </label>
+                        <label class="smallWrap">
+                            <input type="radio" name="append_1" value="3" id="append_1_3" @(HttpUtility.HtmlDecode(Model.append_1.ToString()) == "3" ? "checked=checked" : "") />
+                            Overwrite
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="control-group">
+            <div class="controls">
+                <div class="span7">
+                    <div class="span2">
+                        <a class="btn icn-only" href="#editContent" data-toggle="modal" onclick="editContent('2','#editContent'),false"><i class="icon-edit"></i></a>
+                        <em>Container #2</em>
+                    </div>
+                    <div class="span5">
+                        <label class="smallWrap">
+                            <input type="radio" name="append_2" value="0" id="append_2_0" @(HttpUtility.HtmlDecode(Model.append_2.ToString()) == "0" ? "checked=checked" : "") />
+                            None
+                        </label>
+                    </div>
+                    <div class="span5">
+                        <label class="smallWrap">
+                            <input type="radio" name="append_2" value="1" id="append_2_1" @(HttpUtility.HtmlDecode(Model.append_2.ToString()) == "1" ? "checked=checked" : "") />
+                            Top
+                        </label>
+                    </div>
+                    <div class="span5">
+                        <label class="smallWrap">
+                            <input type="radio" name="append_2" value="2" id="append_2_2" @(HttpUtility.HtmlDecode(Model.append_2.ToString()) == "2" ? "checked=checked" : "") />
+                            Bottom
+                        </label>
+                    </div>
+                    <div class="span5">
+                        <label class="smallWrap">
+                            <input type="radio" name="append_2" value="3" id="append_2_3" @(HttpUtility.HtmlDecode(Model.append_2.ToString()) == "3" ? "checked=checked" : "") />
+                            Overwrite
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="control-group">
+            <div class="controls">
+                <div class="span7">
+                    <div class="span2">
+                        <a class="btn icn-only" href="#editContent" data-toggle="modal" onclick="editContent('3','#editContent'),false"><i class="icon-edit"></i></a>
+                        <em>Container #3</em>
+                    </div>
+                    <div class="span5">
+                        <label class="smallWrap">
+                            <input type="radio" name="append_3" value="0" id="append_3_0" @(HttpUtility.HtmlDecode(Model.append_3.ToString()) == "0" ? "checked=checked" : "") />
+                            None
+                        </label>
+                        <label class="smallWrap">
+                            <input type="radio" name="append_3" value="1" id="append_3_1" @(HttpUtility.HtmlDecode(Model.append_3.ToString()) == "1" ? "checked=checked" : "") />
+                            Top
+                        </label>
+                        <label class="smallWrap">
+                            <input type="radio" name="append_3" value="2" id="append_3_2" @(HttpUtility.HtmlDecode(Model.append_3.ToString()) == "2" ? "checked=checked" : "") />
+                            Bottom
+                        </label>
+                        <label class="smallWrap">
+                            <input type="radio" name="append_3" value="3" id="append_3_3" @(HttpUtility.HtmlDecode(Model.append_3.ToString()) == "3" ? "checked=checked" : "") />
+                            Overwrite
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="control-group">
+            <div class="controls">
+                <div class="span7">
+                    <div class="span2">
+                        <a class="btn icn-only" href="#editContent" data-toggle="modal" onclick="editContent('4','#editContent'),false"><i class="icon-edit"></i></a>
+                        <em>Container #4</em>
+                    </div>
+                    <div class="span5">
+                        <label class="smallWrap">
+                            <input type="radio" name="append_4" value="0" id="append_4_0" @(HttpUtility.HtmlDecode(Model.append_4.ToString()) == "0" ? "checked=checked" : "") />
+                            None
+                        </label>
+                        <label class="smallWrap">
+                            <input type="radio" name="append_4" value="1" id="append_4_1" @(HttpUtility.HtmlDecode(Model.append_4.ToString()) == "1" ? "checked=checked" : "") />
+                            Top
+                        </label>
+                        <label class="smallWrap">
+                            <input type="radio" name="append_4" value="2" id="append_4_2" @(HttpUtility.HtmlDecode(Model.append_4.ToString()) == "2" ? "checked=checked" : "") />
+                            Bottom
+                        </label>
+                        <label class="smallWrap">
+                            <input type="radio" name="append_4" value="3" id="append_4_3" @(HttpUtility.HtmlDecode(Model.append_4.ToString()) == "3" ? "checked=checked" : "") />
+                            Overwrite
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="control-group">
+            <div class="controls">
+                <div class="span7">
+                    <div class="span2">
+                        <a class="btn icn-only" href="#editContent" data-toggle="modal" onclick="editContent('5','#editContent'),false"><i class="icon-edit"></i></a>
+                        <em>Container #5</em>
+                    </div>
+                    <div class="span5">
+                        <label class="smallWrap">
+                            <input type="radio" name="append_5" value="0" id="append_5_0" @(HttpUtility.HtmlDecode(Model.append_5.ToString()) == "0" ? "checked=checked" : "") />
+                            None
+                        </label>
+                        <label class="smallWrap">
+                            <input type="radio" name="append_5" value="1" id="append_5_1" @(HttpUtility.HtmlDecode(Model.append_5.ToString()) == "1" ? "checked=checked" : "") />
+                            Top
+                        </label>
+                        <label class="smallWrap">
+                            <input type="radio" name="append_5" value="2" id="append_5_2" @(HttpUtility.HtmlDecode(Model.append_5.ToString()) == "2" ? "checked=checked" : "") />
+                            Bottom
+                        </label>
+                        <label class="smallWrap">
+                            <input type="radio" name="append_5" value="3" id="append_5_3" @(HttpUtility.HtmlDecode(Model.append_5.ToString()) == "3" ? "checked=checked" : "") />
+                            Overwrite
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="hide">
+            <!-- article 1 -->
+            <textarea id="article_1" name="article_1">@Html.Raw(HttpUtility.HtmlDecode(Model.article_1))</textarea>
+            <input type="radio" name="content_1_editor_type" value="H" @(Model.content_1_editor_type == "H" ? "checked=checked" : "") id="content_1_editor_type1" />
+            <input type="radio" name="content_1_editor_type" value="T" @(Model.content_1_editor_type == "T" ? "checked=checked" : "") id="content_1_editor_type2" />
+            <!-- article 1 -->
+            <!-- article 2 -->
+            <textarea id="article_2" name="article_2">@Html.Raw(HttpUtility.HtmlDecode(Model.article_2))</textarea>
+            <input type="radio" name="content_2_editor_type" value="H" @(HttpUtility.HtmlDecode(Model.content_2_editor_type) == "H" ? "checked=checked" : "") id="content_2_editor_type1" />
+            <input type="radio" name="content_2_editor_type" value="T" @(HttpUtility.HtmlDecode(Model.content_2_editor_type) == "T" ? "checked=checked" : "") id="content_2_editor_type2" />
+            <!-- article 2 -->
+            <!-- article 3 -->
+            <textarea id="article_3" name="article_3">@Html.Raw(HttpUtility.HtmlDecode(Model.article_3))</textarea>
+            <input type="radio" name="content_3_editor_type" value="H" @(HttpUtility.HtmlDecode(Model.content_3_editor_type) == "H" ? "checked=checked" : "") id="content_3_editor_type1" />
+            <input type="radio" name="content_3_editor_type" value="T" @(HttpUtility.HtmlDecode(Model.content_3_editor_type) == "T" ? "checked=checked" : "") id="content_3_editor_type2" />
+            <!-- article 3 -->
+            <!-- article 4 -->
+            <textarea id="article_4" name="article_4">@Html.Raw(HttpUtility.HtmlDecode(Model.article_4))</textarea>
+            <input type="radio" name="content_4_editor_type" value="H" @(HttpUtility.HtmlDecode(Model.content_4_editor_type) == "H" ? "checked=checked" : "") id="content_4_editor_type1" />
+            <input type="radio" name="content_4_editor_type" value="T" @(HttpUtility.HtmlDecode(Model.content_4_editor_type) == "T" ? "checked=checked" : "") id="content_4_editor_type2" />
+            <!-- article 4 -->
+            <!-- article 5 -->
+            <textarea id="article_5" name="article_5">@Html.Raw(HttpUtility.HtmlDecode(Model.article_5))</textarea>
+            <input type="radio" name="content_5_editor_type" value="H" @(HttpUtility.HtmlDecode(Model.content_5_editor_type) == "H" ? "checked=checked" : "") id="content_5_editor_type1" />
+            <input type="radio" name="content_5_editor_type" value="T" @(HttpUtility.HtmlDecode(Model.content_5_editor_type) == "T" ? "checked=checked" : "") id="content_5_editor_type2" />
+            <!-- article 5 -->
+        </div>
+        <div class="form-actions">
+            <button type="button" class="btn" onclick="javascript: history.back(-1);"><i class="icon-remove"></i> Cancel</button>
+			<button type="submit" class="btn red"><i class="icon-save"></i> Save</button>
+        </div>
+    }
+</div>
+
+@section EditContent { @Html.Partial("EditContent") }
+@section ModalSelectArticle { @Html.Partial("ModalSelectArticle", ViewData["ZoneGroups"] as List<EuroCMS.Admin.entity.cms_zone_groups>) }

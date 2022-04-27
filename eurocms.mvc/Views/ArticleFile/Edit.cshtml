@@ -1,0 +1,433 @@
+﻿@model  EuroCMS.Admin.entity.cms_asp_admin_select_file_type_details_Result
+
+<form id="fileTypeList" class="form-horizontal no-margin">
+    <div class="row-fluid">
+        <div class="control-group">
+            <label class="control-label" for="Keyword">File Type:</label>
+            <div class="controls">
+                   <input type="hidden" name="ArticleId" value="@Request.QueryString["ArticleId"]" />
+                <input type="hidden" name="RevisionId" value="@Request.QueryString["RevisionId"]" />
+                <input type="hidden" name="FileRevisionId" value="@Request.QueryString["FileRevisionId"]" />
+                <input type="hidden" name="FileID" value="@ViewContext.RouteData.Values["id"]" />
+                @* Af *@
+
+                @Html.DropDownList("TypeID", ViewBag.FileTypes as List<SelectListItem>, "Please Select", new { @class = "span3", @name = "type_id", @onchange = "formPost(this.id)" })
+
+            </div>
+        </div>
+    </div>
+</form>
+@if (Request["TypeId"] != "-1")
+{
+    
+	using (Html.BeginForm("Edit", "ArticleFile", FormMethod.Post, new { @enctype = "multipart/form-data", @id = "fileTypeProperties", @class = "form-horizontal" }))
+    {
+        
+        @Html.CmsValidationSummary(string.Empty);
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="ArticleId" value="@Request.QueryString["ArticleId"]" />
+        <input type="hidden" name="RevisionId" value="@Request.QueryString["RevisionId"]" />
+        <input type="hidden" name="FileRevisionId" value="@Request.QueryString["FileRevisionId"]" />
+        <input type="hidden" name="FileID" value="@ViewContext.RouteData.Values["id"]" />
+        <input type="hidden" name="TypeID" value="@Request.QueryString["TypeID"]" />
+        <input type="hidden" name="af_rf_id" value="@Request.QueryString["FileRevisionId"]" />
+    
+        if (Request.QueryString["FileRevisionId"].ToString() != "-1")
+        { 
+          <input type="hidden" name="rev_status" value="@ViewData["revision_status"]" />
+        }
+        else
+        {
+         <input type="hidden" name="rev_status" value="" />
+        }
+		if (@Model.file1_name != "")
+        {
+			
+			<div class="portlet box grey afiles">
+				<div class="portlet-title">
+					<div class="caption"><i class="icon-reorder"></i>@Model.type_name (@Model.type_alias)</div>	
+				</div>
+				<div class="portlet-body">	
+					@*<div class="row-fluid">
+						<div class="control-group">
+							<label class="control-label">@Model.type_name (@Model.type_alias)</label>
+						</div>
+					</div>*@
+					<div class="row-fluid">
+						@if (!string.IsNullOrEmpty(@Model.file1_name))
+						{
+							@*<div class="row-fluid">
+								<div class="control-group">
+									<label class="control-label" for="File1">@Model.file1_name</label>
+									<div class="controls">
+										<input id="File1" name="File1" type="file" value="" class="span3" />
+										<a target="_blank" href="/i/tmp/@Request.QueryString["FileRevisionId"]/@Request.QueryString["ArticleId"].ToString()_@ViewData["file_name_1"].ToString()"><label> @ViewData["file_name_1"]</label></a>
+										<input type="hidden" name="Hdn_File1"  id="Hdn_File1" value="@ViewData["file_name_1"]" />
+										<br />
+										<strong>Valid Ext:</strong> @Model.file1_extension
+									</div>
+								</div>
+							</div>  *@
+							<div class="span4">
+								<div class="clearfix portlet">
+									<div class="portlet-title">
+										<div class="caption"><i class="icon-icon-file"></i>@Model.file1_name</div>
+										
+									</div>
+									<div class="portlet-body">
+										<div class="afilePre span4">
+											<a href="/i/tmp/@Request.QueryString["FileRevisionId"]/@Request.QueryString["ArticleId"].ToString()_@ViewData["file_name_1"].ToString()" target="_blank"><img src="/i/tmp/@Request.QueryString["FileRevisionId"]/@Request.QueryString["ArticleId"].ToString()_@ViewData["file_name_1"].ToString()" alt="@ViewData["file_name_1"]"></a>
+
+										</div>
+										<div class="span8">
+											<input id="File1" name="File1" type="file" value="" class="span12" />
+											<input type="hidden" name="Hdn_File1"  id="Hdn_File1" value="@ViewData["file_name_1"]" />
+											<strong>Valid Ext:</strong> @Model.file1_extension
+										</div>
+									</div>
+								</div>
+							</div>
+
+						}
+						@if (!string.IsNullOrEmpty(@Model.file2_name))
+						{
+							@*<div class="row-fluid">
+								<div class="control-group">
+									<label class="control-label" for="File2">@Model.file2_name</label>
+									<div class="controls">
+										<input id="File2" name="File2" type="file" class="span3" /><a target="_blank" href="/i/tmp/@Request.QueryString["FileRevisionId"]/@Request.QueryString["ArticleId"].ToString()_@ViewData["file_name_2"].ToString()"><label> @ViewData["file_name_2"]</label></a>
+										<input type="hidden" name="Hdn_File2" id="Hdn_File2" value="@ViewData["file_name_2"]" />
+										<br />
+										<strong>Valid Ext:</strong> @Model.file2_extension
+									</div>
+								</div>
+							</div>*@
+							<div class="span4">
+								<div class="clearfix portlet">
+									<div class="portlet-title">
+										<div class="caption"><i class="icon-icon-file"></i>@Model.file2_name</div>
+										
+									</div>
+									<div class="portlet-body">
+										<div class="afilePre span4">
+											<a href="/i/tmp/@Request.QueryString["FileRevisionId"]/@Request.QueryString["ArticleId"].ToString()_@ViewData["file_name_2"].ToString()" target="_blank"><img src="/i/tmp/@Request.QueryString["FileRevisionId"]/@Request.QueryString["ArticleId"].ToString()_@ViewData["file_name_2"].ToString()" alt="@ViewData["file_name_2"]"></a>
+
+										</div>
+										<div class="span8">
+											<input id="File2" name="File2" type="file" value="" class="span12" />
+											<input type="hidden" name="Hdn_File2"  id="Hdn_File2" value="@ViewData["file_name_2"]" />
+											<strong>Valid Ext:</strong> @Model.file2_extension
+										</div>
+									</div>
+								</div>
+							</div>
+						}
+						@if (!string.IsNullOrEmpty(@Model.file3_name))
+						{
+							@*<div class="row-fluid">
+								<div class="control-group">
+									<label class="control-label" for="File3">@Model.file3_name</label>
+									<div class="controls">
+										<input id="File3" name="File3" type="file" class="span3" /><a target="_blank" href="/i/tmp/@Request.QueryString["FileRevisionId"]/@Request.QueryString["ArticleId"].ToString()_@ViewData["file_name_3"].ToString()"><label> @ViewData["file_name_3"]</label></a>
+										<input type="hidden" name="Hdn_File3" id="Hdn_File3" value="@ViewData["file_name_3"]" />
+										<br />
+										<strong>Valid Ext:</strong> @Model.file3_extension
+									</div>
+								</div>
+							</div>*@
+							<div class="span4">
+								<div class="clearfix portlet">
+									<div class="portlet-title">
+										<div class="caption"><i class="icon-icon-file"></i>@Model.file3_name</div>
+										
+									</div>
+									<div class="portlet-body">
+										<div class="afilePre span4">
+											<a href="/i/tmp/@Request.QueryString["FileRevisionId"]/@Request.QueryString["ArticleId"].ToString()_@ViewData["file_name_3"].ToString()" target="_blank"><img src="/i/tmp/@Request.QueryString["FileRevisionId"]/@Request.QueryString["ArticleId"].ToString()_@ViewData["file_name_3"].ToString()" alt="@ViewData["file_name_3"]"></a>
+
+										</div>
+										<div class="span8">
+											<input id="File3" name="File3" type="file" value="" class="span12" />
+											<input type="hidden" name="Hdn_File3"  id="Hdn_File3" value="@ViewData["file_name_3"]" />
+											<strong>Valid Ext:</strong> @Model.file3_extension
+										</div>
+									</div>
+								</div>
+							</div>
+						}
+					</div>
+					<div class="row-fluid">
+						@if (!string.IsNullOrEmpty(@Model.file4_name))
+						{
+							@*<div class="row-fluid">
+								<div class="control-group">
+									<label class="control-label" for="File4">@Model.file4_name</label>
+									<div class="controls">
+										<input id="File4" name="File4" type="file" class="span3" /><a target="_blank" href="/i/tmp/@Request.QueryString["FileRevisionId"]/@Request.QueryString["ArticleId"].ToString()_@ViewData["file_name_4"].ToString()"><label> @ViewData["file_name_4"]</label></a>
+										<input type="hidden" name="Hdn_File4" id="Hdn_File4" value="@ViewData["file_name_4"]" />
+										<br />
+										<strong>Valid Ext:</strong> @Model.file4_extension
+									</div>
+								</div>
+							</div>*@
+							<div class="span4">
+								<div class="clearfix portlet">
+									<div class="portlet-title">
+										<div class="caption"><i class="icon-icon-file"></i>@Model.file4_name</div>
+										
+									</div>
+									<div class="portlet-body">
+										<div class="afilePre span4">
+											<a href="/i/tmp/@Request.QueryString["FileRevisionId"]/@Request.QueryString["ArticleId"].ToString()_@ViewData["file_name_4"].ToString()" target="_blank"><img src="/i/tmp/@Request.QueryString["FileRevisionId"]/@Request.QueryString["ArticleId"].ToString()_@ViewData["file_name_4"].ToString()" alt="@ViewData["file_name_4"]"></a>
+
+										</div>
+										<div class="span8">
+											<input id="File4" name="File4" type="file" value="" class="span12" />
+											<input type="hidden" name="Hdn_File4"  id="Hdn_File4" value="@ViewData["file_name_4"]" />
+											<strong>Valid Ext:</strong> @Model.file4_extension
+										</div>
+									</div>
+								</div>
+							</div>
+						}
+						@if (!string.IsNullOrEmpty(@Model.file5_name))
+						{
+							@*<div class="row-fluid">
+								<div class="control-group">
+									<label class="control-label" for="File5">@Model.file5_name</label>
+									<div class="controls">
+										<input id="File5" name="File5" type="file" class="span3" /><a target="_blank" href="/i/tmp/@Request.QueryString["FileRevisionId"]/@Request.QueryString["ArticleId"].ToString()_@ViewData["file_name_5"].ToString()"><label> @ViewData["file_name_5"]</label></a>
+										<input type="hidden" name="Hdn_File5" id="Hdn_File5" value="@ViewData["file_name_5"]" />
+										<br />
+										<strong>Valid Ext:</strong> @Model.file5_extension
+									</div>
+								</div>
+							</div> *@
+							<div class="span4">
+								<div class="clearfix portlet">
+									<div class="portlet-title">
+										<div class="caption"><i class="icon-icon-file"></i>@Model.file5_name</div>
+										
+									</div>
+									<div class="portlet-body">
+										<div class="afilePre span4">
+											<a href="/i/tmp/@Request.QueryString["FileRevisionId"]/@Request.QueryString["ArticleId"].ToString()_@ViewData["file_name_5"].ToString()" target="_blank"><img src="/i/tmp/@Request.QueryString["FileRevisionId"]/@Request.QueryString["ArticleId"].ToString()_@ViewData["file_name_5"].ToString()" alt="@ViewData["file_name_5"]"></a>
+
+										</div>
+										<div class="span8">
+											<input id="File5" name="File5" type="file" value="" class="span12" />
+											<input type="hidden" name="Hdn_File5"  id="Hdn_File5" value="@ViewData["file_name_5"]" />
+											<strong>Valid Ext:</strong> @Model.file5_extension
+										</div>
+									</div>
+								</div>
+							</div>						
+						}
+						@if (!string.IsNullOrEmpty(@Model.file6_name))
+						{
+							@*<div class="row-fluid">
+								<div class="control-group">
+									<label class="control-label" for="File6">@Model.file6_name</label>
+									<div class="controls">
+										<input id="File6" name="File6" type="file" class="span3" /><a target="_blank" href="/i/tmp/@Request.QueryString["FileRevisionId"]/@Request.QueryString["ArticleId"].ToString()_@ViewData["file_name_6"].ToString()"><label> @ViewData["file_name_6"]</label></a>
+										<input type="hidden" name="Hdn_File6" id="Hdn_File6" value="@ViewData["file_name_6"]" />
+										<br />
+										<strong>Valid Ext:</strong> @Model.file6_extension
+									</div>
+								</div>
+							</div> *@
+							<div class="span4">
+								<div class="clearfix portlet">
+									<div class="portlet-title">
+										<div class="caption"><i class="icon-icon-file"></i>@Model.file6_name</div>
+										
+									</div>
+									<div class="portlet-body">
+										<div class="afilePre span4">
+											<a href="/i/tmp/@Request.QueryString["FileRevisionId"]/@Request.QueryString["ArticleId"].ToString()_@ViewData["file_name_6"].ToString()" target="_blank"><img src="/i/tmp/@Request.QueryString["FileRevisionId"]/@Request.QueryString["ArticleId"].ToString()_@ViewData["file_name_6"].ToString()" alt="@ViewData["file_name_6"]"></a>
+
+										</div>
+										<div class="span8">
+											<input id="File6" name="File6" type="file" value="" class="span12" />
+											<input type="hidden" name="Hdn_File6"  id="Hdn_File6" value="@ViewData["file_name_6"]" />
+											<strong>Valid Ext:</strong> @Model.file6_extension
+										</div>
+									</div>
+								</div>
+							</div>						
+						}
+					</div>
+					<div class="row-fluid">
+						@if (!string.IsNullOrEmpty(@Model.file7_name))
+						{
+							@*<div class="row-fluid">
+								<div class="control-group">
+									<label class="control-label" for="File7">@Model.file7_name</label>
+									<div class="controls">
+										<input id="File7" name="File7" type="file" class="span3" /><a target="_blank" href="/i/tmp/@Request.QueryString["FileRevisionId"]/@Request.QueryString["ArticleId"].ToString()_@ViewData["file_name_7"].ToString()"><label> @ViewData["file_name_7"]</label></a>
+										<input type="hidden" name="Hdn_File7" id="Hdn_File7" value="@ViewData["file_name_7"]" />
+										<br />
+										<strong>Valid Ext:</strong> @Model.file7_extension
+									</div>
+								</div>
+							</div> *@
+								<div class="span4">
+								<div class="clearfix portlet">
+									<div class="portlet-title">
+										<div class="caption"><i class="icon-icon-file"></i>@Model.file7_name</div>
+										
+									</div>
+									<div class="portlet-body">
+										<div class="afilePre span4">
+											<a href="/i/tmp/@Request.QueryString["FileRevisionId"]/@Request.QueryString["ArticleId"].ToString()_@ViewData["file_name_7"].ToString()" target="_blank"><img src="/i/tmp/@Request.QueryString["FileRevisionId"]/@Request.QueryString["ArticleId"].ToString()_@ViewData["file_name_7"].ToString()" alt="@ViewData["file_name_7"]"></a>
+
+										</div>
+										<div class="span8">
+											<input id="File7" name="File7" type="file" value="" class="span12" />
+											<input type="hidden" name="Hdn_File7"  id="Hdn_File7" value="@ViewData["file_name_7"]" />
+											<strong>Valid Ext:</strong> @Model.file7_extension
+										</div>
+									</div>
+								</div>
+							</div>						
+						}
+						@if (!string.IsNullOrEmpty(@Model.file8_name))
+						{
+							@*<div class="row-fluid">
+								<div class="control-group">
+									<label class="control-label" for="File8">@Model.file8_name</label>
+									<div class="controls">
+										<input id="File8" name="File8" type="file" class="span3" /><a target="_blank" href="/i/tmp/@Request.QueryString["FileRevisionId"]/@Request.QueryString["ArticleId"].ToString()_@ViewData["file_name_8"].ToString()"><label> @ViewData["file_name_8"]</label></a>
+										<input type="hidden" name="Hdn_File8" id="Hdn_File8" value="@ViewData["file_name_8"]" />
+										<br />
+										<strong>Valid Ext:</strong> @Model.file8_extension
+									</div>
+								</div>
+							</div>*@
+							<div class="span4">
+								<div class="clearfix portlet">
+									<div class="portlet-title">
+										<div class="caption"><i class="icon-icon-file"></i>@Model.file8_name</div>
+										
+									</div>
+									<div class="portlet-body">
+										<div class="afilePre span4">
+											<a href="/i/tmp/@Request.QueryString["FileRevisionId"]/@Request.QueryString["ArticleId"].ToString()_@ViewData["file_name_8"].ToString()" target="_blank"><img src="/i/tmp/@Request.QueryString["FileRevisionId"]/@Request.QueryString["ArticleId"].ToString()_@ViewData["file_name_8"].ToString()" alt="@ViewData["file_name_8"]"></a>
+
+										</div>
+										<div class="span8">
+											<input id="File8" name="File8" type="file" value="" class="span12" />
+											<input type="hidden" name="Hdn_File8"  id="Hdn_File8" value="@ViewData["file_name_8"]" />
+											<strong>Valid Ext:</strong> @Model.file8_extension
+										</div>
+									</div>
+								</div>
+							</div>						
+						}
+						@if (!string.IsNullOrEmpty(@Model.file9_name))
+						{
+							@*<div class="row-fluid">
+								<div class="control-group">
+									<label class="control-label" for="File9">@Model.file9_name</label>
+									<div class="controls">
+										<input id="File9" name="File9" type="file" class="span3" /><a target="_blank" href="/i/tmp/@Request.QueryString["FileRevisionId"]/@Request.QueryString["ArticleId"].ToString()_@ViewData["file_name_9"].ToString()"><label> @ViewData["file_name_9"]</label></a>
+										<input type="hidden" name="Hdn_File9" id="Hdn_File9" value="@ViewData["file_name_9"]" />
+										<br />
+										<strong>Valid Ext:</strong> @Model.file9_extension
+									</div>
+								</div>
+							</div>*@
+							<div class="span4">
+								<div class="clearfix portlet">
+									<div class="portlet-title">
+										<div class="caption"><i class="icon-icon-file"></i>@Model.file9_name</div>
+										
+									</div>
+									<div class="portlet-body">
+										<div class="afilePre span4">
+											<a href="/i/tmp/@Request.QueryString["FileRevisionId"]/@Request.QueryString["ArticleId"].ToString()_@ViewData["file_name_9"].ToString()" target="_blank"><img src="/i/tmp/@Request.QueryString["FileRevisionId"]/@Request.QueryString["ArticleId"].ToString()_@ViewData["file_name_9"].ToString()" alt="@ViewData["file_name_9"]"></a>
+
+										</div>
+										<div class="span8">
+											<input id="File9" name="File9" type="file" value="" class="span12" />
+											<input type="hidden" name="Hdn_File9"  id="Hdn_File9" value="@ViewData["file_name_9"]" />
+											<strong>Valid Ext:</strong> @Model.file9_extension
+										</div>
+									</div>
+								</div>
+							</div>						
+						}
+					</div>
+					<div class="row-fluid">
+						@if (!string.IsNullOrEmpty(@Model.file10_name))
+						{
+							@*<div class="row-fluid">
+								<div class="control-group">
+									<label class="control-label" for="File10">@Model.file10_name</label>
+									<input type="hidden" name="Hdn_File10" id="Hdn_File10" value="@ViewData["file_name_10"]" />
+									<div class="controls">
+										<input id="File10" name="File10" type="file" class="span3" /><a target="_blank" href="/i/tmp/@Request.QueryString["FileRevisionId"]/@Request.QueryString["ArticleId"].ToString()_@ViewData["file_name_10"].ToString()"><label> @ViewData["file_name_10"]</label></a>
+										<br />
+										<strong>Valid Ext:</strong> @Model.file10_extension
+									</div>
+								</div>
+							</div>*@
+							<div class="span4">
+								<div class="clearfix portlet">
+									<div class="portlet-title">
+										<div class="caption"><i class="icon-icon-file"></i>@Model.file10_name</div>
+										
+									</div>
+									<div class="portlet-body">
+										<div class="afilePre span4">
+											<a href="/i/tmp/@Request.QueryString["FileRevisionId"]/@Request.QueryString["ArticleId"].ToString()_@ViewData["file_name_10"].ToString()" target="_blank"><img src="/i/tmp/@Request.QueryString["FileRevisionId"]/@Request.QueryString["ArticleId"].ToString()_@ViewData["file_name_10"].ToString()" alt="@ViewData["file_name_10"]"></a>
+
+										</div>
+										<div class="span8">
+											<input id="File1" name="File1" type="file" value="" class="span12" />
+											<input type="hidden" name="Hdn_File10"  id="Hdn_File10" value="@ViewData["file_name_10"]" />
+											<strong>Valid Ext:</strong> @Model.file10_extension
+										</div>
+									</div>
+								</div>
+							</div>
+						}
+						
+					</div><!--row-fluid-->
+					<div class="row-fluid">
+						<div class="control-group">
+							<label class="control-label" for="filetitle">Title</label>
+							<div class="controls">
+								<input id="filetitle" name="filetitle" maxlength="500" value="@ViewData["file_title"]" type="text" class="span3" />
+							</div>
+						</div>
+					</div>
+					<div class="row-fluid">
+						<div class="control-group">
+							<label class="control-label" for="filecomment">Comment</label>
+							<div class="controls">
+								@*<input id="filecomment" name="filecomment" type="text" class="span3" value="@ViewData["file_comment"]" />*@
+                                <textarea id="filecomment" name="filecomment">@ViewData["file_comment"]</textarea>
+							</div>
+						</div>
+					</div> 
+					<div class="row-fluid">
+						<div class="control-group">
+							<label class="control-label" for="fileorder">Order</label>
+							<div class="controls">
+								<input id="fileorder" name="fileorder" value="@ViewData["file_order"]" type="text" class="span1" />
+							</div>
+						</div>
+					</div>
+					<div class="form-actions">
+						<button class="btn green" type="submit"><i class="icon-save"></i> Save</button>
+						<button onclick="javascript: history.back(-1);" class="btn" type="button"><i class="icon-remove"></i> Cancel</button>
+					</div>      
+		
+			
+				</div>
+			</div>
+		}
+
+    }
+}

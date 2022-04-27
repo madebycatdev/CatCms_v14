@@ -1,0 +1,80 @@
+﻿  <div class="tabbable tabbable-custom">
+		<div class="tab-content new-tab-content">
+ 
+			 <div class="row-fluid">
+				@using (Html.BeginForm("Create", "UrlRedirect", FormMethod.Post, new { @class = "form-horizontal", @id = "urlRedirectCreate" }))
+				{
+					@Html.ValidationSummary(true)
+					@Html.AntiForgeryToken()
+					<div class="control-group">
+						<label class="control-label" for="redirect_alias">URL Alias:<span class="red">*</span></label>
+						<div class="controls">
+							<input type="text" name="redirect_alias" id="redirect_alias" class="m-wrap span12" required>
+						</div>
+					</div> 
+					
+					<div class="control-group">
+						<label class="control-label" for="structure_description">Description:</label>
+						<div class="controls">
+							<textarea name="structure_description" id="structure_description" rows="3" class="span12 m-wrap"></textarea>
+						</div>
+					</div>
+					 <div class="control-group">
+						<label class="control-label" for="group_id">Group:</label>
+						<div class="controls">
+							@Html.DropDownList("group_id", ViewBag.Groups as IEnumerable<SelectListItem>, "Not Grouped", new { @class ="span12 m-wrap"})
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="redirect_article">Redirect To Article:<span class="red">*</span></label>
+						<div class="controls">
+							<select id="redirect_article" name="redirect_article" tabindex="1" class="span8 m-wrap" readonly required>
+							</select>
+							<a class="changeButton btn icn-only" href="#selectArticle" data-toggle="modal" onclick="openModal('redirectArticle','#urlRedirectCreate',this)"><i class="icon-tasks"></i> Change</a>
+							<a class="btn icn-only" href="#" onclick="removeTarget('#redirect_article'); return false;"><i class="icon-trash"></i> Remove</a>
+						</div>
+					</div> 
+					
+					<div class="control-group">
+						<label class="control-label" for="permanent_redirection">Permanent Redirection:</label>
+						<div class="controls">
+							<label class="smallWrap">
+								@*
+								<input type="checkbox" name="permanent_redirection" id="permanent_redirection" />
+								*@
+								<div class="switch" data-on="success" data-off="default">
+									<input 
+										name="permanent_redirection" 
+										data-act="True" 
+										data-psf="False" 
+										value="False" 
+										type="checkbox" 
+										class="toggle success-toggle-button" 
+										id="permanent_redirection" 
+									/>
+								</div>
+								<div><strong>Important:</strong> will be redirect with default format url. ex. /web/1-1-0-0/default_site/default_zone_group/default_zone/default_article</div>
+								
+							</label>
+						</div>
+					</div>
+					@*<div class="control-group">
+						<label class="control-label" for="permanent_redirection">Permanent Redirection:</label>
+						<div class="controls">
+							<input type="hidden" value="@(Model != null ? Model.permanent_redirection : "True")" name="permanent_redirection" id="permanentRedirection_status" data-act="True" data-psf="False" class="switchBt" />
+							<div class="switch switch-small" data-on="primary" data-off="default">
+								<input type="checkbox" class="toggle success-toggle-button" name="permanentRedirection_StatusSwitch" id="permanentRedirection_StatusSwitch" checked />
+							</div>
+							<div><strong>Important:</strong> will be redirect with default format url. ex. /web/1-1-0-0/default_site/default_zone_group/default_zone/default_article</div>
+						</div>
+					</div> *@
+					<div class="form-actions">
+						<button type="button" class="btn" title="Cancel Changes" onclick="discardChanges('@Url.Action("Index")'),false;"><i class="icon-remove"></i> Cancel</button>
+						<button type="submit" class="btn green" title="Save URL Redirection"><i class="icon-save"></i> Save</button>
+					</div>  
+				}
+			</div> 
+	</div> 
+</div> 
+
+@section ModalSelectArticle { @Html.Partial("ModalSelectArticle") }

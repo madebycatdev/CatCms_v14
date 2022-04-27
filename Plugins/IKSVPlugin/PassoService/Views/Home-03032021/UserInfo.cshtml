@@ -1,0 +1,517 @@
+﻿@model  PassoService.Models.Response.MemberInfoResult
+@using PassoService.Models;
+@using PassoService.Models.Response;
+
+@{
+    ViewBag.Title = "UserInfo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var billingAddress = (Address)ViewBag.BillingAddress;
+    var deliveryAddress = (Address)ViewBag.DeliveryAddress;
+    var products = ViewBag.Products != null ? (List<UserProductDetail>)ViewBag.Products : null;
+    var defaultProduct = products != null ? products.FirstOrDefault(x => x.status == 1) : null;
+
+    var colorClass = defaultProduct != null ? CurrentSession.Products.FirstOrDefault(x => x.imageUrl == defaultProduct.imageUrl).classCode : string.Empty;
+
+    var userProductDetail = CurrentSession.Products.FirstOrDefault(x => x.productId == defaultProduct.productId);
+
+}
+
+@section RooterClass
+{
+    <router class="user"></router>
+}
+<!-- Page Head Start -->
+<div class="col-12 px-0 row mx-0 mobil left flex-md-row-reverse"
+     style="background-image: url('assets/img/@colorClass-lalekart-pattern.jpg');">
+    <div class="col-8 col-md-6 pl-0 pr-2 pr-lg-4 d-flex justify-content-md-end">
+        <h4 class="font-mono boxed align-self-center py-2 px-3 pr-5 large-text">
+            Hoş geldiniz
+        </h4>
+    </div>
+    <div class="col-4 col-md-8 pr-0 d-flex d-md-none">
+        <img class="w-100 align-self-center my-2 ml-0" src="@(defaultProduct != null ? defaultProduct.imageUrl : "")" alt="">
+    </div>
+</div>
+<!-- Page Head End -->
+<!-- User Account Start-->
+<section id="user-account">
+    <div class="row mx-0 row-body">
+        <!-- Account Menu Start -->
+        <div class="col-xl-3 col-lg-3 col-12 d-flex pr-xl-3 pr-lg-2 px-0 button-menu align-content-lg-start row mx-0">
+            <button class="btn col-lg-12 col-4 d-lg-flex align-items-center py-xl-4 py-lg-3 mb-xl-4 mb-lg-3 active"
+                    data-target="membership-information">
+                <span class="user"></span>
+                <p class="text-20 mb-0 text-lg-left text-center">
+                    Üyelik Bilgilerim
+                </p>
+            </button>
+            @if (defaultProduct != null && defaultProduct.isRenewable)
+            {
+                <button class="btn col-lg-12 col-4 d-lg-flex align-items-center py-xl-4 py-lg-3 mb-xl-4 mb-lg-3"
+                        data-target="membership-renew">
+                    <span class="reload"></span>
+                    <p class="text-20 mb-0 text-lg-left text-center">
+                        Üyelik Yenileme
+                    </p>
+                </button>
+            }
+        </div>
+        <!-- Account Menu End -->
+        <!-- Account Pages Start -->
+        <div class="col-xl-9 col-lg-9 col-12 form-area px-0 pl-lg-0">
+            <!-- Membership Information Start -->
+            <form id="membership-information" class="row mx-0 active d-flex" method="post" action="@Url.Content("~/uye-bilgileri")">
+                @if (TempData["ResultMessage"] != null)
+                {
+                    var classCode = TempData["ResultMessage"].ToString().Contains("güncellendi") ? "alert-success" : "alert-danger";
+                    <div class="form-error alert @classCode  w-100">
+                        @TempData["ResultMessage"]
+                    </div>
+                }
+                <div class="col-xl-6 col-lg-6 px-xl-5 px-lg-4 px-0 mt-4 mt-lg-0 row mx-0">
+                    <input type="hidden" name="userId" value="" />
+                    <div class="col-12 mb-lg-3 mb-xl-5 d-lg-flex d-none">
+                        <img class="w-100" src="@defaultProduct.imageUrl">
+                    </div>
+                    <div class="form-group col-lg-12 col-6">
+                        <label for="firstname">Adınız</label>
+                        <input type="text" class="form-control" id="firstname" name="name" value="@Model.name"
+                               readonly>
+                    </div>
+                    <div class="form-group col-lg-12 col-6">
+                        <label for="lastname">Soyadınız</label>
+                        <input type="text" class="form-control" id="lastname" name="surname" value="@Model.surname"
+                               readonly>
+                    </div>
+                    <div class="form-group col-lg-12">
+                        <label for="email">E-Posta Adresiniz</label>
+                        <input type="text" class="form-control" id="email" name="email" value="@Model.email"
+                               data-required="true">
+                        <small class="text-danger">Bu alanı doldurmanız gerekmektedir.*</small>
+                    </div>
+                    <div class="col-lg-12 col-6 form-group row mx-0">
+                        <label for="cellphone">Cep Telefonunuz</label>
+                        <input type="text" class="form-control" id="cellphone" name="mobilePhone" value="@Model.mobilePhone"
+                               data-required="true">
+                        <small class="text-danger">Bu alanı doldurmanız gerekmektedir.*</small>
+                    </div>
+                    <div class="col-lg-12 col-6 form-group align-self-lg-end">
+                        <label for="secondphone">Ev/iş Telefonunuz</label>
+                        <input type="text" id="secondphone" class="form-control" name="workPhone" value="@Model.workPhone">
+                    </div>
+                    <div class="form-group col-lg-12">
+                        <label for="firstname">Şifreniz</label>
+                        <input type="text" class="form-control" id="password" name="pinCode" maxlength="4" data-required="true">
+                        <small class="text-danger">Bu alanı doldurmanız gerekmektedir.*</small>
+                        <span class="info" tabindex="0" role="button" data-toggle="popover" data-placement="bottom"
+                              data-html="true" data-trigger="focus"
+                              data-content="Şifrenizi güncellemek için yeni şifrenizi girerek <b>Güncelle ve Kaydet</b> butonuna basınız. Şifreniz dört haneli olmalı ve rakamlardan oluşmalıdır."></span>
+
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 px-xl-5 px-lg-4 px-0 mt-0 mt-lg-0 row mx-0">
+                    <div class="form-group col-lg-12 col-6">
+                        <label for="firstMemberDate">İlk Üyelik Tarihi</label>
+                        <input type="date" class="form-control pr-0" id="firstMemberDate" name="firstMemberDate"
+                               value="@(Convert.ToDateTime(Model.membershipDate).ToString("yyyy-MM-dd"))" readonly>
+                    </div>
+                    <div class="form-group col-lg-12 col-6">
+                        <label for="lastRenewDate">Son Yenileme Tarihi</label>
+                        <input type="date" class="form-control pr-0" id="lastRenewDate" name="lastRenewDate"
+                               value="@(defaultProduct!=null? Convert.ToDateTime(defaultProduct.startDate).ToString("yyyy-MM-dd"):"")" readonly>
+                    </div>
+                    <div class="form-group col-lg-12">
+                        <label for="memberEndDate">Üyelik Bitiş Tarihi</label>
+                        <input type="date" class="form-control pr-0" id="memberEndDate" name="memberEndDate"
+                               value="@(defaultProduct!=null? Convert.ToDateTime(defaultProduct.endDate).ToString("yyyy-MM-dd"):"")" readonly>
+                    </div>
+                    <!-- Textarea -->
+                    <div id="addressArea" class="form-accordion col-12 mb-3">
+                        <div class="row mx-0 px-0">
+                            <div class="mb-0 col-12 px-0 d-flex btn-group">
+                                <button class="btn w-50 text-left" type="button" data-toggle="collapse"
+                                        data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    Açık Adresiniz
+                                </button>
+                                <button class="btn w-50 collapsed text-left" type="button" data-toggle="collapse"
+                                        data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    Bağış Makbuzu Bilgileriniz
+                                </button>
+                            </div>
+                            <div id="collapseOne" class="collapse show col-12 p-0 form-group row mx-0 mb-0"
+                                 data-parent="#addressArea">
+                                <div class="form-group col-12 px-0 mb-2">
+                                    <textarea class="form-control" id="voucher" name="deliveryAddress.address" rows="4"
+                                              placeholder="Açık Adresiniz" data-required="true">@(deliveryAddress!=null? deliveryAddress.address:string.Empty)</textarea>
+                                </div>
+                                <div class="form-group col-12">
+                                    <label for="country">Ülke</label>
+                                    <select class="form-control country-select" name="deliveryAddress.countryCode"
+                                            id="voucher-country" data-required="true" data-placeholder="Seçiniz">
+                                        @foreach (var item in ViewBag.Countries)
+                                        {
+                                            <option @(deliveryAddress.countryCode == item.countryCode ? "selected" : "") value="@item.countryCode">@item.countryName</option>
+                                        }
+                                    </select>
+                                    <small class="text-danger">Bu alanı doldurmanız gerekmektedir.*</small>
+                                </div>
+                                <div class="select-boxes col-12 p-0 row m-0 @(deliveryAddress.countryCode == "TR" ? "" : "d-none")">
+                                    <div class="form-group col-md-6">
+                                        <label for="city">İl</label>
+                                        <select class="form-control" name="deliveryAddress.cityCode" id="voucher-city"
+                                                data-required="true" data-placeholder="Seçiniz">
+                                            <option value="">Seçiniz</option>
+                                            @foreach (var item in ViewBag.Cities)
+                                            {
+                                                <option @(deliveryAddress.cityCode == item.cityCode ? "selected" : "") value="@item.cityCode">@item.cityName</option>
+                                            }
+                                        </select>
+                                        <small class="text-danger">Bu alanı doldurmanız gerekmektedir.*</small>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="district">İlçe</label>
+                                        <select class="form-control" name="deliveryAddress.townCode" id="voucher-district"
+                                                data-required="true" data-placeholder="Seçiniz">
+                                            <option value="">Seçiniz</option>
+                                            @if (ViewBag.DeliveryAddressTowns != null)
+                                            {
+                                                foreach (var item in ViewBag.DeliveryAddressTowns)
+                                                {
+                                                    <option @(deliveryAddress.townCode == item.townCode ? "selected" : "") value="@item.townCode">@item.townName</option>
+                                                }
+                                            }
+                                        </select>
+                                        <small class="text-danger">Bu alanı doldurmanız gerekmektedir.*</small>
+                                    </div>
+                                </div>
+                                <div class="input-boxes col-12 p-0 row m-0 @(deliveryAddress.countryCode != "TR" ? "" : "d-none")">
+                                    <div class="form-group col-md-6">
+                                        <label for="city">İl</label>
+                                        <input type="text" class="form-control" name="deliveryOtherCity"
+                                               id="voucher-city-text" placeholder="İl Giriniz" value="@(deliveryAddress.countryCode != "TR"? deliveryAddress.cityCode:"")">
+                                        <small class="text-danger">Bu alanı doldurmanız gerekmektedir.*</small>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="district">İlçe</label>
+                                        <input type="text" class="form-control" name="deliveryOtherTown"
+                                               id="voucher-district-text" placeholder="Seçiniz" value="@(deliveryAddress.countryCode != "TR"? deliveryAddress.townCode:"")">
+                                        <small class="text-danger">Bu alanı doldurmanız gerekmektedir.*</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="collapseTwo" class="collapse  col-12 p-0 row mx-0 form-group mb-0"
+                                 data-parent="#addressArea">
+                                <div class="form-group col-12 px-0 mb-2">
+                                    <textarea class="form-control" id="adress" name="billingAddress.address" rows="4"
+                                              placeholder="Bağış Makbuzu Bilgileniriz" data-required="true">@(billingAddress!=null?billingAddress.address:string.Empty)</textarea>
+                                    <span class="info" tabindex="0" role="button" data-toggle="popover"
+                                          data-placement="bottom" data-trigger="focus"
+                                          data-content="Eğer makbuzunuzun şahıs adına düzenlenmesini istiyorsanız bu alana “Şahıs” yazmanız yeterlidir;
+                                                 makbuzunuz üyelik işlemi sırasında verdiğiniz bilgilere göre düzenlenecektir.
+                                                  Eğer bağış makbuzunuzun şirket adına düzenlenmesini istiyorsanız lütfen şirket tam adı,
+                                                   telefon, adres, vergi dairesi ve vergi numarası bilgilerinizi yazınız."></span>
+                                </div>
+                                <div class="form-group col-12">
+                                    <label for="country">Ülke</label>
+                                    <select class="form-control country-select" name="billingAddress.countryCode"
+                                            id="adress-country" data-required="true" data-placeholder="Seçiniz">
+                                        @foreach (var item in ViewBag.Countries)
+                                        {
+                                            <option @(billingAddress.countryCode == item.countryCode ? "selected" : "") value="@item.countryCode">@item.countryName</option>
+                                        }
+                                    </select>
+                                    <small class="text-danger">Bu alanı doldurmanız gerekmektedir.*</small>
+                                </div>
+                                <div class="select-boxes col-12 p-0 row m-0 @(billingAddress.countryCode == "TR" ? "" : "d-none")">
+                                    <div class="form-group col-md-6">
+                                        <label for="city">İl</label>
+                                        <select class="form-control" name="billingAddress.cityCode" id="adress-city"
+                                                data-required="true" data-placeholder="Seçiniz">
+                                            <option value="">Seçiniz</option>
+                                            @foreach (var item in ViewBag.Cities)
+                                            {
+                                                <option @(billingAddress.cityCode == item.cityCode ? "selected" : "") value="@item.cityCode">@item.cityName</option>
+                                            }
+                                        </select>
+                                        <small class="text-danger">Bu alanı doldurmanız gerekmektedir.*</small>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="district">İlçe</label>
+                                        <select class="form-control" name="billingAddress.townCode" id="adress-district"
+                                                data-required="true" data-placeholder="Seçiniz">
+                                            <option value="">Seçiniz</option>
+                                            @if (ViewBag.BillingAddressTowns != null)
+                                            {
+                                                foreach (var item in ViewBag.BillingAddressTowns)
+                                                {
+                                                    <option value="@item.townCode" @(billingAddress.townCode == item.townCode ? "selected" : "")>@item.townName</option>
+                                                }
+                                            }
+                                        </select>
+                                        <small class="text-danger">Bu alanı doldurmanız gerekmektedir.*</small>
+                                    </div>
+                                </div>
+                                <div class="input-boxes col-12 p-0 row m-0 @(billingAddress.countryCode != "TR" ? "" : "d-none")">
+                                    <div class="form-group col-md-6">
+                                        <label for="city">İl</label>
+                                        <input type="text" class="form-control" name="billingOtherCity"
+                                               id="adress-city-text" placeholder="İl Giriniz" value="@(billingAddress.countryCode != "TR"? billingAddress.cityCode:"")">
+                                        <small class="text-danger">Bu alanı doldurmanız gerekmektedir.*</small>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="district">İlçe</label>
+                                        <input type="text" class="form-control" name="billingOtherTown"
+                                               id="adress-district-text" placeholder="İlçe Giriniz" value="@(billingAddress.countryCode != "TR"? billingAddress.townCode:"")">
+                                        <small class="text-danger">Bu alanı doldurmanız gerekmektedir.*</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- Textarea -->
+                    <div class="form-group col-12 mb-3 mb-lg-0 mb-xl-3">
+                        <div id="formCaptcha"></div>
+                        <small class="text-danger align-self-center">
+                            Bu alan
+                            zorunludur.
+                        </small>
+                    </div>
+                    <input type="hidden" class="captchaResponse" name="captchaResponse">
+                    <div class="col-12 align-self-lg-end">
+                        <button type="submit" class="btn btn-block mb-3 py-3 btn-submit">
+                            Güncelle ve Kaydet
+                        </button>
+                    </div>
+                </div>
+            </form>
+            <!-- Membership Information End -->
+            @*@if (defaultProduct != null && defaultProduct.isRenewable && userProductDetail != null)
+                {*@
+            <!-- Membership Renew Start -->
+            <form id="membership-renew" class="row mx-0 px-0 mt-lg-0 mt-3 mt-md-4" action="@Url.Content("~/uyelik-yenile")" method="post">
+                <!-- Renew Type Start -->
+                <input id="deliveryPrice" type="hidden" name="delivery-price" value="">
+                <input id="renewPrice" type="hidden" name="renew-price" value="">
+                <input id="cardNo" type="hidden" name="cardNo" value="@defaultProduct.cardNo" />
+                <input id="option" type="hidden" name="deliveryTypeId" value="">
+                <div class="col-xl-4 col-lg-12 row mx-0 px-0">
+                    <div class="col-xl-12 col-lg-6 d-none d-lg-flex process-side">
+                        <img class="w-100" src="@defaultProduct.imageUrl">
+                    </div>
+                    @{
+                        var renewProducts = userProductDetail.productPriceList.Where(x => x.productType != 0).ToList();
+                        double renewCardPrice = renewProducts != null ? renewProducts.FirstOrDefault().price : 0;
+                    }
+                    <div class="col-xl-12 col-lg-6 row mx-0 renew-type-list align-items-lg-center align-content-xl-end pr-md-4 pr-lg-2 delivery-side align-self-xl-end">
+                        @foreach (var item in renewProducts)
+                        {
+                            int index = renewProducts.IndexOf(item);
+                            <div class="col-12 d-flex align-items-center renew-type-item @(index==0?"active":"")">
+                                <div class="custom-control custom-radio col-8 pr-0">
+                                    <input type="radio" id="@("renewType"+item.productPriceId)" name="productPriceId" class="custom-control-input"
+                                           data-price="@item.price" @(index == 0 ? "checked" : "") value="@item.productPriceId">
+                                    <label class="custom-control-label" for="@("renewType"+item.productPriceId)">
+                                        @item.title
+                                    </label>
+                                </div>
+                                <div class="col-4 px-0">
+                                    <h5 class="price mb-0 p-0 float-right">@item.price</h5>
+                                </div>
+                            </div>
+                        }
+
+
+                    </div>
+                </div>
+                <!-- Renew Type End -->
+                <!-- Delivery Options Start -->
+                <div class="col-xl-8 col-12 pl-0 pr-lg-0 pr-xl-3 row mx-0 form-left">
+                    <h6 class="py-4 px-3 d-lg-flex d-xl-none">
+                        Lütfen bir teslimat tipi seçin.
+                    </h6>
+
+                    @foreach (var item in ViewBag.DeliveryTypes)
+                    {
+                        int index = ViewBag.DeliveryTypes.IndexOf(item);
+                        <div class="col-lg-6 col-12 delivery-option option @(index==0?"selected":"") @(item.id==3?"check-box-div":"")" data-option="@item.id" data-price="@item.price">
+                            <div class="col-12 row mx-0 px-0 box px-lg-4 pt-lg-4 pb-lg-2">
+                                <div class="col-12 px-0 row mx-0 option-header">
+                                    <div class="col-lg-12 col-8 mb-lg-4">
+                                        <h5 class="my-3">
+                                            @item.title
+                                        </h5>
+                                    </div>
+                                    <div class="align-items-center col-4 d-flex d-lg-none footer justify-content-end pl-0">
+                                        <h4 class="float-right">@item.price</h4>
+                                    </div>
+                                </div>
+                                <div class="row mx-0 col-12 px-0 option-footer">
+
+                                    <div class="col-12 d-none d-lg-flex py-3 py-lg-0 mx-0  row option-body">
+                                        @*<p class="col-12 px-0">
+                                                Kartınız 15 iş günü içerisinde adresinize gönderilecektir.
+                                            </p>*@
+                                        @if (item.id == 3)
+                                        {
+                                            <div id="adressRadio"
+                                                 class="custom-control custom-radio custom-control-inline col-12 px-0 mx-4 mx-lg-0 ">
+                                                <input type="checkbox" id="adressChangeStat" name="adressChangeStat"
+                                                       class="custom-control-input" disabled>
+                                                <label class="custom-control-label" for="adressChangeStat">
+                                                    Kartımın üyelik
+                                                    adresimden
+                                                    farklı bir adrese teslim edilmesini istiyorum.
+                                                </label>
+                                            </div>
+                                        }
+                                    </div>
+
+                                </div>
+                                <div class="align-items-center col-12 d-none d-lg-flex footer justify-content-end pl-0">
+                                    <h4 class="float-right">@item.price</h4>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    <div class="col-lg-6 col-12 delivery-option adress disabled">
+                        <div class="col-12 row mx-0 box px-0 pb-lg-0 h-100">
+                            <div class="col-12 mb-lg-4 py-3 text-center header">
+                                <h5 class="mb-0">
+                                    Teslimat Adresiniz
+                                </h5>
+                            </div>
+                            <div class="col-12 d-flex">
+                                <div class="form-group py-4 py-lg-0 w-100 d-flex row mx-0">
+                                    <textarea class="form-control pt-0 col-12" id="adress-textarea" name="deliveryAddress.address"
+                                              rows="3" readonly
+                                              data-required="true">@deliveryAddress.address</textarea>
+
+                                    @*<a class="col px-0 pt-2" id="editAdress" type="button">
+                                            <img class="float-right"
+                                                 src="@Url.Content("~/assets/img/icon-edit.svg")">
+                                        </a>*@
+                                    <div id="address-chooser" class="row mx-0 p-0 m-0 col-12 non-click">
+                                        <div class="form-group col-12 px-0">
+                                            <label for="country">Ülke</label>
+                                            <select class="form-control country-select" name="deliveryAddress.countryCode"
+                                                    id="adress-country-delivery" data-placeholder="Seçiniz">
+                                                @foreach (var item in ViewBag.Countries)
+                                                {
+                                                    <option value="@item.countryCode" @(deliveryAddress.countryCode == item.countryCode ? "selected" : "")>@item.countryName</option>
+                                                }
+                                            </select>
+                                            <small class="text-danger">Bu alanı doldurmanız gerekmektedir.*</small>
+                                        </div>
+                                        <div class="select-boxes col-12 p-0 row m-0">
+                                            <div class="form-group col-sm-6 px-0 pr-sm-1">
+                                                <label for="city">İl</label>
+                                                <select class="form-control" name="deliveryAddress.cityCode"
+                                                        id="adress-city-delivery" data-placeholder="Seçiniz">
+                                                    @foreach (var item in ViewBag.Cities)
+                                                    {
+                                                        <option value="@item.cityCode" @(deliveryAddress.cityCode == item.cityCode ? "selected" : "")>@item.cityName</option>
+                                                    }
+                                                </select>
+                                                <small class="text-danger">
+                                                    Bu alanı doldurmanız
+                                                    gerekmektedir.*
+                                                </small>
+                                            </div>
+                                            <div class="form-group col-sm-6 px-0 pl-sm-1">
+                                                <label for="district">İlçe</label>
+                                                <select class="form-control" name="deliveryAddress.townCode"
+                                                        id="adress-district-delivery" data-placeholder="Seçiniz">
+                                                    @if (ViewBag.DeliveryAddressTowns != null)
+                                                    {
+                                                        foreach (var item in ViewBag.DeliveryAddressTowns)
+                                                        {
+                                                            <option @(deliveryAddress.townCode == item.townCode ? "selected" : "") value="@item.townCode">@item.townName</option>
+                                                        }
+                                                    }
+                                                </select>
+                                                <small class="text-danger">
+                                                    Bu alanı doldurmanız
+                                                    gerekmektedir.*
+                                                </small>
+                                            </div>
+                                        </div>
+                                        <div class="input-boxes col-12 p-0 row m-0 d-none">
+                                            <div class="form-group col-sm-6 px-0 pr-sm-1">
+                                                <label for="city">İl</label>
+                                                <input type="text" class="form-control" name="otherCity"
+                                                       id="adress-city-text-delivery" placeholder="İl Giriniz">
+                                                <small class="text-danger">
+                                                    Bu alanı doldurmanız
+                                                    gerekmektedir.*
+                                                </small>
+                                            </div>
+                                            <div class="form-group col-sm-6 px-0 pl-sm-1">
+                                                <label for="district">İlçe</label>
+                                                <input type="text" class="form-control" name="otherTown"
+                                                       id="adress-district-text-delivery" placeholder="İlçe Giriniz">
+                                                <small class="text-danger">
+                                                    Bu alanı doldurmanız
+                                                    gerekmektedir.*
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @*<div class="col-12 d-flex pb-2 align-items-end justify-content-end">
+                                    <button id="editAdressSave" type="button" class="btn float-right px-4 py-1"
+                                            disabled="true">
+                                        KAYDET
+                                    </button>
+                                </div>*@
+                        </div>
+                    </div>
+                </div>
+                <!-- Delivery Options End -->
+                <!-- Agreements and Submit Start -->
+                <div class="col-12 d-flex justify-content-lg-end px-0 pr-md-3 pr-lg-0 pr-xl-3">
+                    <div class="col-xl-4 col-lg-6 col-12 d-flex submit-button row mx-0 delivery-option">
+                        @foreach (var item in ViewBag.Contracts)
+                        {
+                            string isRequired = item.isRequired ? "data-required=true" : "";
+                            <div class="custom-control form-group custom-checkbox mx-2 mb-3 col-12">
+                                <input type="checkbox" class="custom-control-input form-control" name="contractIds"
+                                       id="@("contract-"+item.code)" @isRequired value="@item.id">
+                                <label class="custom-control-label" for="@("contract-"+item.code)">
+                                    <a type="button" class="modal-btn"
+                                       data-toggle="modal" data-target="#@("contract-"+item.code+"-modal")">@item.title</a> okudum
+                                    ve onaylıyorum.
+                                </label>
+                                @if (item.isRequired)
+                                {
+                                    <small class="text-danger">Bu alanı doldurmanız gerekmektedir.*</small>
+                                }
+                            </div>
+
+                        }
+
+                        <input type="hidden" class="captchaResponse" name="renewCaptchaResponse">
+                        <div class="form-group col-12 px-0 mb-3">
+                            <div id="renewFormCaptcha"></div>
+                            <small class="text-danger align-self-center">
+                                Bu alan
+                                zorunludur.
+                            </small>
+                        </div>
+                        <input type="hidden" class="captchaResponse" name="captchaResponse">
+                        <button type="submit" class="btn btn-block btn-submit text-25 col-12 price">
+                            ÖDE <span class="payment-value">@renewCardPrice</span>
+                        </button>
+                    </div>
+                </div>
+                <!-- Agreements and Submit End -->
+            </form>
+            <!-- Membership Renew End -->
+            @*}*@
+
+        </div>
+    </div>
+</section>

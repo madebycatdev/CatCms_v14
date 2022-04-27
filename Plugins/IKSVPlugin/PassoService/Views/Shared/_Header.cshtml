@@ -1,0 +1,199 @@
+﻿<!-- Nav Start -->
+<nav id="nav" class="navbar fixed-top">
+    <div id="partners-menu" class="d-flex flex-row justify-content-start justify-content-md-center w-100">
+	
+		<a href="https://www.iksv.org/">İKSV</a>
+        <a href="https://film.iksv.org/tr">FİLM</a>
+        <a href="https://muzik.iksv.org/tr">MÜZİK</a>
+        <a href="https://caz.iksv.org/tr">CAZ</a>
+        <a href="https://bienal.iksv.org/tr">BIENAL</a>
+        <a href="https://empathyrevisited.iksv.org/en/index">TASARIM</a>
+        <a href="https://tiyatro.iksv.org/tr">TİYATRO</a>
+        <a href="http://filmekimi.iksv.org/tr">FİLMEKİMİ</a>
+        <a href="https://www.saloniksv.com/tr/">SALON İKSV</a>
+    </div>
+    <div class="col-3 p-0">
+        <a href="javascript:void(0);" class="navbar-toggler d-inline-flex flex-row collapsed" data-toggle="collapse"
+           data-target="#navbar-menu-collapse" aria-controls="navbar-menu-collapse" aria-expanded="false"
+           aria-label="Toggle navigation">
+            <div class="menu-icon">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <span class="d-none d-md-flex">Menu</span>
+            <span class="d-none d-md-flex">Kapat</span>
+        </a>
+        <div class="collapse navbar-collapse d-flex flex-column" id="navbar-menu-collapse">
+            <div class="menu-nav">
+                <div class="logo-wrapper d-flex flex-row justify-content-center align-items-center">
+                    <a href="/">
+                        <img src="@Url.Content("~/assets/img/logo-white.png")" alt="">
+                    </a>
+                </div>
+                @*<div class="search-lang-wrapper d-flex flex-row">
+                        <form action="." class="form d-none d-md-flex">
+                            <div class="form-group">
+                                <input type="text" class="form-control">
+                            </div>
+                            <button type="submit" class="d-flex flex-column justify-content-center align-items-center">
+                                <img src="@Url.Content("~/assets/img/icon-search.png" alt="">
+                            </button>
+                        </form>
+                        <a href="javascript:void(0);" class="lang-button font-small font-medium">EN</a>
+                    </div>*@
+            </div>
+            <div class="menu-wrapper w-100">
+                <ul class="navbar-nav text-center">
+                    <!----------------- Üyelik ----------------->
+                    <li class="nav-item collapse-btn d-block d-md-none">
+                        <a class="nav-link font-mono" data-toggle="collapse" href="#subMenuMembership"
+                           aria-expanded="false" aria-controls="subMenuMembership">
+                            Üyelik <img class="py-1"
+                                        src="@Url.Content("~/assets/img/icon-select-arrow.png")"></img>
+                        </a>
+                    </li>
+                    <li id="subMenuMembership" class="nav-item collapse d-md-none">
+                        <div class="d-flex flex-column flex-md-row justify-content-center collapse-btn d-md-none">
+                            @if (PassoService.Models.CurrentSession.MemberInfo != null)
+                            {
+							
+                                <a href="@Url.Content("~/uye-bilgileri")" class="nav-link sub-link mx-4">@PassoService.Models.CurrentSession.MemberInfo.name @PassoService.Models.CurrentSession.MemberInfo.surname</a>
+                                <a href="@Url.Content("~/cikis-yap")" class="nav-link sub-link mx-4">Çıkış</a> 
+                             }
+                            else
+                            {
+                                <a href="@Url.Content("~/uye-girisi")" class="nav-link sub-link mx-4">Lale Kart Üyesiyim</a>
+                            }
+                            <!----------------- Üye Olmak İstiyorum ----------------->
+                            <a href="#subMenuMembershipMenu" data-toggle="collapse" class="nav-link sub-link mx-4"
+                               aria-expanded="false" aria-controls="subMenuMembershipMenu">
+                                Üye Olmak İstiyorum <img class="py-1" src="@Url.Content("~/assets/img/icon-select-arrow.png")"></img>
+                            </a>
+                            @if (PassoService.Models.CurrentSession.Products != null)
+                            {
+                                <div id="subMenuMembershipMenu" class="collapse d-md-none">
+                                    <div class="d-flex flex-column justify-content-center d-md-none">
+
+                                        @foreach (var item in PassoService.Models.CurrentSession.Products)
+                                        {
+                                        <a href="~/uye-ol/kart-@item.productId"
+                                           class="nav-link sub mb-3 w-75 mx-auto font-weight-bold membership-btns @item.classCode">
+                                            @item.productName Kart
+                                        </a>
+                                        }
+                                    </div>
+                                </div>
+                             }
+                            <!----------------- Üye Olmak İstiyorum ----------------->
+                            <a href="/tr/lale-kart-uyelik" class="nav-link sub-link mx-4">Üyelik Kategorileri </a>
+                        </div>
+                    </li>
+                    <!----------------- Üyelik ----------------->
+                    <li class="nav-item collapse-btn">
+                        <a class="nav-link font-mono" data-toggle="collapse" href="#subMenuAbout"
+                           ria-expanded="false" aria-controls="subMenuAbout">
+                            Hakkımızda <img class="py-1" src="@Url.Content("~/assets/img/icon-select-arrow.png")" />
+                        </a>
+                    </li>
+                    <li id="subMenuAbout" class="nav-item collapse">
+                        <div class="d-flex flex-column flex-md-row justify-content-center">
+                            <a href="/tr/lalekart" class="nav-link sub-link mx-4">IKSV LALE KART</a>
+                            <a href="/tr/tesekkur" class="nav-link sub-link mx-4">TEŞEKKÜR</a>
+                            <a href="/tr/askida-lale-kart" class="nav-link sub-link mx-4">ASKIDA LALE KART</a>
+                            <a href="/tr/sss" class="nav-link sub-link mx-4">SSS</a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link font-mono" href="/tr/lale-kart-uyelik">Üyelik Kategorileri</a>
+                    </li>
+					<li class="nav-item">
+					@if (PassoService.Models.CurrentSession.MemberInfo == null)
+					{
+						<a href="@Url.Content("~/uye-girisi")" class="nav-link font-mono">Üye Girişi</a>
+					}
+                        
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link font-mono" href="/tr/indirimli-mekanlar">İndirimli Mekanlar</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link font-mono" href="/tr/etkinlikler">Etkinlikler</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link font-mono" href="/tr/haberler">Haberler</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link font-mono" href="/tr/bize-ulasin">Bize Ulaşın</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 p-0 d-flex justify-content-center">
+        <h1 id="logo" class="m-0">
+            <a class="navbar-brand m-0" href="/">
+                <img src="@Url.Content("~/assets/img/logo-white.png")" alt="lalekart">
+            </a>
+        </h1>
+    </div>
+    <!-- Sağ menü -->
+    <div class="col-3 p-0 d-flex justify-content-end">
+        <ul class="navbar-nav d-flex flex-row align-items-center">
+            <li class="d-none d-md-flex nav-item mr-5">
+                <a id="pop-up-menu-btn" class="nav-link d-flex flex-row align-items-center"
+                   href="javascript:;">
+                    <span>ÜYELİK</span>
+                    <div class="icon-plus ml-3"></div>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="javascript:;" id="partners-button" class="nav-link">
+                    <img src="@Url.Content("~/assets/img/iksv-logo.jpg")" alt="">
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div id="pop-up-menu" class="pop-up-menu">
+        <ul class="menu-list mb-0">
+            <li class="menu-item">
+                @if (PassoService.Models.CurrentSession.MemberInfo != null)
+                {
+    <a class="lead" href="@Url.Content("~/uye-bilgileri")">
+        <bb>@PassoService.Models.CurrentSession.MemberInfo.name @PassoService.Models.CurrentSession.MemberInfo.surname</bb>
+    </a>
+                    <a class="lead" href="@Url.Content("~/cikis-yap")">
+                        <bb>Çıkış</bb>
+                    </a>}
+                else
+                {
+    <a class="lead" href="@Url.Content("~/uye-girisi")">
+        <bb>Lale Kart Üyesiyim</bb>
+    </a>}
+            </li>
+            <li id="sub-menu-1" class="menu-item dropdown dropleft">
+                <a class="lead dropdown-toggle"
+                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="javascript:void(0);">
+                    <span><img src="@Url.Content("~/assets/img/sub-menu.icon.svg")"></span>
+                    <bb>Üye Olmak İstiyorum</bb>
+                </a>
+                @if (PassoService.Models.CurrentSession.Products != null)
+                {
+    <div class="dropdown-menu menu-list" aria-labelledby="sub-menu-1">
+        @foreach (var item in PassoService.Models.CurrentSession.Products)
+        {
+
+<a class="dropdown-item font-weight-bolder @item.classCode" href="@Url.Content("~/uye-ol/kart-"+item.productId)">@item.productName Kart</a>}
+
+    </div>}
+            </li>
+            <li class="menu-item">
+                <a class="lead" href="/tr/lale-kart-uyelik">
+                    <bb>Üyelik Kategorileri</bb>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <!-- Sağ menü -->
+</nav>
+<!-- Nav End -->

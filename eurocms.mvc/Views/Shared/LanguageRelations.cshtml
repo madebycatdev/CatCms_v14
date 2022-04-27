@@ -1,0 +1,15 @@
+﻿@model IList<EuroCMS.Admin.entity.cms_asp_select_article_language_relations_by_revision_Result>
+
+
+    @if (Model != null && Model.Count > 0)
+    {
+        foreach (var related in Model)
+        {
+            <option selected="selected" value="@related.zone_id-@related.article_id">@related.out_name</option>
+        }
+    } 
+ 	
+					
+						 
+					
+			

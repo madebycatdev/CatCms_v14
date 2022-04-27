@@ -1,0 +1,149 @@
+﻿
+@using (Html.BeginForm("Create", "XmlGenerator", FormMethod.Post, new { @class = "form-horizontal", @id = "xmlCreate" }))
+{
+    @Html.AntiForgeryToken()
+	<div class="tabbable tabbable-custom">
+		<div class="tab-content new-tab-content">
+
+			<div class="row-fluid">
+				<div class="control-group">
+					<label class="control-label" for="xml_name">XML Name: <span class="red">*</span></label>
+					<div class="controls">
+						<input class="span12 m-wrap" type="text" id="xml_name" name="xml_name" required>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="structure_description">Description:</label>
+					<div class="controls">
+						<textarea class="span12 m-wrap" id="structure_description" name="structure_description"></textarea>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="group_id">Group:</label>
+					<div class="controls">
+						@Html.DropDownList("group_id", ViewBag.Groups as IEnumerable<SelectListItem>, "Not Grouped", new { @class ="span12"})
+					</div> 
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="xml_main_node">XML Root Node: <span class="red">*</span></label>
+					<div class="controls">
+						<input class="span12 m-wrap" type="text" id="xml_main_node" name="xml_main_node" required>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="xml_main_node_attrib">Root Node Attributes:</label>
+					<div class="controls">
+						<input class="span12 m-wrap" type="text" id="xml_main_node_attrib" name="xml_main_node_attrib">
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="xml_per_node">XML Per Item Node: <span class="red">*</span></label>
+					<div class="controls">
+						<input class="span12 m-wrap" type="text" id="xml_per_node" name="xml_per_node" required>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="xml_per_node_attrib">Per Item Attributes: </label>
+					<div class="controls">
+						<input class="span12 m-wrap" type="text" id="xml_per_node_attrib" name="xml_per_node_attrib">
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="xml_related_line">Related Article Line: </label>
+					<div class="controls">
+						<input class="span12 m-wrap" type="text" id="xml_related_line" name="xml_related_line">
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="xml_sub_node">Second Level Line: </label>
+					<div class="controls">
+						<input class="span12 m-wrap" type="text" id="xml_sub_node" name="xml_sub_node" value="<second_level>##xml_url##</second_level>">
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="xml_sub_template">Second Level Template: </label>
+					<div class="controls">
+						@Html.DropDownList("xml_sub_template", ViewBag.Groups as IEnumerable<SelectListItem>, "- Upper Level Template -", new { @class ="span12 m-wrap"})
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">XML Data Items:</label>
+				</div>
+				<div class="xmlWrap">
+					@for(int i = 1;i<=1;i++)
+					{
+						<!-- XML Data @i begin -->
+						<div class="xmlItem">
+							<h4 class="dataName">XML Data @i</h4>
+							<div class="control-group">
+								<label class="control-label" for="name_@i">Name:<span class="red">*</span></label>
+								<div class="controls">
+									<input type="text" class="m-wrap medium" id="name_@i" name="name_@i" required/>
+									<label class="checkbox">
+										<input type="checkbox" id="afiles_@i" name="afiles_v" /> 
+										<span class="small">Article File</span>
+									</label>
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label" for="attribute_@i">Attribute: </label>
+								<div class="controls">
+									<input type="text" class="m-wrap medium" id="attribute_@i" name="attribute_@i" />
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label" for="value_@i">Value:<span class="red">*</span></label>
+								<div class="controls">
+									<input type="text" class="m-wrap medium" id="value_@i" name="value_@i" required/>
+									<label class="checkbox">
+										<input type="checkbox" id="cdata_@i" name="cdata_@i" /> 
+										<span class="small">cData</span>
+									</label>
+								</div>
+							</div>
+						</div>
+						<!-- XML Data @i complete -->
+					}
+				</div>
+				<div class="control-group">
+					<div class="controls">
+						<button type="button" class="btn blue" title="Add Xml Data" onclick="return addXmlData(this),false;"><i class="icon-plus"></i> Add New Xml Data</button>
+					</div>
+				</div>
+			</div>
+
+			
+			@*
+
+		
+	  
+	   
+		
+		
+			for(int i = 1;i<=20;i++)
+			{   
+				<!-- XML Data @i begin -->
+				<b>XML Data @i</b>
+				<br />
+				<label for="name_@i">Name: </label>
+				<input type="text" id="name_@i" name="name_@i">
+				<br />
+				<label for="attribute_@i">Attribute: </label>
+				<input type="text" id="attribute_@i" name="attribute_@i">
+				<br />
+				<label for="value_@i">Value: </label>
+				<input type="text" id="value_@i" name="value_@i">
+				<input type="checkbox" id="afiles_@i" name="afiles_@i"> <span class="small">Article File</span>
+				<input type="checkbox" id="cdata_@i" name="cdata_@i"> <span class="small">cData</span>
+				<!-- // XML Data @i begin -->
+			}
+			
+			
+			*@
+			<div class="form-actions">
+				<button class="btn" type="button" title="Cancel Changes" onclick="discardChanges('@Url.Action("Index")'),false;"><i class="icon-remove"></i> Cancel</button>
+				<button class="btn green" type="submit" title="Save This XML"><i class="icon-save"></i> Save</button>
+			</div>
+		</div>
+	</div>
+}

@@ -1,0 +1,61 @@
+﻿@model System.Web.Configuration.SqlCacheDependencySection
+
+
+@using (Html.BeginForm("SaveSqlDependency", "Setting", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <div class="row-fluid">
+        <div class="control-group">
+            <label class="smallWrap" for="Enabled">
+                @Html.CheckBoxFor(t => t.Enabled) Enabled
+            </label>
+        </div>
+        <div class="control-group">
+            <label for="PollTime">PollTime (in ms):</label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.PollTime)
+            </div>
+        </div>
+        <div class="form-actions">
+            <button class="btn green" type="submit"><i class="icon-save"></i> Save</button>
+        </div>
+    </div>
+}
+<div class="no-more-tables">
+	<table class="table table-striped table-hover System margin-top-20">
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Pool Time (in ms)</th>
+				@*<td><b>Actions</b></td>*@
+			</tr>
+		</thead>
+		<tbody class="fields">
+			@foreach (System.Web.Configuration.SqlCacheDependencyDatabase database in Model.Databases)
+			{
+				int i = 0;
+				<tr>
+					<td data-title="Name">
+						@database.Name
+					</td>
+					<td data-title="Pool Time (in ms)">
+						@database.PollTime 
+					</td>
+					@*<td data-title="Actions">
+						<a href="@Url.Action("CreateSqlCacheDependency", "Setting", new { id=database.Name })" class="btn icn-only black openModal"><i class="icon-pencil"></i></a> 
+						@if (database.Name != "EuroCMS")
+						{
+							using (Html.BeginForm("DeleteCacheDependency", "Setting", FormMethod.Post))
+							{
+								@Html.AntiForgeryToken()
+								<input type="hidden" name="id" value="@database.Name" />
+								<button type="submit" class="remove-field">Remove</button>
+							}
+						}
+					</td>*@
+				</tr>
+				i++;
+			}
+		</tbody>    
+	</table>
+</div>

@@ -1,0 +1,513 @@
+﻿<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+<head>
+    <meta charset="utf-8" />
+    <title>CatCMS - @Html.MvcSiteMap().SiteMapTitle("SitemapTitle") </title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    <!-- GLOBAL VARIABLES -->
+    <script type="text/javascript">
+        var cmsPath = "/@System.Configuration.ConfigurationManager.AppSettings["EuroCMS.AreaName"]";
+        var approveArticleFilesRevision_var = "@Url.Action("ApproveArticleFilesRevision", "ArticleFile")"
+        var discardArticleFilesRevision_var = "@Url.Action("discardArticleFilesRevision","ArticleFile")"
+        var deleteFile_var = "@Url.Action("Delete","ArticleFile")"
+        var getSiteList_var = "@Url.Action("ListByGroupID","Site")"
+        var getZoneGroupList_var = "@Url.Action("ListBySiteID","ZoneGroup")"
+        var getZoneList_var = "@Url.Action("ListByZoneGroupID","Zone")"
+        var getArticleList_var = "@Url.Action("ListByZoneID","Article")"
+        var getSiteAndZoneGroups_var = "@Url.Action("SiteAndZoneGroups","RssFeed")"
+        var reloadCache_var = "@Url.Action("ReloadCache","Home")"
+        var portletList_var = "@Url.Action("PortletList","Portlet")"
+        var pluginList_var = "@Url.Action("PluginList","Plugin")"
+        var breadcrumbList_var = "@Url.Action("BreadCrumbList","BreadCrumb")"
+        var addObjects_var = "@Url.Action("Index","AddObjects")"
+        var portletProp_var = "@Url.Action("Properties","Portlet")"
+        var sitemapProp_var = "@Url.Action("Properties","Sitemap")"
+        var menuProp_var = "@Url.Action("Properties","Menu")"
+    </script>
+    <!-- GLOBAL VARIABLES -->
+
+    <link href="@Url.Content("~/Content/plugins/bootstrap/css/bootstrap.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/plugins/bootstrap/css/bootstrap-responsive.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/plugins/font-awesome/font/font-awesome.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/css/style-metro.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/css/style.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/css/style-responsive.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/css/themes/default.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/plugins/uniform/css/uniform.default.min.css")" rel="stylesheet" type="text/css" />
+
+    <!-- END GLOBAL MANDATORY STYLES -->
+    <!-- BEGIN PAGE LEVEL STYLES -->
+    <link href="@Url.Content("~/Content/css/chosen.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/plugins/bootstrap-modal/css/bootstrap-modal.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/plugins/datetimepicker/css/jquery-ui.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/plugins/jhtml-area/style/jHtmlArea.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/plugins/jhtml-area/style/jHtmlArea.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/plugins/bootstrap-switch/static/stylesheets/bootstrap-switch-metro.css")" rel="stylesheet" type="text/css" /> 
+    <link href="@Url.Content("~/Content/plugins/jquery-tags-input/jquery.tagsinput.css")" rel="stylesheet" type="text/css" /> 
+	<link href="@Url.Content("~/Content/plugins/jquery-nestable/jquery.nestable.css")" rel="stylesheet" type="text/css" /> 
+    <link href="@Url.Content("~/Content/plugins/data-tables/DT_bootstrap.css")" rel="stylesheet" type="text/css" /> 
+
+    <!-- END PAGE LEVEL STYLES -->
+    <!-- BEGIN CORE PLUGINS -->
+
+    <script src="@Url.Content("~/Content/scripts/jquery-2.0.3.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/scripts/jquery-migrate-1.2.1.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/plugins/jquery-ui/jquery-ui-1.10.1.custom.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/plugins/bootstrap/js/bootstrap.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/plugins/uniform/jquery.uniform.min.js")" type="text/javascript"></script>
+    
+    <script src="@Url.Content("~/Content/scripts/jquery.cookie.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/plugins/jquery-validation/jquery.validate.min.js")" type="text/javascript" ></script>
+    <script src="@Url.Content("~/Content/plugins/jquery-validation/additional-methods.min.js")" type="text/javascript"></script>
+    <!-- END CORE PLUGINS -->
+
+    <script src="@Url.Content("~/Content/scripts/chosen.jquery.min.js")"></script>
+    <script src="@Url.Content("~/Content/plugins/bootstrap-modal/js/bootstrap-modal.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/plugins/bootstrap-modal/js/bootstrap-modalmanager.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/scripts/twitter-bootstrap-hover-dropdown.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/plugins/jhtml-area/scripts/jHtmlArea-0.8.js")" type="text/javascript"></script>
+	<script src="@Url.Content("~/Content/plugins/jquery-blockui/jquery.blockui.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/plugins/jquery-speakingurl/speakingurl.js")" type="text/javascript"></script>	
+    @*<script src="@Url.Content("~/Content/plugins/ckeditor/ckeditor.js")" type="text/javascript"></script>*@
+
+    <script src="@Url.Content("~/Content/scripts/functions.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/scripts/global.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/plugins/ckfinder/ckfinder.js")" type="text/javascript"></script>
+    
+
+    <!-- BEGIN PAGE LEVEL SCRIPTS -->
+     
+    <script src="@Url.Content("~/Content/plugins/jquery-tags-input/jquery.tagsinput.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/scripts/portlet-draggable.js")" type="text/javascript"></script>
+
+    <script src="@Url.Content("~/Content/scripts/app.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/plugins/bootstrap-modal/js/ui-modals.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/plugins/datetimepicker/js/jquery-ui-timepicker-addon.js")" type="text/javascript"></script>
+     
+    <script src="@Url.Content("~/Content/plugins/bootstrap-switch/static/js/bootstrap-switch.js")" type="text/javascript"></script>  
+	
+
+
+    <link rel="shortcut icon" href="@Url.Content("~/Content/img/favicon.ico")" />
+    <!-- END PAGE LEVEL SCRIPTS -->
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var isReset = $("#hiddenResetPassword").val();
+            var isApproved = $("#hiddenIsApproved").val();
+            var isLoggedOut = $("#hiddenLoggedOut").val();
+
+            if (isReset == 1 || isApproved == 1 || isLoggedOut == 1) {
+                $("#btnLogout").click();
+            }
+        });
+    </script>
+
+
+</head>
+<!-- END HEAD -->
+<!-- BEGIN BODY -->
+
+
+
+<body class="page-header-fixed @(Request.Cookies["menuVisible"] !=null && Request.Cookies["menuVisible"].Value == "true" ? "page-sidebar-closed" : "") ">
+
+
+    @{
+        Guid currentUserId = new Guid();
+        EuroCMS.Model.CmsDbContext dbContext = new EuroCMS.Model.CmsDbContext();
+        List<EuroCMS.Model.InstantMessaging> listUnReadInstantMessaging = new List<EuroCMS.Model.InstantMessaging>();
+        List<EuroCMS.Model.InstantMessaging> listReadedInstantMessaging = new List<EuroCMS.Model.InstantMessaging>();
+        List<EuroCMS.Model.InstantMessaging> listInstantMessaging = new List<EuroCMS.Model.InstantMessaging>();
+
+        int unReadMessageCount = 0;
+
+        if (Request.IsAuthenticated)
+        {
+            currentUserId = (Guid)Membership.GetUser().ProviderUserKey;
+
+            listUnReadInstantMessaging = dbContext.InstantMessagings.Where(im => im.To == currentUserId && im.ReadDate == null && im.DeleteDate == null).OrderByDescending(od => od.CreateDate).ToList();
+            listReadedInstantMessaging = dbContext.InstantMessagings.Where(im => im.To == currentUserId && im.ReadDate != null && im.DeleteDate == null).OrderByDescending(od => od.CreateDate).ToList();
+        }
+
+
+        unReadMessageCount = listUnReadInstantMessaging != null ? listUnReadInstantMessaging.Count() : 0;
+
+        listInstantMessaging = listUnReadInstantMessaging != null ? listUnReadInstantMessaging : listInstantMessaging;
+        if (listReadedInstantMessaging != null)
+        {
+            if (listReadedInstantMessaging.Count() > 0)
+            {
+                foreach (EuroCMS.Model.InstantMessaging item in listReadedInstantMessaging)
+                {
+                    if (!listInstantMessaging.Contains(item))
+                    {
+                        listInstantMessaging.Add(item);
+                    }
+                }
+            }
+        }
+
+
+    }
+
+
+
+
+    <!-- Send To Approve Start -->
+    <script type="text/javascript">
+        function OpenMessage(id) {
+            $.ajax({
+                url: "/cms/InstantMessage/Detail",
+                type: "POST",
+                data: JSON.stringify({ 'id': id }), //{"id": id},
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    if (data != undefined) {
+                        if (data != null) {
+                            if (data.IsUnRead == "1") {
+                                var unReadMessageCount = $("#instantUnReadMessageCount").text();
+                                unReadMessageCount = unReadMessageCount > 0 ? unReadMessageCount - 1 : unReadMessageCount;
+                                $("#instantUnReadMessageCount").text(unReadMessageCount);
+                                if ($("#instantMessage" + data.ID).length > 0) {
+                                    $("#instantMessage" + data.ID).removeAttr("class");
+                                }
+                            }
+                            var createDate = new Date(parseInt(data.CreateDate.replace("/Date(", "").replace(")/", "")));
+                            var strCreateDate = createDate.toLocaleDateString() + " " + createDate.getHours().toString() + ":" + createDate.getMinutes().toString() + ":" + createDate.getSeconds().toString();
+                            $("#messageDetailFromUserName").text(data.FromUserFullName == "" ? "User Name Not Found" : data.FromUserFullName);
+                            $("#messageDetailDate").text(strCreateDate);
+                            $("#messageDetailSubject").text("New " + data.Subject);
+                            $("#messageDetailContentName").text(data.ContentName == "" ? "Content Name Not Found" : data.ContentName);
+                            $("#messageDetailMessage").text(data.Message == "" ? "Message Not Found" : data.Message);
+                            $("#messageDetailRequestRevisionURL").removeAttr("href");
+                            $("#messageDetailRequestRevisionURL").attr("href", data.ContentRequestRevisionURL);
+                            $("#messageDetailLiveURL").removeAttr("href");
+                            $("#messageDetailLiveURL").attr("href", data.ContentLiveURL);
+                            $("#sendToApproveIncoming").modal("show");
+                        }
+
+                    }
+
+                },
+                error: function (error) {
+                    alert("hata");
+                }
+            });
+        }
+
+    </script>
+    <div id="sendToApproveIncoming" class="modal hide" tabindex="-1" data-width="760">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+            <h3>Message Detail</h3>
+        </div>
+        <div class="modal-body">
+            <div class="row-fluid">
+                <div class="control-group">
+                    <label class="control-label" style="float: left; width: 150px;" for="user">FROM:</label>
+                    <div class="controls">
+                        <span id="messageDetailFromUserName"></span>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" style="float: left; width: 150px;" for="date">DATE:</label>
+                    <div class="controls">
+                        <span id="messageDetailDate"></span>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" style="float: left; width: 150px;" for="user">SUBJECT:</label>
+                    <div class="controls">
+                        <span id="messageDetailSubject"></span>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" style="float: left; width: 150px;" for="user">CONTENT NAME:</label>
+                    <div class="controls">
+                        <span id="messageDetailContentName"></span>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" style="float: left; width: 150px;" for="user">MESSAGE:</label>
+                    <div class="controls">
+                        <span id="messageDetailMessage"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <div class="left" style="width:300px;float:left;">
+                <a id="messageDetailRequestRevisionURL" class="btn red" target="_blank" style="float:left; padding:7px;" href="#">Go To Request Revision</a>
+                <a id="messageDetailLiveURL" class="btn green" target="_blank" style="float: right; padding: 7px;" href="#">See Live Version</a>
+            </div>
+            <button type="button" data-dismiss="modal" class="btn">Close</button>
+        </div>
+
+    </div>
+    <!-- Send To Approve End -->
+    <!-- BEGIN HEADER -->
+
+    <div class="header navbar navbar-inverse navbar-fixed-top">
+        <!-- BEGIN TOP NAVIGATION BAR -->
+        <div class="navbar-inner">
+            <div class="container-fluid">
+                <!-- BEGIN LOGO -->
+                <a class="brand" href="@Url.Action("Dashboard", "Home")">
+                    <img src="@Url.Content("~/Content/img/logo.png")" alt="logo" width="90" />
+                </a>
+                <!-- END LOGO -->
+                <!-- BEGIN RESPONSIVE MENU TOGGLER -->
+                <a href="javascript:;" class="btn-navbar collapsed" data-toggle="collapse" data-target=".nav-collapse">
+                    <img src="@Url.Content("~/Content/img/menu-toggler.png")" alt="" />
+                </a>
+                <!-- END RESPONSIVE MENU TOGGLER -->
+                <!-- BEGIN SITE MENU -->
+                @if (ViewBag.SitesMenu != null)
+                {
+                    @Html.Partial("SiteMenu", ViewBag.SitesMenu as IList<EuroCMS.Model.Site>)
+                }
+                <!-- END SITE MENU -->
+
+                <!-- BEGIN TOP NAVIGATION MENU -->
+                <ul class="nav pull-right">
+
+                    <!-- BEGIN INBOX DROPDOWN -->
+                    <li class="dropdown" id="header_inbox_bar">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                            <i class="icon-envelope"></i>
+                            @{
+                                if (unReadMessageCount > 0)
+                                {
+                                    <span id="instantUnReadMessageCount" class="badge">@unReadMessageCount.ToString()</span>
+                                }
+                            }
+                        </a>
+                        <ul class="dropdown-menu extended inbox">
+                            <li>
+                                <p>You have @unReadMessageCount.ToString() new messages</p>
+                            </li>
+                            <li>
+                                <ul class="dropdown-menu-list scroller" style="height:250px">
+                                    @{
+                                        int messageCount = 5;
+                                        messageCount = listInstantMessaging.Count() < 5 ? listInstantMessaging.Count() : 5;
+                                        for (int i = 0; i < messageCount; i++)
+                                        {
+                                            string message = "";
+                                            message = listInstantMessaging[i].Message;
+                                            message = message.Length <= 30 ? message : message.Substring(0, 27).Trim() + "...";
+
+                                            Guid userId = listInstantMessaging[i].From;
+                                            EuroCMS.Model.vAspNetMembershipUser getUser = new EuroCMS.Model.vAspNetMembershipUser();
+                                            getUser = dbContext.vAspNetMembershipUsers.Where(v => v.UserId == userId).FirstOrDefault();
+                                            if (getUser != null)
+                                            {
+                                                var userProfile = System.Web.Profile.ProfileBase.Create(getUser.UserName, false);
+                                                string userFullName = userProfile.GetPropertyValue("System.FullName").ToString().Trim();
+                                                <li>
+                                                    <a href="javascript:;" onclick="OpenMessage(@listInstantMessaging[i].ID)">
+                                                        <span class="subject">
+                                                            <span class="from">@userFullName</span>
+                                                            <span class="time">@listInstantMessaging[i].CreateDate.ToString("dd.MM.yyyy hh:mm")</span>
+                                                        </span>
+                                                        <span class="message">
+                                                            @message
+                                                        </span>
+                                                    </a>
+                                                </li>
+                                            }
+
+                                        }
+                                    }
+                                </ul>
+                            </li>
+                            <li class="external">
+                                <a href="/cms/InstantMessage/Index">See all messages <i class="m-icon-swapright"></i></a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- END INBOX DROPDOWN -->
+                    <!-- BEGIN USER LOGIN DROPDOWN -->
+                    <li class="dropdown user">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                            @if (Request.IsAuthenticated)
+                            {
+
+                                var profile = System.Web.Profile.ProfileBase.Create(User.Identity.Name, true);
+                                if (profile.GetPropertyValue("isResetPassword") != null)
+                                {
+                                    var isResetPassword = profile.GetPropertyValue("isResetPassword");
+                                    string isReset = isResetPassword.ToString();
+                                    if (isReset != null)
+                                    {
+                                        if (isReset.Contains("1"))
+                                        {
+                                            profile.SetPropertyValue("isResetPassword", "");
+                                            profile.Save();
+                                            <input id="hiddenResetPassword" type="hidden" value="1" />
+                                        }
+                                    }
+
+                                    var isLoggedOut = profile.GetPropertyValue("isLoggedOut");
+                                    string loggedOut = isLoggedOut.ToString();
+                                    if (!string.IsNullOrEmpty(loggedOut))
+                                    {
+                                        if (loggedOut.Contains("1"))
+                                        {
+                                            profile.SetPropertyValue("isLoggedOut", "");
+                                            profile.Save();
+                                            <input id="hiddenLoggedOut" type="hidden" value="1" />
+                                        }
+                                    }
+                                }
+                                
+                                EuroCMS.Model.vAspNetMembershipUser getUserInfo = new EuroCMS.Model.vAspNetMembershipUser();
+                                getUserInfo = dbContext.vAspNetMembershipUsers.Where(s => s.UserName == User.Identity.Name).FirstOrDefault();
+                                if (getUserInfo != null)
+                                {
+                                    if (!getUserInfo.IsApproved)
+                                    {
+                                        <input id="hiddenIsApproved" type="hidden" value="1" />
+                                    }
+                                }
+                                
+
+                                var avatar = (byte[])profile.GetPropertyValue("System.Avatar");
+
+                                if (avatar != null)
+                                {
+                                    <img src="data:image/png;base64,@System.Convert.ToBase64String(avatar)" width="24" height="24" />
+                                }
+                                else
+                                {
+                                    <img src="~/Content/img/avatar-small.png" width="24" height="24" />
+                                }
+                                <span class="username">@User.Identity.Name</span>
+                            }
+                            <i class="icon-angle-down"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="@Url.Action("ChangeProfile", "Account")"><i class="icon-user"></i> Change Profile</a></li>
+                            <li>
+                                @using (Html.BeginForm("Logout", "Account"))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <button id="btnLogout" type="submit"><i class="icon-key"></i> Log Out</button>
+                                }
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- END USER LOGIN DROPDOWN -->
+                </ul>
+                <!-- END TOP NAVIGATION MENU -->
+
+                <a onclick="reloadCache();" href="javascript:void(0);" class="btn mini pull-right">
+                    <i class="icon-refresh"></i> Reload Cache
+                </a>
+
+            </div>
+        </div>
+        <!-- END TOP NAVIGATION BAR -->
+    </div>
+    <!-- END HEADER -->
+    <!-- BEGIN CONTAINER -->
+    <div class="page-container">
+        <!-- BEGIN SIDEBAR -->
+        <div class="page-sidebar nav-collapse collapse">
+            <!-- BEGIN SIDEBAR MENU -->
+            @Html.MvcSiteMap().Menu("Menu", false)
+            <!-- END SIDEBAR MENU -->
+        </div>
+        <!-- END SIDEBAR -->
+        <!-- BEGIN PAGE -->
+        <div class="page-content">
+
+            <!-- BEGIN PAGE CONTAINER-->
+            <div class="container-fluid">
+                <!-- BEGIN PAGE HEADER-->
+                <div class="row-fluid">
+                    <div class="span12">
+                        <!-- BEGIN PAGE TITLE & AdminSitemap-->
+
+                        <div class="alert alert-success dn cacheMessages"></div>
+
+                        <h3 class="page-title">
+                            @Html.MvcSiteMap().SiteMapTitle("SitemapTitle") <small></small>
+                        </h3>
+
+                        @Html.MvcSiteMap().SiteMapPath("BreadCrumb")
+                        <!-- END PAGE TITLE & AdminSitemap-->
+                    </div>
+                </div>
+                <!-- END PAGE HEADER-->
+
+                <div id="dashboard">
+                    @if (TempData.ContainsKey("Message") && TempData.ContainsKey("HasError"))
+                    {
+                        <div class="alert alert-error">
+                            <button data-dismiss="alert" class="close"></button>
+                            @Html.Raw(TempData["Message"])
+                        </div>
+                    }
+                    else if (TempData.ContainsKey("Message"))
+                    {
+                        <div class="alert alert-success">
+                            <button data-dismiss="alert" class="close"></button>
+                            @Html.Raw(TempData["Message"])
+                        </div>
+                    }
+                    
+                    @RenderBody()
+
+                </div>
+
+            </div>
+            <!-- END PAGE CONTAINER-->
+        </div>
+        <!-- END PAGE -->
+    </div>
+    <!-- END CONTAINER -->
+    <!-- BEGIN FOOTER -->
+    <div class="footer">
+        <div class="footer-inner">
+            CatCMS v @System.Diagnostics.FileVersionInfo.GetVersionInfo(typeof(EuroCMS.Core.AssemblyResourceProvider).Assembly.Location).ProductVersion (©) @System.Configuration.ConfigurationManager.AppSettings["SinceCMS"].ToString()@System.DateTime.Now.Year.ToString(). All Rights Reserved.<br />
+            Powered by <a href="//www.madebycat.com" target="_blank" class="text-error">Madebycat</a>, member of <a href="//www.relateddigital.com/" target="_blank" class="text-warning">Related Marketing Cloud</a>
+        </div>
+        <div class="footer-tools">
+            <span class="go-top">
+                <i class="icon-angle-up"></i>
+            </span>
+        </div>
+    </div>
+    <!-- END FOOTER -->
+
+    <div class="modalElement"></div>
+
+    <!-- Modal Start-->
+
+    <div id="ajax-modal" class="modal modalBoxes hide" tabindex="-1"></div>
+
+    @RenderSection("ModalSelectArticle", required: false)
+    @RenderSection("EditContent", required: false)
+
+    <!-- Modal End-->
+
+    <script>
+        $(document).ready(function () {
+            App.init(); // initlayout and core plugins
+            UIModals.init(); 
+        });
+    </script>
+    <!-- END JAVASCRIPTS -->
+
+</body>
+<!-- END BODY -->
+</html>

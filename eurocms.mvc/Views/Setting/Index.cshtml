@@ -1,0 +1,7 @@
+﻿@{
+    ViewBag.Title = "Settings";
+}
+ 
+@Html.Partial("Tracing", ViewData["Tracing"] as System.Web.Configuration.TraceSection)
+
+@Html.Partial("Mail", ViewData["Mail"] as System.Net.Configuration.SmtpSection)

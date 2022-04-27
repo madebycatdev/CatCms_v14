@@ -1,0 +1,298 @@
+﻿@model EuroCMS.Admin.Models.PortletPropertyView
+
+@{
+    ViewBag.Title = "PortletProperties";
+    Layout = null;
+}
+<script type="text/javascript" charset="utf-8">
+    $(document).ready(function () {
+        $(".chosen-select").chosen({
+            width: "100%",
+            allow_single_deselect: true
+        })
+    })
+</script>
+@using (Html.BeginForm("Properties", "Portlet", new { }, FormMethod.Post, new { @class = "form-horizontal", @id = "pProperties" }))
+{
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+        <h3>Portlet Properties:</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row-fluid">
+            <div class="control-group">
+                <label class="control-label" for="inpZoneID">Zone Name:</label>
+                <div class="controls">
+                    @Html.DropDownList("zone_id", ViewBag.Zones as List<SelectListItem>, new { @class = "m-wrap span12 chosen-select" })
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inpItemCount">Item Count:</label>
+                <div class="controls">
+                    <select class="chosen-select" name="inpItemCount" id="inpItemCount">
+                        <option value="-365" @(Model.ItemCount == -365 ? " selected" : "")>Last 1 Year</option>
+                        <option value="-180" @(Model.ItemCount == -180 ? " selected" : "")>Last 6 Month</option>
+                        <option value="-90" @(Model.ItemCount == -90 ? " selected" : "")>Last 3 Month</option>
+                        <option value="-60" @(Model.ItemCount == -60 ? " selected" : "")>Last 2 Month</option>
+                        <option value="-30" @(Model.ItemCount == -30 ? " selected" : "")>Last Month</option>
+                        <option value="-14" @(Model.ItemCount == -14 ? " selected" : "")>Last 2 Week</option>
+                        <option value="-7" @(Model.ItemCount == -7 ? " selected" : "")>Last Week</option>
+                        <option value="0" @(Model.ItemCount == 0 ? " selected" : "")>0 [Unlimited]</option>
+                        <option value="1" @(Model.ItemCount == 1 ? " selected" : "")>1</option>
+                        <option value="2" @(Model.ItemCount == 2 ? " selected" : "")>2</option>
+                        <option value="3" @(Model.ItemCount == 3 ? " selected" : "")>3</option>
+                        <option value="4" @(Model.ItemCount == 4 ? " selected" : "")>4</option>
+                        <option value="5" @(Model.ItemCount == 5 ? " selected" : "")>5</option>
+                        <option value="6" @(Model.ItemCount == 6 ? " selected" : "")>6</option>
+                        <option value="7" @(Model.ItemCount == 7 ? " selected" : "")>7</option>
+                        <option value="8" @(Model.ItemCount == 8 ? " selected" : "")>8</option>
+                        <option value="9" @(Model.ItemCount == 9 ? " selected" : "")>9</option>
+                        <option value="10" @(Model.ItemCount == 10 ? " selected" : "")>10</option>
+                        <option value="11" @(Model.ItemCount == 11 ? " selected" : "")>11</option>
+                        <option value="12" @(Model.ItemCount == 12 ? " selected" : "")>12</option>
+                        <option value="13" @(Model.ItemCount == 13 ? " selected" : "")>13</option>
+                        <option value="14" @(Model.ItemCount == 14 ? " selected" : "")>14</option>
+                        <option value="15" @(Model.ItemCount == 15 ? " selected" : "")>15</option>
+                        <option value="16" @(Model.ItemCount == 16 ? " selected" : "")>16</option>
+                        <option value="17" @(Model.ItemCount == 17 ? " selected" : "")>17</option>
+                        <option value="18" @(Model.ItemCount == 18 ? " selected" : "")>18</option>
+                        <option value="19" @(Model.ItemCount == 19 ? " selected" : "")>19</option>
+                        <option value="20" @(Model.ItemCount == 21 ? " selected" : "")>20</option>
+                        <option value="21" @(Model.ItemCount == 21 ? " selected" : "")>21</option>
+                        <option value="22" @(Model.ItemCount == 22 ? " selected" : "")>22</option>
+                        <option value="23" @(Model.ItemCount == 23 ? " selected" : "")>23</option>
+                        <option value="24" @(Model.ItemCount == 24 ? " selected" : "")>24</option>
+                        <option value="25" @(Model.ItemCount == 25 ? " selected" : "")>25</option>
+                        <option value="26" @(Model.ItemCount == 26 ? " selected" : "")>26</option>
+                        <option value="27" @(Model.ItemCount == 27 ? " selected" : "")>27</option>
+                        <option value="28" @(Model.ItemCount == 28 ? " selected" : "")>28</option>
+                        <option value="29" @(Model.ItemCount == 29 ? " selected" : "")>29</option>
+                        <option value="30" @(Model.ItemCount == 30 ? " selected" : "")>30</option>
+                        <option value="31" @(Model.ItemCount == 31 ? " selected" : "")>31</option>
+                        <option value="32" @(Model.ItemCount == 32 ? " selected" : "")>32</option>
+                        <option value="33" @(Model.ItemCount == 33 ? " selected" : "")>33</option>
+                        <option value="34" @(Model.ItemCount == 34 ? " selected" : "")>34</option>
+                        <option value="35" @(Model.ItemCount == 35 ? " selected" : "")>35</option>
+                        <option value="36" @(Model.ItemCount == 36 ? " selected" : "")>36</option>
+                        <option value="37" @(Model.ItemCount == 37 ? " selected" : "")>37</option>
+                        <option value="38" @(Model.ItemCount == 38 ? " selected" : "")>38</option>
+                        <option value="39" @(Model.ItemCount == 39 ? " selected" : "")>39</option>
+                        <option value="40" @(Model.ItemCount == 40 ? " selected" : "")>40</option>
+                        <option value="41" @(Model.ItemCount == 41 ? " selected" : "")>41</option>
+                        <option value="42" @(Model.ItemCount == 42 ? " selected" : "")>42</option>
+                        <option value="43" @(Model.ItemCount == 43 ? " selected" : "")>43</option>
+                        <option value="44" @(Model.ItemCount == 44 ? " selected" : "")>44</option>
+                        <option value="45" @(Model.ItemCount == 45 ? " selected" : "")>45</option>
+                        <option value="46" @(Model.ItemCount == 46 ? " selected" : "")>46</option>
+                        <option value="47" @(Model.ItemCount == 47 ? " selected" : "")>47</option>
+                        <option value="48" @(Model.ItemCount == 48 ? " selected" : "")>48</option>
+                        <option value="49" @(Model.ItemCount == 49 ? " selected" : "")>49</option>
+                        <option value="50" @(Model.ItemCount == 50 ? " selected" : "")>50</option>
+                    </select>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inpOrderID">Item Ordering:</label>
+                <div class="controls">
+                    <select class="chosen-select" name="inpOrderID" id="inpOrderID">
+                        <option value="0" @(Model.ItemOrdering == 0 ? " selected" : "")>Article Start Date ASC</option>
+                        <option value="14" @(Model.ItemOrdering == 14 ? " selected" : "")>Article Start Date DESC</option>
+                        <option value="15" @(Model.ItemOrdering == 15 ? " selected" : "")>Article Create Date ASC</option>
+                        <option value="16" @(Model.ItemOrdering == 16 ? " selected" : "")>Article Create Date DESC</option>
+                        <option value="1" @(Model.ItemOrdering == 1 ? " selected" : "")>Article Last Update</option>
+                        <option value="2" @(Model.ItemOrdering == 2 ? " selected" : "")>Article Headline</option>
+                        <option value="3" @(Model.ItemOrdering == 3 ? " selected" : "")>Article Order Asc</option>
+                        <option value="11" @(Model.ItemOrdering == 11 ? " selected" : "")>Article Order Desc</option>
+                        <option value="4" @(Model.ItemOrdering == 4 ? " selected" : "")>Article Custom Date 1 DESC</option>
+                        <option value="12" @(Model.ItemOrdering == 12 ? " selected" : "")>Article Custom Date 1 ASC</option>
+                        <option value="5" @(Model.ItemOrdering == 5 ? " selected" : "")>Article Custom Date 2 DESC</option>
+                        <option value="13" @(Model.ItemOrdering == 13 ? " selected" : "")>Article Custom Date 2 ASC</option>
+                        <option value="17" @(Model.ItemOrdering == 17 ? " selected" : "")>Article Custom 1 ASC</option>
+                        <option value="18" @(Model.ItemOrdering == 18 ? " selected" : "")>Article Custom 1 DESC</option>
+                        <option value="19" @(Model.ItemOrdering == 19 ? " selected" : "")>Article Custom 2 ASC</option>
+                        <option value="20" @(Model.ItemOrdering == 20 ? " selected" : "")>Article Custom 2 DESC</option>
+                        <option value="21" @(Model.ItemOrdering == 21 ? " selected" : "")>Article Custom 3 ASC</option>
+                        <option value="22" @(Model.ItemOrdering == 22 ? " selected" : "")>Article Custom 3 DESC</option>
+                        <option value="23" @(Model.ItemOrdering == 23 ? " selected" : "")>Article Custom 4 ASC</option>
+                        <option value="24" @(Model.ItemOrdering == 24 ? " selected" : "")>Article Custom 4 DESC</option>
+                        <option value="25" @(Model.ItemOrdering == 25 ? " selected" : "")>Article Custom 5 ASC</option>
+                        <option value="26" @(Model.ItemOrdering == 26 ? " selected" : "")>Article Custom 5 DESC</option>
+                        <option value="6" @(Model.ItemOrdering == 6 ? " selected" : "")>Article Custom Flag 1</option>
+                        <option value="7" @(Model.ItemOrdering == 7 ? " selected" : "")>Article Custom Flag 2</option>
+                        <option value="8" @(Model.ItemOrdering == 8 ? " selected" : "")>Article Custom Flag 3</option>
+                        <option value="9" @(Model.ItemOrdering == 9 ? " selected" : "")>Article Custom Flag 4</option>
+                        <option value="10" @(Model.ItemOrdering == 10 ? " selected" : "")>Article Custom Flag 5</option>
+                    </select>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inpHeader">Portlet Header:</label>
+                <div class="controls">
+                    <input class="m-wrap span12" type="text" name="inpHeader" id="inpHeader" size="60" maxlength="100" value="@Model.PortletHeader" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inpClass">Class Name:</label>
+                <div class="controls">
+                    <input class="m-wrap span12" type="text" name="inpClass" id="inpClass" size="60" maxlength="100" value="@Model.ClassName" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inpContainer">Container Tag:</label>
+                <div class="controls">
+                    <input class="m-wrap span12" type="text" name="inpContainer" id="inpContainer" size="60" maxlength="100" value="@(!string.IsNullOrEmpty(Model.ContainerTag) ? Model.ContainerTag : "NA")" /><br />
+                    <span class="smallElement">Default: div, use NA for non-container tag</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inpInclude">Display Article IDs:</label>
+                <div class="controls">
+                    <input type="hidden" name="inpInclude" id="inpInclude" value="@Model.IncludeArticles" />
+                    @Html.DropDownList("include_articles", ViewBag.IncludeArticles as List<SelectListItem>, new { @size = "4", @style = "height:120px; width:99%; overflow:hidden; visibility:visible;" })
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Actions</label>
+                <div class="controls">
+                    <a onclick="openModal('includeArticle','#pProperties',this)" data-toggle="modal" href="#selectArticle" title="Add new article ID" class="changeButton btn blue"><i class=" icon-plus"></i> Add</a>
+                    <a onclick="return removeAZL('include_articles'),false;" href="#" title="Remove selected article ID" class="btn blue"><i class="icon-trash"></i> Remove</a>
+                    <a onclick="return MoveSelectOptionUp('include_articles'),false;" href="#" title="Move selected article up" class="btn blue"><i class="icon-arrow-up"></i> Move Up</a>
+                    <a onclick="return MoveSelectOptionDown('include_articles'),false;" href="#" title="Move selected article down" class="btn blue"><i class="icon-arrow-down"></i> Move Down</a>
+                    <span class="smallElement">Zone ID - Article ID # with comma (Disables zone selection, item count, ordering)</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="exclude_articles">Exclude Article IDs:</label>
+                <div class="controls">
+                    <input type="hidden" name="inpExclude" id="inpExclude" value="@Model.ExcludeArticles" />
+                    @Html.DropDownList("exclude_articles", ViewBag.ExcludeArticles as List<SelectListItem>, new { @size = "4", @style = "height:120px; width:99%; overflow:hidden; visibility:visible;" })
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Action:</label>
+                <div class="controls">
+                    <a onclick="openModal('excludeArticle','#pProperties',this)" data-toggle="modal" href="#selectArticle" title="Add new article ID" class="changeButton btn blue"><i class=" icon-plus"></i> Add</a>
+                    <a onclick="return removeAZL('exclude_articles'),false;" href="#" title="Remove selected article ID" class="btn blue"><i class="icon-trash"></i> Remove</a><br />
+                    <span class="smallElement">Article ID # with comma</span>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="inpExSelf">Exclude Self:</label>
+                <div class="controls">
+                    <div class="switch" data-on="success" data-off="default">
+                        <input name="inpExSelf"
+                               data-act="1"
+                               data-psf="0"
+                               value="@(Model.ExcludeSelf == 1 ? "1" : "0")"
+                               type="checkbox"
+                               class="toggle success-toggle-button"
+                               id="inpExSelf"
+                               @(Model.ExcludeSelf == 1 ? "checked" : "") />
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="control-group">
+                <h4>Pager Properties</h4>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inpPagerClass">Class Name:</label>
+                <div class="controls">
+                    <input class="m-wrap span12" type="text" name="inpPagerClass" id="inpPagerClass" size="60" maxlength="100" value="@Model.PagerClass" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inpPagerCount">Pager Count:</label>
+                <div class="controls">
+                    <select class="chosen-select" name="inpPagerCount" id="inpPagerCount">
+                        <option value="0" @(Model.PagerCount == 0 ? " selected" : "")>0 [Unlimited]</option>
+                        <option value="1" @(Model.PagerCount == 1 ? " selected" : "")>1</option>
+                        <option value="2" @(Model.PagerCount == 2 ? " selected" : "")>2</option>
+                        <option value="3" @(Model.PagerCount == 3 ? " selected" : "")>3</option>
+                        <option value="4" @(Model.PagerCount == 4 ? " selected" : "")>4</option>
+                        <option value="5" @(Model.PagerCount == 5 ? " selected" : "")>5</option>
+                        <option value="6" @(Model.PagerCount == 6 ? " selected" : "")>6</option>
+                        <option value="7" @(Model.PagerCount == 7 ? " selected" : "")>7</option>
+                        <option value="8" @(Model.PagerCount == 8 ? " selected" : "")>8</option>
+                        <option value="9" @(Model.PagerCount == 9 ? " selected" : "")>9</option>
+                        <option value="10" @(Model.PagerCount == 10 ? " selected" : "")>10</option>
+                        <option value="11" @(Model.PagerCount == 11 ? " selected" : "")>11</option>
+                        <option value="12" @(Model.PagerCount == 12 ? " selected" : "")>12</option>
+                        <option value="13" @(Model.PagerCount == 13 ? " selected" : "")>13</option>
+                        <option value="14" @(Model.PagerCount == 14 ? " selected" : "")>14</option>
+                        <option value="15" @(Model.PagerCount == 15 ? " selected" : "")>15</option>
+                        <option value="16" @(Model.PagerCount == 16 ? " selected" : "")>16</option>
+                        <option value="17" @(Model.PagerCount == 17 ? " selected" : "")>17</option>
+                        <option value="18" @(Model.PagerCount == 18 ? " selected" : "")>18</option>
+                        <option value="19" @(Model.PagerCount == 19 ? " selected" : "")>19</option>
+                        <option value="20" @(Model.PagerCount == 20 ? " selected" : "")>20</option>
+                        <option value="21" @(Model.PagerCount == 21 ? " selected" : "")>21</option>
+                        <option value="22" @(Model.PagerCount == 21 ? " selected" : "")>22</option>
+                        <option value="23" @(Model.PagerCount == 23 ? " selected" : "")>23</option>
+                        <option value="24" @(Model.PagerCount == 24 ? " selected" : "")>24</option>
+                        <option value="25" @(Model.PagerCount == 25 ? " selected" : "")>25</option>
+                        <option value="26" @(Model.PagerCount == 26 ? " selected" : "")>26</option>
+                        <option value="27" @(Model.PagerCount == 27 ? " selected" : "")>27</option>
+                        <option value="28" @(Model.PagerCount == 28 ? " selected" : "")>28</option>
+                        <option value="29" @(Model.PagerCount == 29 ? " selected" : "")>29</option>
+                        <option value="30" @(Model.PagerCount == 30 ? " selected" : "")>30</option>
+                        <option value="31" @(Model.PagerCount == 31 ? " selected" : "")>31</option>
+                        <option value="32" @(Model.PagerCount == 32 ? " selected" : "")>32</option>
+                        <option value="33" @(Model.PagerCount == 33 ? " selected" : "")>33</option>
+                        <option value="34" @(Model.PagerCount == 34 ? " selected" : "")>34</option>
+                        <option value="35" @(Model.PagerCount == 35 ? " selected" : "")>35</option>
+                        <option value="36" @(Model.PagerCount == 36 ? " selected" : "")>36</option>
+                        <option value="37" @(Model.PagerCount == 37 ? " selected" : "")>37</option>
+                        <option value="38" @(Model.PagerCount == 39 ? " selected" : "")>38</option>
+                        <option value="39" @(Model.PagerCount == 39 ? " selected" : "")>39</option>
+                        <option value="40" @(Model.PagerCount == 40 ? " selected" : "")>40</option>
+                        <option value="41" @(Model.PagerCount == 41 ? " selected" : "")>41</option>
+                        <option value="42" @(Model.PagerCount == 42 ? " selected" : "")>42</option>
+                        <option value="43" @(Model.PagerCount == 43 ? " selected" : "")>43</option>
+                        <option value="44" @(Model.PagerCount == 44 ? " selected" : "")>44</option>
+                        <option value="45" @(Model.PagerCount == 45 ? " selected" : "")>45</option>
+                        <option value="46" @(Model.PagerCount == 46 ? " selected" : "")>46</option>
+                        <option value="47" @(Model.PagerCount == 47 ? " selected" : "")>47</option>
+                        <option value="48" @(Model.PagerCount == 48 ? " selected" : "")>48</option>
+                        <option value="49" @(Model.PagerCount == 49 ? " selected" : "")>49</option>
+                        <option value="50" @(Model.PagerCount == 50 ? " selected" : "")>50</option>
+                    </select>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inpPagerLocation">Pager Position:</label>
+                <div class="controls">
+                    <select name="inpPagerLocation" id="inpPagerLocation">
+                        <option value="0" @(Model.PagerPosition == 0 ? " selected" : "")>Top</option>
+                        <option value="1" @(Model.PagerPosition == 1 ? " selected" : "")>Bottom</option>
+                        <option value="2" @(Model.PagerPosition == 2 ? " selected" : "")>Both</option>
+                    </select>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inpPagerHeader">Pager Header:</label>
+                <div class="controls">
+                    <input class="m-wrap span12" type="text" name="inpPagerHeader" id="inpPagerHeader" size="60" maxlength="255" value="@Model.PagerHeader" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inpPrevNext">Previos - Next Caption:</label>
+                <div class="controls">
+                    <input class="m-wrap span12" type="text" name="inpPrevNext" id="inpPrevNext" size="60" maxlength="255" value="@Model.PrevNextCaption" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inpSeperator">Item Seperator:</label>
+                <div class="controls">
+                    <input class="m-wrap span12" type="text" name="inpSeperator" id="inpSeperator" size="60" maxlength="255" value="@Model.ItemSeperator" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" type="button">Close</button>
+        <button onclick="applyPortlet(this),false;" id="saveClose" class="btn blue" type="button">Save & Close</button>
+    </div>
+}

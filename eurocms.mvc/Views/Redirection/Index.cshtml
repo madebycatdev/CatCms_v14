@@ -1,0 +1,142 @@
+﻿@model  List<EuroCMS.Model.PageRedirection> 
+
+<!-- BEGIN SAMPLE FORM PORTLET-->
+<p>
+
+
+    @*
+        <a class="btn blue" onclick="openAcc('Create New Redirection')">Create New Redirection <i class="icon-circle-arrow-right"></i></a>
+    *@
+</p>
+<div class="row-fluid">
+    <div class="span12" title="Create New Redirection">
+        <div class="portlet box grey">
+            <div class="portlet-title">
+                <div class="caption"><i class="icon-edit"></i>Create New Redirection</div>
+            </div>
+            <div class="portlet-body form">
+                @using (Html.BeginForm("Create", "Redirection", FormMethod.Post, new { @class = "form-horizontal", @id = "redirectionCreate" }))
+                {
+                    @Html.ValidationSummary(true)
+                    @Html.AntiForgeryToken()
+                    <h3>Source</h3>
+                    <div class="control-group">
+                        <label class="control-label" for="redirectRequestProtocol">Protocol:</label>
+                        <div class="controls">
+                            <select class="span2 m-wrap" name="redirectRequestProtocol" id="redirectRequestProtocol" data-placeholder="Choose a Category" tabindex="1" required>
+                                <option value="">Select...</option>
+                                <option value="http">http</option>
+                                <option value="https">https</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="redirectRequestDomain">Domain:</label>
+                        <div class="controls">
+                            @Html.DropDownList("redirectRequestDomain", ViewBag.Domains as List<SelectListItem>, "Please Select", new { @class = "m-wrap medium", @id = "redirectRequestProtocol", @placeholder = "Choose a Category", @tabindex = "2", @required = "required" })
+                            <select class="span3 m-wrap" name="redirectRequestType" id="redirectRequestType" data-placeholder="Choose a Category" tabindex="2" required>
+                                <option value="">Select...</option>
+                                <option value="readonly" data-attr="readonly">Domain</option>
+                                <option value="readonly" data-attr="readonly">Domain with Mirroring</option>
+                                <option value="required" data-attr="required">Url</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="redirectRequestUrl">Url:</label>
+                        <div class="controls">
+                            <input class="m-wrap span6" type="text" name="redirectRequestUrl" id="redirectRequestUrl" value="" tabindex="6" readonly />
+                        </div>
+                    </div>
+                    <h3>Target</h3>
+                    <div class="control-group">
+                        <label class="control-label" for="redirectTargetProtocol">Protocol:</label>
+                        <div class="controls">
+                            <select class="span2 m-wrap" name="redirectTargetProtocol" id="redirectTargetProtocol" data-placeholder="Choose a Category" tabindex="7" required>
+                                <option value="">Select...</option>
+                                <option value="http">http</option>
+                                <option value="https">https</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="redirectTargetDomain">Domain:</label>
+                        <div class="controls">
+                            <input class="span6 m-wrap" name="redirectTargetDomain" id="redirectTargetDomain" data-placeholder="Choose a Category" tabindex="8" required />
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="redirectTargetUrl">Url:</label>
+                        <div class="controls">
+                            <input class="m-wrap span6" type="text" name="redirectTargetUrl" id="redirectTargetUrl" value="" tabindex="9" required readonly />
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="redirectType">Redirect Type:</label>
+                        <div class="controls">
+                            <select class="span3 m-wrap" name="redirectType" id="redirectType" data-placeholder="Choose a Category" tabindex="10" required>
+                                <option value="">Select...</option>
+                                <option value="301">Permamnent (301)</option>
+                                <option value="302">Temporary (302)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button class="btn" type="button"><i class="icon-remove"></i> Cancel</button>
+                        <button class="btn green" type="submit"><i class="icon-save"></i> Save</button>
+                    </div>
+                }
+                <!-- END FORM-->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- END SAMPLE FORM PORTLET-->
+<!-- BEGIN SAMPLE TABLE PORTLET-->
+
+<a href="#domainEdit" data-toggle="modal" id="modalOpen" class="hide">Edit Redirection</a>
+<div class="no-more-tables">
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Source</th>
+                <th>Target</th>
+                <th>Created</th>
+                <th>Updated</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Count > 0)
+            {
+                foreach (var redirection in Model)
+                {
+                    <tr>
+                        <td data-title="#">@redirection.ID</td>
+                        <td data-title="Redirection(s) From">@redirection.RedirectFrom</td>
+                        <td data-title="Redirection To">@redirection.RedirectTo</td>
+                        <td data-title="Created">@redirection.CreateDate.ToString("dd.MM.yyyy hh:mm:ss") by @EuroCMS.Core.CmsHelper.GetUserName((Guid)redirection.CreatedBy)</td>
+                        <td data-title="Updated">@redirection.UpdateDate.ToString("dd.MM.yyyy hh:mm:ss") by @EuroCMS.Core.CmsHelper.GetUserName((Guid)redirection.UpdatedBy)</td>
+                        <td data-title="Actions">
+                            <a href="@Url.Action("Edit", new { id= @redirection.ID })" class="btn icn-only" onclick="editObject(this); return false;" title="Edit Redirection"><i class="icon-pencil"></i></a>
+                            @using (Html.BeginForm("Delete", "Redirection", new { id = @redirection.ID }))
+                            {
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn icn-only red" data-message="Are you sure want to remove this Redirection?" onclick="return deleteObject(this);"><i class="icon-trash"></i></button>
+                            }
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr><td colspan="4">No Result Found!</td></tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- END SAMPLE TABLE PORTLET-->
+@section ModalSelectArticle { @Html.Partial("ModalSelectArticle") }

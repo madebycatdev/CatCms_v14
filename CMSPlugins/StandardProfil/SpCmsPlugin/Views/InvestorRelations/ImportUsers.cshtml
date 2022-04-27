@@ -1,0 +1,268 @@
+﻿@model IList<EuroCMS.CMSPlugin.StandardProfil.Models.ImportInvestorUser>
+@{
+    ViewBag.Title = "Investor Relations Users = Import";
+}
+<style>
+    .action-btn {
+        position: relative;
+    }
+
+        .action-btn:before {
+            width: 100%;
+            height: 100%;
+            display: block;
+            content: "";
+            opacity: 0;
+            pointer-events: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            transition: all .3s ease-in-out;
+        }
+
+        .action-btn:after {
+            width: 14px;
+            height: 14px;
+            display: block;
+            content: "";
+            opacity: 0;
+            pointer-events: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            border-radius: 50%;
+            border: 2px solid #0d638f;
+            border-color: #0d638f transparent #0d638f transparent;
+            transition: all .3s ease-in-out;
+            animation: lds-dual-ring 1.2s linear infinite;
+        }
+
+        .action-btn.loading {
+            color: transparent;
+        }
+
+            .action-btn.loading:before,
+            .action-btn.loading:after {
+                opacity: 1;
+            }
+
+    @@keyframes lds-dual-ring {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $("#GroupName").change(function () {
+            window.location.href = "/cms/investorrelations/importusers?groupname=" + $(this).val();
+        });
+
+        $(".changeStatusSelectedUsers").click(function (e) {
+
+            var el = $(this);
+            $(this).addClass('loading');
+            var status = $(this).val();
+            var ids;
+            $('input[name=changeStatus]').each(function () {
+                if ($(this).is(':checked')) { ids += "," + $(this).val(); }
+            });
+
+
+            $.post("/cms/InvestorRelations/ChangeImportUsersStatus", { status: status, ids: ids }, function (result) {
+                $(this).removeClass('loading');
+                var jsonResult = jQuery.parseJSON(result);
+                alert("Message : " + jsonResult.message);
+                location.reload();
+                //if (jsonResult.success == true) {
+                //    $(".alert-success").show();
+                //    $(".alert-success").append(jsonResult.message);
+                //}
+                //else {
+                //    $(".alert-error").show();
+                //    $(".alert-error").append(jsonResult.message);
+                //}
+
+                //$(this).removeAttr("disabled");
+                //window.setTimeout(function () { location.reload() }, 3000);
+            });
+        });
+
+
+        $(".action-btn").click(function (e) {
+            //$(this).attr("disabled", "disabled");
+            //var href = $(this).data("href");
+            //$.post(href, {}, function (result) {
+            //    var jsonResult = jQuery.parseJSON(result);
+            //    if (jsonResult.success == true) {
+            //        $(".alert-success").show();
+            //        $(".alert-success").append(jsonResult.message);
+            //    }
+            //    else {
+            //        $(".alert-error").show();
+            //        $(".alert-error").append(jsonResult.message);
+            //    }
+
+            //    $(this).removeAttr("disabled");
+            //    window.setTimeout(function () { location.reload() }, 3000);
+            //});
+
+            $(".action-btn").click(function (e) {
+                var el = $(this);
+                var href = el.data("href");
+                el.addClass('loading');
+                $.post(href, {}, function (result) {
+                    el.removeClass('loading');
+                    var jsonResult = jQuery.parseJSON(result);
+                    alert("Message : " + jsonResult.message);
+                    location.reload();
+                  
+                    //if (jsonResult.success == true) {
+                    //    $(".alert-success").show();
+                    //    $(".alert-success").append(jsonResult.message);
+                    //}
+                    //else {
+                    //    $(".alert-error").show();
+                    //    $(".alert-error").append(jsonResult.message);
+                    //}
+                });
+
+            });
+
+        });
+
+    });
+</script>
+
+<div class="portlet box grey">
+    <div class="portlet-title">
+        <div class="caption"><i class="icon-reorder"></i>Filter Investor Relations Users</div>
+    </div>
+    <div class="portlet-body">
+
+        <div class="alert alert-error" style="display:none;">
+            <button data-dismiss="alert" class="close"></button>
+
+        </div>
+        @using (Html.BeginForm("ImportUsers", "InvestorRelations", FormMethod.Post, new { @class = "form-horizontal", @id = "zEdit", enctype = "multipart/form-data" }))
+        {
+            @Html.ValidationSummary(true)
+            <div class="control-group">
+                <label class="control-label" for="GroupName">Older Import File Groups:</label>
+                <div class="controls">
+                    <select id="GroupName">
+                        @if (ViewBag.GroupNames != null)
+                        {
+                            foreach (var item in ViewBag.GroupNames)
+                            {
+                                <option value="@item" @(ViewBag.GroupName == item ? "selected" : "")>@item</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <input type="file" id="file" name="file" />
+                <button class="export-btn">Import New User List</button>
+            </div>
+
+        }
+        <div class="form-actions">
+            <button class="changeStatusSelectedUsers" value="1">Approve Selected Users</button>
+            <button class="changeStatusSelectedUsers" value="-1">Reject Selected Users</button>
+        </div>
+    </div>
+</div>
+
+<div>
+    <p><b>Number of Users : </b> @Model.Count</p>
+    <div class="no-more-tables">
+        <table class="table dataTable table-striped table-hover">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th style="width:15%">Email</th>
+                    <th>Name</th>
+                    <th>Lastname</th>
+                    <th style="width:15%">Company Name</th>
+                    <th>User Status</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Count > 0)
+                {
+                    foreach (var user in Model)
+                    {
+                        <tr>
+                            <td><input type="checkbox" id="changeStatus-@user.Id" class="changeStatus" name="changeStatus" value="@user.Id" /></td>
+                            <td data-title="Email">@user.Email</td>
+                            <td data-title="Name">@user.Name</td>
+                            <td data-title="Surname">@user.Surname</td>
+                            <td data-title="CompanyName">@user.CompanyName</td>
+
+                            @switch (user.Status)
+                            {
+                                case 1:
+                                    <td data-title="Status" style="color:green;">
+                                        Approved
+                                    </td>
+                                    <td>
+                                        <a href="javascript:;" data-href="/cms/InvestorRelations/ChangeImportUserStatus?status=-1&id=@user.Id" class="reject action-btn" style="font-weight:bold;">Reject</a>
+                                    </td>
+                                    <td>
+                                        <a href="javascript:;" data-href="/cms/InvestorRelations/ChangeImportUserStatus?status=-2&id=@user.Id" class="delete action-btn" style="font-weight:bold;">Delete</a>
+                                    </td>
+                                    break;
+                                case -1:
+                                    <td data-title="Status" style="color:red;">
+                                        Rejected
+                                    </td>
+                                    <td>
+                                        <a href="javascript:;" data-href="/cms/InvestorRelations/ChangeImportUserStatus?status=1&id=@user.Id" class="approve action-btn" style="font-weight:bold;">Approve</a>
+                                    </td>
+                                    <td>
+                                        <a href="javascript:;" data-href="/cms/InvestorRelations/ChangeImportUserStatus?status=-2&id=@user.Id" class="delete action-btn" style="font-weight:bold;">Delete</a>
+                                    </td>
+                                    break;
+                                case 0:
+                                    <td data-title="Status" style="color: orange;">
+                                        Waiting
+                                    </td>
+                                    <td>
+                                        <a href="javascript:;" data-href="/cms/InvestorRelations/ChangeImportUserStatus?status=1&id=@user.Id" class="approve action-btn" style="font-weight:bold;">Approve</a>
+                                    </td>
+                                    <td>
+                                        <a href="javascript:;" data-href="/cms/InvestorRelations/ChangeImportUserStatus?status=-1&id=@user.Id" class="reject action-btn" style="font-weight:bold;">Reject</a>
+                                    </td>
+                                    break;
+                            }
+
+
+
+                            @*<td>
+                                    <a href="javascript:;" data-href="/cms/InvestorRelations/SendPassword?id=@user.Id" class="sendPassword action-btn">Send Password</a>
+                                </td>*@
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="5">No Result Found!</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

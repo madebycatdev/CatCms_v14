@@ -1,0 +1,39 @@
+﻿@{
+    
+    Layout = null;
+}
+
+@using (Html.BeginForm("Edit", "Zone", new { id = -1, ForceApprove = true, ReturnUrl = Request.QueryString["ReturnUrl"] }, FormMethod.Post, new { @id = "zCreate" })) 
+ { 
+    @Html.ValidationSummary(true) 
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="zone_group_id" value="@ViewBag.zone_group_id" />
+    <input type="hidden" name="zone_type_id" value="0" /><!-- navigation zone-->
+    <input type="hidden" name="force_approve" value="true" />
+    <input type="hidden" name="rev_name" value="Structure Automaticly Created" />
+    
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+        <h3>Quick Create Zone:</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row-fluid">
+            <div class="control-group">
+                <label class="control-label" for="language_id">Language:<span class="red">*</span></label>
+                <div class="controls">
+                    @Html.DropDownList("LangId", ViewBag.Languages as List<SelectListItem>, "Please Select",new { @class = "span12 required" })
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="zone_name">Zone Name:<span class="red">*</span></label>
+                <div class="controls">
+                    <input type="text" name="zone_name" id="zone_name" class="span12" value="" required />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" data-dismiss="modal" class="btn"><i class="icon-remove"></i> Close</button>
+        <button type="submit" class="btn blue"><i class="icon-save"></i> Save & Close</button>
+    </div>
+ }

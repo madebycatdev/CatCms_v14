@@ -1,0 +1,165 @@
+﻿@model PagedList.IPagedList<EuroCMS.Admin.Models.WebEventLogModel>
+@using PagedList.Mvc;
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('#BeginDate').datetimepicker({
+            dateFormat: 'dd/mm/yy',
+            onClose: function (selectedDate) {
+                $("#EndDate").datepicker("option", "minDate", selectedDate);
+            }
+        });
+
+        $('#EndDate').datetimepicker({
+            dateFormat: 'dd/mm/yy',
+            onClose: function (selectedDate) {
+                $("#BeginDate").datepicker("option", "maxDate", selectedDate);
+            }
+        });
+    });
+</script>
+
+@*<fieldset>
+    <legend>Filter Logs</legend>*@
+ <div class="portlet box grey">
+	<div class="portlet-title">
+		<div class="caption"><i class="icon-reorder"></i>Filter Logs</div>
+	</div>
+	<div class="portlet-body">  
+		@using (Html.BeginForm("Index", "WebEventLog", FormMethod.Get, new { @class = "form-horizontal"}))
+		{
+			<div class="row-fluid">
+				<div class="control-group">
+					
+						<label class="control-label" for="WebEventType">Event Type:</label>
+						<div class="controls">
+							@Html.DropDownList("WebEventType", ViewData["CmsWebEventTypes"] as List<SelectListItem>, Request["WebEventType"], new { @class = "m-wrap span5"})
+						</div>
+				</div>
+				<div class="control-group">				
+						<label class="control-label" for="BeginDate">Begin Date:</label>
+						<div class="controls">
+							@Html.TextBox("BeginDate", ViewData["BeginDate"], new { @class = "m-wrap span5"})
+						</div>
+				</div>
+				<div class="control-group">	
+						<label class="control-label" for="EndDate">End Date:</label>
+						<div class="controls">
+							@Html.TextBox("EndDate", ViewData["EndDate"], new { @class = "m-wrap span5"})
+						</div>
+					
+				</div>
+			</div>
+			<div class="form-actions">
+					<button class="btn" type="submit">Search <i class="icon-search"></i></button>
+				
+			</div>
+		}
+	</div>
+</div>
+     
+@*</fieldset>*@
+
+<div class="row-fluid">
+    @if (Model.Count > 0)
+    {
+        <div class="span12">
+            @*<div class="portlet box grey">
+                <div class="portlet-title">
+                    <div class="caption"><i class="icon-reorder"></i>Web Event Logs</div>
+                </div>
+                <div class="portlet-body">*@
+                    <div class="no-more-tables">
+						<table class="table dataTable table-striped table-hover">
+							<thead>
+								<tr>
+									<th>Time</th>
+								   @* <th>Time UTC</th>*@
+									<th>Type</th>
+									<th>Sequence</th>
+									<th>Occurrence</th>
+									@*<th>Event Code</th>*@
+									@*<th>Detail Code</th>*@
+									<th>Message</th>
+									@*<th>Application Path</th>*@
+									<th>Application Virtual Path</th>
+									@*<th>Machine Name</th>*@
+									@*<th>Request Url</th>*@
+									@*<th>Exception Type</th>*@
+									<th>Details</th>
+								</tr>
+							</thead>
+							<tbody>
+								@if (Model.Count > 0)
+								{
+									foreach (var log in Model)
+									{ 
+									<tr>
+										<td>@log.EventTime.ToString("f")</td>
+										@*<td>@log.EventTimeUtc</td>*@
+										<td>@log.EventType</td>
+										<td>@log.EventSequence</td>
+										<td>@log.EventOccurrence</td>
+										@*<td>@log.EventCode</td>
+										<td>@log.EventDetailCode</td>*@
+										<td>@log.Message</td>
+										@*<td>@log.ApplicationPath</td>*@
+										<td>@log.ApplicationVirtualPath</td>
+										@*<td>@log.MachineName</td>*@
+										@*<td>@log.RequestUrl</td>*@
+										@*<td>@log.ExceptionType</td>*@
+										<td><a title="Details" class="btn icn-only mini logDetail" href="#" onclick="showHide(this); return false;"><i class="icon-sort-up"></i></a></td>
+									</tr>
+									<tr class="hide">
+										<td colspan="7" class="details">
+											<p><b>Event Time UTC:</b> @log.EventTimeUtc
+											<br />
+											<b>Event Code:</b> @log.EventCode
+											<br />
+											<b>Event Detail Code:</b> @log.EventDetailCode
+											<br />
+											<b>Application Path:</b> @log.ApplicationPath
+											<br />
+											<b>Machine Name:</b> @log.MachineName
+											<br />
+											<b>Request Url:</b> @log.RequestUrl
+											<br />
+											<b>Exception Type:</b> @log.ExceptionType
+
+											<pre>@HttpUtility.HtmlDecode(log.Details)</pre>
+											</p>
+											<br />
+											@*<a title="Hide" class="btn icn-only black" href="#" onclick="$(this).parents('tr').hide(); return false;"><i class="m-icon-swapup m-icon-white"></i></a>*@
+										</td>
+									</tr>
+									}
+								}
+								else
+								{
+									<tr>
+										<td colspan="4">No Result Found!</td>
+									</tr>
+								}
+							</tbody>
+						</table>
+					</div>
+				@*</div>
+            </div>*@
+        </div>
+ 
+        @Html.PagedListPager(Model, page => Url.Action("Index",
+                new
+                {
+                    page,
+                    WebEventType=ViewBag.WebEventType,
+                    BeginDate=ViewData["BeginDate"],
+                    EndDate=ViewData["EndDate"]
+                }))
+    }
+    else
+    {
+        <p>No result found.</p>
+    }
+</div>
+

@@ -1,0 +1,9 @@
+﻿@model DiffPlex.DiffBuilder.Model.SideBySideDiffModel
+
+    <div class="span6" id="leftPane">
+            @Html.Partial("DiffPane", Model.OldText)
+    </div>
+    <div class="span5" id="rightPane">
+
+            @Html.Partial("DiffPane", Model.NewText)
+    </div>

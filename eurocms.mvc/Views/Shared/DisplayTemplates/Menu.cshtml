@@ -1,0 +1,36 @@
+﻿@model MvcSiteMapProvider.Web.Html.Models.MenuHelperModel
+@using System.Web.Mvc.Html
+@using MvcSiteMapProvider.Web.Html.Models
+ 
+
+<ul class="page-sidebar-menu">
+    <li>
+		<div class="sidebar-toggler hidden-phone"></div>
+	</li>
+    <li class="space10"></li>
+ 
+    @foreach (var node in Model.Nodes) {
+        if (node.Children.Any()) {
+            <li class="@(node.IsInCurrentPath == true ? "active":"")"> 
+                <a class="open-child" href="javascript:;">
+				    <i class="@node.ImageUrl.Replace("/","")"></i> 
+				    <span class="title">@node.Title</span>
+				    <span class="arrow"></span>
+				</a>
+                 
+                @Html.DisplayFor( m => node.Children, "MenuChild") 
+            </li>
+        }
+        else
+        {
+            <li class="@(node.IsCurrentNode == true ?"active":"")"> 
+                <a class="open-child" href="@node.Url">
+				    <i class="@node.ImageUrl.Replace("/","")"></i> 
+				    <span class="title">@node.Title</span>
+				</a>
+                 
+            </li>
+        }
+    }
+
+</ul>

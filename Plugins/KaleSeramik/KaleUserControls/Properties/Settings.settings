@@ -1,0 +1,9 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="EuroCMS.Plugin.KaleUserControls.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="EuroCMS_Plugin_KaleUserControls_tr_com_kale_digitalkatalogws_KSWebContent" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">https://digitalkatalogws.kale.com.tr/kswebcontent.asmx</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

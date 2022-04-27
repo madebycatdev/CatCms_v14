@@ -1,0 +1,231 @@
+﻿@model List<EuroCMS.Admin.entity.cms_asp_select_article_zones_by_revision_Result>
+    @{
+        var controller = new EuroCMS.Admin.Controllers.ArticleController();
+
+    }
+
+
+    <label class="control-label">Zones:<span class="red">*</span></label>
+    <div class="controls">
+
+        <select class="m-wrap span12 margin-bottom-10 hide" size="7" onclick="onZoneChanged(this)" name="zones1[]" id="zones" multiple="multiple">
+            @if (Model != null && Model.Count > 0)
+            {
+                foreach (var zone in Model)
+                {
+                    <option value="@zone.out_id" ondblclick="gotoObj('zone',@zone.out_id)">@HttpUtility.HtmlDecode(zone.out_name)  (@zone.out_id)</option>
+                }
+
+            }
+        </select>
+
+        <div id="newZones">
+            <select class="chosen-select" onclick="onZoneChanged(this);" data-placeholder="Select a Zone" name="zones[]" id="zone2" multiple required>
+
+                @if (ViewBag.ZoneList != null)
+                {
+                    List<int> listSelectedZones = new List<int>();
+                    listSelectedZones = Model != null ? Model.Select(x => x.out_id).ToList() : listSelectedZones;
+
+                    List<int> listZoneGroup = new List<int>();
+                    List<EuroCMS.Model.Zone> listZones = new List<EuroCMS.Model.Zone>();
+                    listZones = (List<EuroCMS.Model.Zone>)ViewBag.ZoneList;
+                    listZoneGroup = listZones.Select(s => s.ZoneGroupId).Distinct().ToList();
+                    for (int i = 0; i < listZoneGroup.Count; i++)
+                    {
+                        List<EuroCMS.Model.Zone> listZoneByZoneGroup = new List<EuroCMS.Model.Zone>();
+                        listZoneByZoneGroup = listZones.Where(v => v.ZoneGroupId == listZoneGroup[i]).ToList();
+                        @*<optgroup label=@HttpUtility.HtmlDecode(listZoneByZoneGroup.FirstOrDefault().ZoneGroup.Name)>*@
+                        <optgroup label="@listZoneByZoneGroup.FirstOrDefault().ZoneGroup.Site.Name  - @HttpUtility.HtmlDecode(listZoneByZoneGroup.FirstOrDefault().ZoneGroup.Name)">
+                            @foreach (EuroCMS.Model.Zone zone in listZoneByZoneGroup)
+                            {
+                                if (listSelectedZones.Contains(zone.Id))
+                                {
+                                    <option selected="selected" value="@zone.Id">@HttpUtility.HtmlDecode(zone.Name) - @zone.Id</option>
+                                }
+                                else
+                                {
+                                    <option value="@zone.Id">@HttpUtility.HtmlDecode(zone.Name) - @zone.Id</option>
+                                }
+
+                            }
+                        </optgroup>
+                    }
+
+
+                }
+                else
+                {
+                    <option>Boş</option>
+                }
+            </select>
+
+
+
+
+
+        </div>
+
+
+        <div id="az_names">
+            @if (Model != null)
+            {
+                foreach (var zone in Model)
+                {
+                    <input type="hidden" name="az_name_@zone.out_id" value="@HttpUtility.HtmlDecode(zone.out_name)" />
+                }
+            }
+        </div>
+        <a class="btn icn-only margin-bottom-10 hide" href="#selectZone" data-toggle="modal" onclick="openModal('zoneArticle','#aCreate',this)"><i class="icon-plus"></i> Add</a>
+        <a class="btn icn-only margin-bottom-10 hide" href="#" onclick="removeObj('zones'); return false;"><i class="icon-trash"></i> Remove</a>
+        <a class="btn icn-only margin-top-10" href="#" onclick="gotoObj('Zone', selectedzoneid);"><i class="icon-edit"></i> Edit Zone</a>
+        @*<a class="btn icn-only margin-bottom-10" href="#" onclick=""><i class="icon-eye-open"></i> List Zone</a>*@
+
+        <div id="az_properties">
+
+            <div id="az_properties_base" style="display:none">
+
+
+                <div class="row-fluid margin-bottom-10">
+                    <div class="span2">
+                        <label class="control-label" for="cache">Add To Cache:</label>
+                    </div>
+                    <div class="span10">
+                        <input class="fl" type="checkbox" name="cache" id="cache" checked="checked" value="true" />
+                    </div>
+                </div>
+                <div class="row-fluid margin-bottom-10">
+                    <div class="span2">
+                        <label class="control-label" for="order">Order:</label>
+                    </div>
+                    <div class="span10">
+                        <input class="m-wrap span8" type="text" name="order" id="order" size="10" maxlength="10" value="0" />
+                    </div>
+                </div>
+
+
+
+                <div class="row-fluid margin-bottom-10">
+                    <div class="span2">
+                        <label class="control-label" for="is_page">Is Page:</label>
+                    </div>
+                    <div class="span10">
+                        <input type="checkbox" name="is_page" id="is_page" value="on" checked="checked" />
+                    </div>
+
+                </div>
+                <div class="row-fluid margin-bottom-10">
+                    <div class="span2">
+                        <label class="control-label" for="alias">Alias:</label>
+                    </div>
+                    <div class="span10">
+                        <input class="m-wrap span11" type="text" name="alias" id="alias" />
+                        <a class="btn icn-only" href="#" onclick="generateAlias($(this)); return false;"><i class="icon-link"></i></a>
+                    </div>
+                </div>
+
+
+
+
+                <div class="row-fluid margin-bottom-10">
+                    <div class="span2">
+                        <label class="control-label" for="is_protected">Protect This Alias:</label>
+                    </div>
+                    <div class="span10">
+                        <input type="checkbox" name="is_protected" id="is_protected" />
+                    </div>
+
+                </div>
+                <div class="row-fluid margin-bottom-10">
+                    <div class="span2">
+                        <label class="control-label" for="relations">Language Relation Pool For This Zone:</label>
+                    </div>
+                    <div class="span10">
+                        <select class="m-wrap span12 margin-bottom-10" name="relations[]" id="relations" multiple="multiple"></select><br />
+                        <a title="Add New Article Language Relation" href="#selectArticle" data-toggle="modal" onclick="openModalTwo('relations_35')" class="btn mini langAdd changeButton"><i class="icon-plus"></i> Add </a>
+                        <a title="Remove Selected Language Relation" href="#" onclick="removeObj('#zones'); return false;" class="btn mini langRemove"><i class="icon-trash"></i> Remove </a>
+                    </div>
+                    <!--  article seçtir. -->
+                </div>
+            </div>
+
+            @if (Model != null && Model.Count > 0)
+            {
+                foreach (var zone in Model)
+                {
+
+                    <div id="az_properties_@zone.out_id" style="display:none">
+                        <div class="row-fluid margin-bottom-10">
+                            <div class="span2">
+                                <label class="control-label" for="cache_@zone.out_id">Add To Cache:</label>
+                            </div>
+                            <div class="span10">
+                                <input type="checkbox" name="cache_@zone.out_id" id="cache_@zone.out_id" checked="checked" value="true" />
+                            </div>
+                        </div>
+                        <div class="row-fluid margin-bottom-10">
+                            <div class="span2">
+                                <label class="control-label" for="order_@zone.out_id">Order:</label>
+                            </div>
+                            <div class="span10">
+                                <input class="m-wrap span1" type="text" name="order_@zone.out_id" id="order_@zone.out_id" size="10" maxlength="10" value="@zone.az_order" />
+                            </div>
+                        </div>
+                        <div class="row-fluid margin-bottom-10">
+                            <div class="span2">
+                                <label class="control-label" for="is_page">Is Page:</label>
+                            </div>
+                            <div class="span10">
+                                @if (!zone.is_page)
+                                {
+                                    <input type="checkbox" name="is_page_@zone.out_id" id="is_page_@zone.out_id" />
+                                }
+                                else
+                                {
+                                    <input type="checkbox" name="is_page_@zone.out_id" id="is_page_@zone.out_id" checked="checked" value="on" />
+                                }
+                            </div>
+
+                        </div>
+                        <div class="row-fluid margin-bottom-10">
+                            <div class="span2">
+                                <label class="control-label" for="alias_@zone.out_id">Alias:</label>
+                            </div>
+                            <div class="span10">
+                                <input class="m-wrap span12" type="text" name="alias_@zone.out_id" id="alias_@zone.out_id" value="@HttpUtility.HtmlDecode(zone.az_alias)" />
+                            </div>
+                        </div>
+                        <div class="row-fluid margin-bottom-10">
+                            <div class="span2">
+                                <label class="control-label" for="is_protected_@zone.out_id">Protect This Alias:</label>
+                            </div>
+                            <div class="span10">
+                                @if (!zone.is_alias_protected)
+                                {
+                                    <input type="checkbox" name="is_protected_@zone.out_id" id="is_protected_@zone.out_id" />
+                                }
+                                else
+                                {
+                                    <input type="checkbox" name="is_protected_@zone.out_id" id="is_protected_@zone.out_id" checked="checked" />
+                                }
+                            </div>
+                        </div>
+                        <div class="row-fluid margin-bottom-10">
+                            <div class="span2">
+                                <label class="control-label" for="relations_@zone.out_id">Language Relation Pool For This Zone:</label>
+                            </div>
+                            <div class="span10">
+                                <select class="m-wrap span12 margin-bottom-10" name="relations_@(zone.out_id)[]" id="relations_@zone.out_id" multiple="multiple">
+                                    @Html.Raw(controller.LanguageRelations(zone.out_id, TempData["ArticleID"].ToString(), TempData["RevisionID"].ToString()))
+                                </select><br />
+                                <a title="Add New Article Language Relation" href="#selectArticle" data-toggle="modal" onclick="openModalTwo('relations_@zone.out_id')" class="btn mini langAdd changeButton"><i class="icon-plus"></i> Add </a>
+                                <a title="Remove Selected Language Relation" href="#" onclick="removeObj('relations_@zone.out_id'); return false;" class="btn mini langRemove"><i class="icon-trash"></i> Remove </a>
+                            </div>
+                            <!--  article seçtir. -->
+                        </div>
+                    </div>
+                }
+            }
+
+        </div>
+    </div>

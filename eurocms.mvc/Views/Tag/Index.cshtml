@@ -1,0 +1,79 @@
+﻿@model List<EuroCMS.Model.Tag>
+
+
+<div class="row-fluid">
+	@using (Html.BeginForm("Index", "Tag", FormMethod.Get, new { @class = "form-horizontal", @id = "viewZoneGroup" }))
+	{
+		<div class="control-group">
+			<div class="controls-row">
+				<div class="span4">
+					<a class="btn blue" href="@Url.Action("Create", "Tag", new { SiteID = ViewData["SiteID"] })">Create New Tag <i class="icon-circle-arrow-right"></i></a>
+                    <a class="btn yellow" href="@Url.Action("UpdateRecords", "Tag")">Update Article Tags Data <i class="icon-circle-arrow-right"></i></a>
+				</div>
+				<label class="control-label span1" for="ZoneGroupID">Site:</label>
+				<div class="span5">
+					@Html.GroupDropList("SiteID", ViewBag.Sites as List<GroupDropListItem>, "", new { @class = "chosen-select m-wrap margin-bottom-10" }, "")
+				</div>
+				<button class="btn span2" type="submit">Go <i class="icon-search"></i></button>
+			</div>
+		</div>
+	}
+</div>
+
+<!-- BEGIN SAMPLE TABLE PORTLET-->
+<div class="row-fluid">
+	<div class="span12">
+		<div class="portlet box grey">
+			<div class="portlet-title">
+				<div class="caption"><i class="icon-reorder"></i>Tag List</div>
+			</div>
+			<div class="portlet-body">
+				<div class="no-more-tables">
+					<table class="table table-striped table-hover">
+						<thead>
+							<tr>
+								<th>#</th>
+								<th>Tag Name</th>
+								<th>Alias</th>
+								<th>Created</th>
+								@*<th>Created by</th>*@
+								<th>Actions</th>
+							</tr>
+						</thead>
+						<tbody>
+							@if (Model.Count > 0)
+							{
+								int i = 1;
+								foreach (var tag in Model)
+								{
+									<tr>
+										<td data-title="#">@tag.ID</td>
+										<td data-title="Tag Name">
+											<strong>@HttpUtility.HtmlDecode(tag.Text)</strong>
+											<p class="muted">Site: @(tag.SiteID != -1 ? Html.Raw(tag.Site.Name) : Html.Raw("")) </p>
+										</td>
+										<td data-title="Tag Alias">@HttpUtility.HtmlDecode(tag.Alias)</td>
+										<td data-title="Created">@tag.AddedDate.ToString("f")</td>
+										@*<td data-title="Created by">@tag.CreatedUser.UserName</td>*@
+										<td data-title="Actions">
+											@*<a class="btn mini" href="@Url.Action("Edit", new { id= @zg.zone_group_id })"><i class="icon-pencil"></i> Edit</a>
+												<a class="btn mini black" href="@Url.Action("Delete", new { id= @zg.zone_group_id })" onclick="deleteObject(this); return false;" data-message="Are you sure want to delete this zone group?"><i class="icon-trash"></i> Delete</a>*@
+											<a href="@Url.Action("Edit", new { id= @tag.ID })" class="btn icn-only r" title="Edit This Layout"><i class="icon-pencil"></i></a>
+                                            <a href="@Url.Action("ChangeStatus", new { id= @tag.ID })"  class="btn icn-only @(tag.IsActive ==false ? "green" : "red")" title="@(tag.IsActive ==false ? "Change Status to Active" : "Change Status to Passive")"><i class="@(tag.IsActive ==false ? "icon-ok" : "icon-remove")"></i></a>
+										</td>
+									</tr>
+											i++;
+								}
+							}
+							else
+							{
+								<tr><td colspan="4">No Result Found!</td></tr>
+							}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- END SAMPLE TABLE PORTLET-->

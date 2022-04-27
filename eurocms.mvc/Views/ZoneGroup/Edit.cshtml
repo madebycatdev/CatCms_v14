@@ -1,0 +1,390 @@
+﻿@model EuroCMS.Model.ZoneGroup
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        jHtmlAreaInit("article_1");
+    });
+</script>
+
+<div class="row-fluid">
+    @using (Html.BeginForm("Edit", "ZoneGroup", FormMethod.Post, new { @class = "form-horizontal", @id = "zgEdit" }))
+    {
+        @Html.ValidationSummary(true)
+        @Html.AntiForgeryToken()
+        <div class="tabbable tabbable-custom">
+            <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#tab_1_1">Basic</a></li>
+                <li class=""><a data-toggle="tab" href="#tab_1_2">Advanced</a></li>
+                <li class=""><a data-toggle="tab" href="#tab_1_3">SEO</a></li>
+            </ul>
+            <div class="tab-content">
+                <div id="tab_1_1" class="tab-pane active">
+                    @if (Request["SiteId"] == null)
+                    {
+                        <div class="control-group">
+                            <label class="control-label" for="site_id">Site:<span class="red">*</span></label>
+                            <div class="controls">
+                                @Html.GroupDropList("site_id", ViewBag.Sites as List<GroupDropListItem>, Model.SiteId.ToString(), new { @class = "span12 m-wrap required" }, "Please Select")
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <input type="hidden" value="@Request["SiteId"]" name="site_id" />
+                    }
+                    <input type="hidden" name="CurrentObjID" id="CurrentObjID" value="@Model.Id" />
+                    <div class="control-group">
+                        <label class="control-label" for="zone_group_name">Zone Group Name:<span class="red">*</span></label>
+                        <div class="controls">
+                            <input type="text" name="zone_group_name" id="zone_group_name" class="m-wrap span12" value="@HttpUtility.HtmlDecode(Model.Name)" onblur="getAlias(this,this, false, 'zonegroup')" required />
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="site_name">Zone Group Alias:</label>
+                        <div class="controls">
+                            <input type="text" name="zone_group_alias" id="zone_group_alias" class="getAlias m-wrap span12" value="@HttpUtility.HtmlDecode(Model.Alias)" onblur="getAlias(zone_group_name,this, true, 'zonegroup')">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="zone_group_name_display">Zone Group Display Name:</label>
+                        <div class="controls">
+                            <input type="text" name="zone_group_name_display" id="zone_group_name_display" class="m-wrap span12" value="@HttpUtility.HtmlDecode(Model.DisplayName)" />
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="template_id">Default Screen Template:</label>
+                        <div class="controls">
+                            @Html.GroupDropList("template_id", ViewBag.Layouts as List<GroupDropListItem>, Model.TemplateId.ToString(), new { @class = "m-wrap span12" }, "Please Select")
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="custom_body">Custom Body:</label>
+                        <div class="controls">
+                            <input type="text" name="custom_body" id="custom_body" class="m-wrap span12" value="@HttpUtility.HtmlDecode(Model.CustomBody)" />
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="zone_group_content">Zone Group Content:</label>
+                    </div>
+                    <div class="control-group">
+                        <div class="tabbable tabbable-custom tabs-left">
+                            <!-- Only required for left/right tabs -->
+                            <ul class="nav nav-tabs tabs-left">
+                                <li class="active">
+                                    <a data-toggle="tab" href="#tab_2_1" onclick="editContent('1',this),false;">Container #1</a>
+                                </li>
+                                <li>
+                                    <a data-toggle="tab" href="#tab_2_2" onclick="editContent('2',this),false;">Container #2</a>
+                                </li>
+                                <li>
+                                    <a data-toggle="tab" href="#tab_2_3" onclick="editContent('3',this),false;">Container #3</a>
+                                </li>
+                                <li>
+                                    <a data-toggle="tab" href="#tab_2_4" onclick="editContent('4',this),false;">Container #4</a>
+                                </li>
+                                <li>
+                                    <a data-toggle="tab" href="#tab_2_5" onclick="editContent('5',this),false;">Container #5</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content editorContent">
+                                <div id="tab_2_1" class="tab-pane active">
+                                    <div class="control-group">
+                                        <label for="append_1_0" class="control-label">Container Type:</label>
+                                        <div class="controls">
+                                            <label class="smallWrap">
+                                                <input type="radio" name="append_1" value="0" id="append_1_0" @(HttpUtility.HtmlDecode(Model.Append1.ToString()) == "0" ? "checked=checked" : "") />
+                                                None
+                                            </label>
+                                            <label class="smallWrap">
+                                                <input type="radio" name="append_1" value="1" id="append_1_1" @(HttpUtility.HtmlDecode(Model.Append1.ToString()) == "1" ? "checked=checked" : "") />
+                                                Top
+                                            </label>
+                                            <label class="smallWrap">
+                                                <input type="radio" name="append_1" value="2" id="append_1_2" @(HttpUtility.HtmlDecode(Model.Append1.ToString()) == "2" ? "checked=checked" : "") />
+                                                Bottom
+                                            </label>
+                                            <label class="smallWrap">
+                                                <input type="radio" name="append_1" value="3" id="append_1_3" @(HttpUtility.HtmlDecode(Model.Append1.ToString()) == "3" ? "checked=checked" : "") />
+                                                Overwrite
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="control-group hide">
+                                        <label for="content_1_editor_type1" class="control-label">Editor Type:</label>
+                                        <div class="controls">
+                                            <label class="smallWrap">
+                                                <input type="radio" value="H" id="content_1_editor_type1" name="content_1_editor_type" checked="checked" />
+                                                HTML Editor
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <div class="type_H">
+                                            <!-- article 1 -->
+                                            <textarea class="htmlEditor span12" id="article_1" name="article_1">@Html.Raw(HttpUtility.HtmlDecode(Model.Article1))</textarea>
+                                            <!-- article 1 -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="tab_2_2" class="tab-pane">
+                                    <div class="control-group">
+                                        <label for="append_2_0" class="control-label">Container Type:</label>
+                                        <div class="controls">
+                                            <label class="smallWrap">
+                                                <input type="radio" name="append_2" value="0" id="append_2_0" @(HttpUtility.HtmlDecode(Model.Append2.ToString()) == "0" ? "checked=checked" : "") />
+                                                None
+                                            </label>
+                                            <label class="smallWrap">
+                                                <input type="radio" name="append_2" value="1" id="append_2_1" @(HttpUtility.HtmlDecode(Model.Append2.ToString()) == "1" ? "checked=checked" : "") />
+                                                Top
+                                            </label>
+                                            <label class="smallWrap">
+                                                <input type="radio" name="append_2" value="2" id="append_2_2" @(HttpUtility.HtmlDecode(Model.Append2.ToString()) == "2" ? "checked=checked" : "") />
+                                                Bottom
+                                            </label>
+                                            <label class="smallWrap">
+                                                <input type="radio" name="append_2" value="3" id="append_2_3" @(HttpUtility.HtmlDecode(Model.Append2.ToString()) == "3" ? "checked=checked" : "") />
+                                                Overwrite
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="control-group hide">
+                                        <label for="content_2_editor_type1" class="control-label">Editor Type:</label>
+                                        <div class="controls">
+                                            <label class="smallWrap">
+                                                <input type="radio" value="H" id="content_2_editor_type1" name="content_2_editor_type" checked="checked" @(HttpUtility.HtmlDecode(Model.Content2EditorType) == "H" ? "checked=checked" : "") />
+                                                HTML Editor
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <div class="type_H">
+                                            <!-- article 2 -->
+                                            <textarea class="htmlEditor span12" id="article_2" name="article_2">@Html.Raw(HttpUtility.HtmlDecode(Model.Article2))</textarea>
+                                            <!-- article 2 -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="tab_2_3" class="tab-pane">
+                                    <div class="control-group">
+                                        <label for="append_3_0" class="control-label">Container Type:</label>
+                                        <div class="controls">
+                                            <label class="smallWrap">
+                                                <input type="radio" name="append_3" value="0" id="append_3_0" @(HttpUtility.HtmlDecode(Model.Append3.ToString()) == "0" ? "checked=checked" : "") />
+                                                None
+                                            </label>
+                                            <label class="smallWrap">
+                                                <input type="radio" name="append_3" value="1" id="append_3_1" @(HttpUtility.HtmlDecode(Model.Append3.ToString()) == "1" ? "checked=checked" : "") />
+                                                Top
+                                            </label>
+                                            <label class="smallWrap">
+                                                <input type="radio" name="append_3" value="2" id="append_3_2" @(HttpUtility.HtmlDecode(Model.Append3.ToString()) == "2" ? "checked=checked" : "") />
+                                                Bottom
+                                            </label>
+                                            <label class="smallWrap">
+                                                <input type="radio" name="append_3" value="3" id="append_3_3" @(HttpUtility.HtmlDecode(Model.Append3.ToString()) == "3" ? "checked=checked" : "") />
+                                                Overwrite
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="control-group hide">
+                                        <label for="content_3_editor_type1" class="control-label">Editor Type:</label>
+                                        <div class="controls">
+                                            <label class="smallWrap">
+                                                <input type="radio" value="H" id="content_3_editor_type1" name="content_3_editor_type" @(HttpUtility.HtmlDecode(Model.Content3EditorType) == "H" ? "checked=checked" : "") />
+                                                HTML Editor
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <div class="type_H">
+                                            <!-- article 3 -->
+                                            <textarea class="htmlEditor span12" id="article_3" name="article_3">@Html.Raw(HttpUtility.HtmlDecode(Model.Article3))</textarea>
+                                            <!-- article 3 -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="tab_2_4" class="tab-pane">
+                                    <div class="control-group">
+                                        <label for="append_4_0" class="control-label">Container Type:</label>
+                                        <div class="controls">
+                                            <label class="smallWrap">
+                                                <input type="radio" name="append_4" value="0" id="append_4_0" @(HttpUtility.HtmlDecode(Model.Append4.ToString()) == "0" ? "checked=checked" : "") />
+                                                None
+                                            </label>
+                                            <label class="smallWrap">
+                                                <input type="radio" name="append_4" value="1" id="append_4_1" @(HttpUtility.HtmlDecode(Model.Append4.ToString()) == "1" ? "checked=checked" : "") />
+                                                Top
+                                            </label>
+                                            <label class="smallWrap">
+                                                <input type="radio" name="append_4" value="2" id="append_4_2" @(HttpUtility.HtmlDecode(Model.Append4.ToString()) == "2" ? "checked=checked" : "") />
+                                                Bottom
+                                            </label>
+                                            <label class="smallWrap">
+                                                <input type="radio" name="append_4" value="3" id="append_4_3" @(HttpUtility.HtmlDecode(Model.Append4.ToString()) == "3" ? "checked=checked" : "") />
+                                                Overwrite
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="control-group hide">
+                                        <label for="content_3_editor_type1" class="control-label">Editor Type:</label>
+                                        <div class="controls">
+                                            <label class="smallWrap">
+                                                <input type="radio" value="H" id="content_4_editor_type1" name="content_4_editor_type" @(HttpUtility.HtmlDecode(Model.Content4EditorType) == "H" ? "checked=checked" : "") />
+                                                HTML Editor
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <div class="type_H">
+                                            <!-- article 4 -->
+                                            <textarea class="htmlEditor span12" id="article_4" name="article_4">@Html.Raw(HttpUtility.HtmlDecode(Model.Article4))</textarea>
+                                            <!-- article 4 -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="tab_2_5" class="tab-pane">
+                                    <div class="control-group">
+                                        <label for="append_5_0" class="control-label">Container Type:</label>
+                                        <div class="controls">
+                                            <label class="smallWrap">
+                                                <input type="radio" name="append_5" value="0" id="append_5_0" @(HttpUtility.HtmlDecode(Model.Append5.ToString()) == "0" ? "checked=checked" : "") />
+                                                None
+                                            </label>
+                                            <label class="smallWrap">
+                                                <input type="radio" name="append_5" value="1" id="append_5_1" @(HttpUtility.HtmlDecode(Model.Append5.ToString()) == "1" ? "checked=checked" : "") />
+                                                Top
+                                            </label>
+                                            <label class="smallWrap">
+                                                <input type="radio" name="append_5" value="2" id="append_5_2" @(HttpUtility.HtmlDecode(Model.Append5.ToString()) == "2" ? "checked=checked" : "") />
+                                                Bottom
+                                            </label>
+                                            <label class="smallWrap">
+                                                <input type="radio" name="append_5" value="3" id="append_5_3" @(HttpUtility.HtmlDecode(Model.Append5.ToString()) == "3" ? "checked=checked" : "") />
+                                                Overwrite
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="control-group hide">
+                                        <label for="content_5_editor_type1" class="control-label">Editor Type:</label>
+                                        <div class="controls">
+                                            <label class="smallWrap">
+                                                <input type="radio" value="H" id="content_5_editor_type1" name="content_5_editor_type" @(HttpUtility.HtmlDecode(Model.Content5EditorType) == "H" ? "checked=checked" : "") />
+                                                HTML Editor
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <div class="type_H">
+                                            <!-- article 5 -->
+                                            <textarea class="htmlEditor span12" id="article_5" name="article_5">@Html.Raw(HttpUtility.HtmlDecode(Model.Article5))</textarea>
+                                            <!-- article 5 -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+					<div class="form-actions">
+						<button type="button" class="btn" onclick="discardChanges('@Url.Action("Index")'),false;"><i class="icon-remove"></i> Cancel</button>
+						<button type="submit" class="btn green"><i class="icon-save"></i> Save</button>
+					</div>
+                </div><!--tab_1_1-->
+                <div id="tab_1_2" class="tab-pane">
+                    <div class="control-group">
+                        <label class="control-label" for="before_head">Before &lt;&#47;head&gt;:</label>
+                        <div class="controls">
+                            <textarea class="m-wrap span12" rows="4" name="before_head" id="before_head">@Html.Raw(HttpUtility.HtmlDecode(Model.BeforeHead))</textarea>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="before_body">Before &lt;&#47;body&gt;:</label>
+                        <div class="controls">
+                            <textarea class="m-wrap span12" rows="4" name="before_body" id="before_body">@Html.Raw(HttpUtility.HtmlDecode(Model.BeforeBody))</textarea>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="site_js">After &lt;&#47;body&gt;:</label>
+                        <div class="controls">
+                            <textarea name="afterbody" id="afterbody" rows="6" class="span12 m-wrap">@HttpUtility.HtmlDecode(Model.AfterBody)</textarea>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="template_id_mobile">Default Mobile Template:</label>
+                        <div class="controls">
+                            @Html.GroupDropList("template_id_mobile", ViewBag.Layouts as List<GroupDropListItem>, Model.MobileTemplateId.ToString(), new { @class = "m-wrap span12" }, "Please Select")
+                        </div>
+                    </div>
+                    <div class="control-group hide">
+                        <label class="control-label" for="omniture_code">Omniture Code:</label>
+                        <div class="controls">
+                            <textarea class="m-wrap span12" rows="4" name="omniture_code" id="omniture_code">@Html.Raw(HttpUtility.HtmlDecode(Model.OmnitureCode))</textarea>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="analytics">Analytics Code:</label>
+                        <div class="controls">
+                            <textarea class="m-wrap span12" rows="4" name="analytics" id="analytics">@Html.Raw(HttpUtility.HtmlDecode(Model.Analytics))</textarea>
+                        </div>
+                    </div>
+
+                    <div class="control-group hide">
+                        <label class="control-label" for="default_article">Default Article:</label>
+                        <div class="controls">
+                            <select id="default_article" name="default_article" tabindex="1" disabled="disabled" class="m-wrap span10">
+                                <option value="@HttpUtility.HtmlDecode(Model.DefaultArticle)">@HttpUtility.HtmlDecode(ViewBag.default_article)</option>
+                            </select>
+                            <a class="openModal btn icn-only" href="@Url.Action("SelectZoneGroup", "ZoneGroup", new { objName = "default_article" })" title="Change Default Article"><i class="icon-tasks"></i> Change</a>
+                            <a class="btn icn-only" href="#" onclick="removeTarget('#default_article'); return false;"><i class="icon-trash"></i> Remove</a>
+                        </div>
+                    </div>
+                    <div class="control-group hide">
+                        <label class="control-label" for="tag_detail_article">Tag Detail Article:</label>
+                        <div class="controls">
+                            <select id="tag_detail_article" name="tag_detail_article" tabindex="1" disabled="disabled" class="m-wrap span10">
+                                <option value="@HttpUtility.HtmlDecode(Model.TagArticle)">@HttpUtility.HtmlDecode(ViewBag.tag_detail_article)</option>
+                            </select>
+                            <a class="openModal btn icn-only" href="@Url.Action("SelectZoneGroup", "ZoneGroup", new { objName = "tag_detail_article" })" title="Change Default Article"><i class="icon-tasks"></i> Change</a>
+                            <a class="btn icn-only" href="#" onclick="removeTarget('#tag_detail_article'); return false;"><i class="icon-trash"></i> Remove</a>
+                        </div>
+                    </div>
+					<div class="form-actions">
+						<button type="button" class="btn" onclick="discardChanges('@Url.Action("Index")'),false;"><i class="icon-remove"></i> Cancel</button>
+						<button type="submit" class="btn green"><i class="icon-save"></i> Save</button>
+					</div>
+                </div><!--tab_1_2-->
+                <div id="tab_1_3" class="tab-pane">
+                    <div class="control-group">
+                        <label class="control-label" for="zone_group_keywords">Meta Keywords:</label>
+                        <div class="controls">
+                            <textarea class="m-wrap span12" rows="4" name="zone_group_keywords" id="zone_group_keywords">@HttpUtility.HtmlDecode(Model.Keywords)</textarea>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="controls">
+                            <label>
+                                <input class="fl" type="radio" name="keywords_ao" value="A" id="keywords_ao_A" @(!(HttpUtility.HtmlDecode(Model.Keywords) ?? "").StartsWith("|") ? "checked=checked" : "") />
+                                <span class="smallElement">Append</span>
+                            </label>
+                            <label>
+                                <input class="fl" type="radio" name="keywords_ao" value="O" id="keywords_ao_O" @((HttpUtility.HtmlDecode(Model.Keywords) ?? "").StartsWith("|") ? "checked=checked" : "") />
+                                <span class="smallElement">Overwrite</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="meta_description">Meta Description:</label>
+                        <div class="controls">
+                            <textarea class="m-wrap span12" rows="4" name="meta_description" id="meta_description">@HttpUtility.HtmlDecode(Model.MetaDescription)</textarea>
+                        </div>
+                    </div>
+					<div class="form-actions">
+						<button type="button" class="btn" onclick="discardChanges('@Url.Action("Index")'),false;"><i class="icon-remove"></i> Cancel</button>
+						<button type="submit" class="btn green"><i class="icon-save"></i> Save</button>
+					</div>
+				</div><!--tab_1_3"-->
+            </div>
+        </div>
+    }
+</div>
+@section ModalSelectArticle { @Html.Partial("ModalSelectArticle", ViewData["ZoneGroups"] as List<EuroCMS.Admin.entity.cms_zone_groups>) }

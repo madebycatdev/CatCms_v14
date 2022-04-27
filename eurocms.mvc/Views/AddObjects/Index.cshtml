@@ -1,0 +1,42 @@
+﻿@{
+    ViewBag.Title = "AddObjects";
+    Layout = "~/Views/Shared/AddObjects.cshtml";
+}
+
+
+
+<div class="tabbable tabbable-custom">
+    <ul class="nav nav-tabs new-tabs">
+        <li class="active"><a href="#tab_1_1">Portlet</a></li>
+        <li><a href="#tab_1_2">Menu</a></li>
+        <li><a href="#tab_1_6">Splash</a></li>
+        <li><a href="#tab_1_3">Plugins</a></li>
+        <li><a href="#tab_1_4">BreadCrumbs</a></li>
+        <li><a href="#tab_1_5">Custom Contents</a></li>
+    </ul>
+    <div class="tab-content new-tab-content addObjects">
+        <div id="tab_1_1" class="tab-pane active">
+            @Html.Partial("~/Views/Portlet/PortletList.cshtml", Model as EuroCMS.Admin.entity.cms_asp_select_portlets_Result)
+        </div>
+        <div id="tab_1_2" class="tab-pane">
+            <ul>
+                <li><a onclick="return iM('a','Menu A')" href="javascript:void(0);"><img hspace="4" src="/cms/Content/img/icon_blank.gif" />Menu A</a></li>
+                <li><a onclick="return iSM('a','Sitemap'),false;" href="javascript:void(0);"><img hspace="4" src="/cms/Content/img/icon_blank.gif" />Sitemap</a></li>
+                <li><a onclick="return iTag('a','Tag Listing'),false;" href="javascript:void(0);"><img hspace="4" src="/cms/Content/img/icon_blank.gif" />Tag Listing</a></li>
+            </ul>
+        </div>
+        <div id="tab_1_3" class="tab-pane">
+            Plugins
+        </div>
+        <div id="tab_1_4" class="tab-pane">
+
+            @Html.Partial("~/Views/BreadCrumb/BreadCrumbList.cshtml", ViewData["BreadCrumb"] as List<EuroCMS.Admin.entity.cms_asp_select_breadcrumb_Result>)
+        </div>
+        <div id="tab_1_5" class="tab-pane">
+            Custom Contents
+        </div>
+        <div id="tab_1_6" class="tab-pane">
+            @Html.Partial("~/Views/Splash/SplashList.cshtml", ViewData["Splash"] as List<EuroCMS.Model.Splash>)
+        </div>
+    </div>
+</div>

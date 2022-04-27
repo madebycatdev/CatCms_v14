@@ -1,0 +1,55 @@
+﻿@model IList<EuroCMS.Admin.entity.cms_asp_select_breadcrumb_Result>
+
+<p>
+    <a class="btn blue" href="@Url.Action("Create")">Create New BreadCrumb <i class="icon-circle-arrow-right"></i></a>
+</p>
+<div class="row-fluid">
+    <div class="span12">
+        <div class="portlet box grey">
+            <div class="portlet-title">
+                <div class="caption"><i class="icon-reorder"></i>Breadcrumb List</div>
+            </div>
+            <div class="portlet-body">
+                <table class="table table-striped table-hover breadCrumb">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Bread Crumb Name</th>
+                            <th>Created</th>
+                            <th>Created by</th>
+                            <th>Updated</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Count > 0)
+                        {
+                            foreach (var breadCrumb in Model)
+                            {
+                                <tr>
+                                    <td data-title="#"> @breadCrumb.breadcrumb_id </td>
+                                    <td data-title="Bread Crumb Name"><strong>@breadCrumb.breadcrumb_name</strong></td>
+                                    <td data-title="Created"> @breadCrumb.created</td>
+                                    <td data-title="Created by">@(breadCrumb.publisher_name == "" ? "System" : breadCrumb.publisher_name) </td>
+                                    <td data-title="Updated">@breadCrumb.updated</td>
+                                    <td data-title="Actions">
+                                        <a href="@Url.Action("Edit",   new { id = @breadCrumb.breadcrumb_id})" class="btn icn-only"><i class="icon-pencil"></i></a>
+                                        @using (Html.BeginForm("Delete", "Breadcrumb", new { id = breadCrumb.breadcrumb_id }))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            <button class="btn icn-only red" type="submit" data-message="Are you sure want to delete this Bread Crumb?" onclick="return deleteObject(this);"><i class="icon-trash"></i></button>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr><td colspan="6">No Result Found!</td></tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

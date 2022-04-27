@@ -1,0 +1,45 @@
+﻿@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/Login.cshtml";
+}
+
+<!-- BEGIN LOGIN -->
+    <!-- BEGIN LOGIN FORM -->
+    @using (Html.BeginForm("Login", "Publisher", new { ReturnUrl = Request["ReturnUrl"] }, FormMethod.Post, new { @class = "form-vertical login-form", @id = "pCreate", @name = "pCreate" }))
+    { 
+        @Html.CmsValidationSummary(string.Empty);
+         @Html.AntiForgeryToken()
+        <h3 class="form-title">madebycat CMS Sign-in</h3>
+        <div class="control-group">
+			<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
+			<label class="control-label visible-ie8 visible-ie9">Username</label>
+			<div class="controls">
+				<div class="input-icon left">
+					<i class="icon-user"></i>
+                    <input class="m-wrap placeholder-no-fix required" type="text" autocomplete="off" placeholder="Username" name="username" id="UserName"  title="Please enter your username." value="" tabindex="1" />
+				</div>
+			</div>
+		</div>
+        <div class="control-group">
+			<label class="control-label visible-ie8 visible-ie9">Password</label>
+			<div class="controls">
+				<div class="input-icon left">
+					<i class="icon-lock"></i>
+					<input class="m-wrap placeholder-no-fix required" type="password" autocomplete="off" placeholder="Password" name="password" id="password" title="Passwords will be 6 character at least." tabindex="2" />
+				</div>
+			</div>
+		</div>
+        <div class="form-actions">
+            <div class="checkWrap pull-left">
+                <input class="fl" type="checkbox" id="RememberMe" name="remember" value="true" tabindex="3" />
+                <span>Remember me</span>
+            </div>
+			<button type="submit" class="btn red pull-right">
+			Login <i class="m-icon-swapright m-icon-white"></i>
+			</button>            
+		</div>
+        
+    }
+    <!-- END LOGIN FORM -->
+<!-- END LOGIN -->   
+        

@@ -1,0 +1,199 @@
+﻿@model System.Web.Configuration.HealthMonitoringSection
+ 
+<script type="text/ecmascript">
+    $(document).ready(function () {
+        $("form#form-healtMonitoring input[name=Enabled]").click(function () {
+             
+            if ($(this).is(":checked")) {
+                $(".healtMonitoringGroup").show();
+            } else {
+                $(".healtMonitoringGroup").hide();
+            }
+
+        });
+
+        $("input[name='Mail.Enabled']").bind("click", function () {
+            
+            if ($(this).is(":checked")) {
+                $(".mailEventProviderGroup").show();
+            } else {
+                $(".mailEventProviderGroup").hide();
+            }
+
+        });
+
+        $("input[name='SQL.Enabled']").bind("click", function () {
+            
+            if ($(this).is(":checked")) {
+                $(".sqlEventProviderGroup").show();
+            } else {
+                $(".sqlEventProviderGroup").hide();
+            }
+
+        });
+    });
+</script>
+
+@using (Html.BeginForm("SaveHealtMonitoring", "Setting", FormMethod.Post, new { @class="form-horizontal", @id="form-healtMonitoring" }))
+{ 
+   @Html.AntiForgeryToken()
+    <div class="row-fluid">
+        <div class="control-group">
+            <label class="smallWrap" for="healthEnable">
+                @Html.CheckBox("Enabled", Model.Enabled, new { @id = "healthEnable" })
+                Enable Health Monitoring?
+            </label>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="HeartbeatInterval">
+                Heartbeat Interval / Sec :
+            </label>
+            <div class="controls">
+                @Html.TextBox("HeartbeatInterval", Model.HeartbeatInterval.TotalSeconds)
+            </div>
+        </div>
+        <div class="control-group">
+            <div class="healtMonitoringGroup @(Model.Enabled ?"show":"hide")">
+                <hr />
+                <h3>Mail WebEventProvider</h3>
+                @{ 
+                    var mailProvider = Model.Providers["SimpleMailWebEventProvider"];
+                    var mailEnabled = (mailProvider != null);
+                    var mailFrom = mailEnabled ? mailProvider.Parameters["from"] : "";
+                    var mailTo = mailEnabled ? mailProvider.Parameters["to"] : "";
+                    var mailCc = mailEnabled ? mailProvider.Parameters["cc"] : "";
+                    var mailBcc = mailEnabled ? mailProvider.Parameters["bcc"] : "";
+                    var bodyHeader = mailEnabled ? mailProvider.Parameters["bodyHeader"] : "";
+                    var bodyFooter = mailEnabled ? mailProvider.Parameters["bodyFooter"] : "";
+                    var subjectPrefix = mailEnabled ? mailProvider.Parameters["subjectPrefix"] : "";
+                    var buffer = mailEnabled ?  Convert.ToBoolean(mailProvider.Parameters["buffer"]) : false;
+                    var bufferMode = mailEnabled ? mailProvider.Parameters["bufferMode"] : "Notification";
+                    var maxMessagesPerNotification = mailEnabled ? mailProvider.Parameters["maxMessagesPerNotification"] : "1";
+                    }
+                <div class="control-group">
+                    <label class="smallWrap" for="Mail_Enabled">
+                        @Html.CheckBox("Mail.Enabled", mailEnabled)
+                        Enabled
+                    </label>
+                </div>
+                <div class="row-fluid">
+                    <div class="mailEventProviderGroup @(mailEnabled?"show":"hide")">
+                        <div class="control-group">
+                            <label class="control-label" for="Mail_from">From:</label>
+                            <div class="controls">
+                                @Html.TextBox("Mail.from",mailFrom)
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="Mail_to">To:</label>
+                            <div class="controls">
+                                @Html.TextBox("Mail.to", mailTo)
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="Mail_cc">CC:</label>
+                            <div class="controls">
+                                @Html.TextBox("Mail.cc", mailCc)
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="Mail_bcc">BCC:</label>
+                            <div class="controls">
+                                @Html.TextBox("Mail.bcc", mailBcc)
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="Mail_bodyHeader">Body Header:</label>
+                            <div class="controls">
+                                @Html.TextBox("Mail.bodyHeader", bodyFooter)
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="Mail_bodyFooter">Body Footer:</label>
+                            <div class="controls">
+                                @Html.TextBox("Mail.bodyFooter", bodyFooter)
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="Mail_subjectPrefix">Subject Prefix:</label>
+                            <div class="controls">
+                                @Html.TextBox("Mail.subjectPrefix", subjectPrefix)
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="Mail_buffer">Buffer:</label>
+                            <div class="controls">
+                                @Html.CheckBox("Mail.buffer", buffer)
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="Mail_bufferMode">Buffer Mode:</label>
+                            <div class="controls">
+                                @Html.DropDownList("Mail.bufferMode", new List<SelectListItem> { 
+                                    new SelectListItem(){ Text = "Critical Notification", Value="Critical Notification", Selected=bufferMode=="Critical Notificaiton"},
+                                    new SelectListItem(){ Text = "Logging", Value="Logging", Selected=bufferMode=="Logging" },
+                                    new SelectListItem(){ Text = "Analysis" , Value="Analysis", Selected=bufferMode=="Analysis"},
+                                    new SelectListItem(){ Text = "Notification", Value="Notification", Selected=bufferMode=="Notificaiton" },
+                                })
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="Mail_maxMessagesPerNotification">Max Messages / Notification:</label>
+                            <div class="controls">
+                                @Html.TextBox("Mail.maxMessagesPerNotification", maxMessagesPerNotification)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+            
+    <div class="row-fluid">
+        <div class="healtMonitoringGroup @(Model.Enabled ?"show":"hide")">
+            <hr />
+            <h3>SQL WebEventProvider</h3>
+            @{ 
+                var sqlProvider = Model.Providers["SqlWebEventProvider"];
+                var sqlEnabled = (sqlProvider != null);
+                var sqlbuffer = sqlEnabled ? Convert.ToBoolean(sqlProvider.Parameters["buffer"]) : false;
+                var sqlbufferMode = sqlEnabled ? sqlProvider.Parameters["bufferMode"] : "";
+                var maxEventDetailsLength = sqlEnabled ? sqlProvider.Parameters["maxEventDetailsLength"] : "";
+            }
+            <div class="control-group">
+                <label class="smallWrap" for="SQL_Enabled">
+                    @Html.CheckBox("SQL.Enabled", sqlEnabled) Enabled
+                </label>
+            </div>
+
+            <div class="sqlEventProviderGroup @(sqlEnabled?"show":"hide")">
+                <div class="control-group">
+                    <label class="smallWrap" for="SQL_buffer">
+                         @Html.CheckBox("SQL.buffer", sqlbuffer) Buffer
+                    </label>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="SQL_bufferMode">Buffer Mode:</label>
+                    <div class="controls">
+                         @Html.DropDownList("SQL.bufferMode", new List<SelectListItem> { 
+                            new SelectListItem(){ Text = "Critical Notification", Value="Critical Notification", Selected=sqlbufferMode=="Critical Notificaiton"},
+                            new SelectListItem(){ Text = "Logging", Value="Logging", Selected=sqlbufferMode=="Logging" },
+                            new SelectListItem(){ Text = "Analysis" , Value="Analysis", Selected=sqlbufferMode=="Analysis"},
+                            new SelectListItem(){ Text = "Notification", Value="Notification", Selected=sqlbufferMode=="Notificaiton" },
+                        })
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="SQL_maxEventDetailsLength">Max Event Details <br /> Length (bytes):</label>
+                    <div class="controls">
+                        @Html.TextBox("SQL.maxEventDetailsLength", maxEventDetailsLength)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>    
+    
+    <div class="form-actions">
+        <button class="btn green" type="submit"><i class="icon-save"></i> Save</button>
+    </div>
+}

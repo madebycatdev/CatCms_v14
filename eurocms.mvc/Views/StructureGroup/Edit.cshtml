@@ -1,0 +1,47 @@
+﻿@model EuroCMS.Admin.entity.cms_asp_admin_select_structure_group_Result
+ 
+@{   
+    Layout = null;
+}
+
+@using (Html.BeginForm("Edit", "StructureGroup", FormMethod.Post, new { @class = "form-horizontal" })) 
+{
+    @Html.AntiForgeryToken()
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+        <h3>Edit Structure Group:</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row-fluid">
+            <div class="control-group">
+                <label class="control-label" for="group_name">Group Name:</label>
+                <div class="controls">
+                    <input type="text" id="group_name" name="group_name" class="m-wrap span12" value="@Model.group_name" />
+                </div>
+            </div> 
+            <div class="control-group">
+                <label class="control-label" for="group_type">Group Type:</label>  
+                <div class="controls">
+                    <select id="group_type" name="group_type" tabindex="1" class="large m-wrap">
+                            <option value="0" @(Model.group_type.ToString() == "0"?"selected=selected":"")>Please Select</option>
+                            <option value="1" @(Model.group_type.ToString() == "1"?"selected=selected":"")>CSS</option>
+                            <option value="2" @(Model.group_type.ToString() == "2"?"selected=selected":"")>Sites</option>
+                            <option value="3" @(Model.group_type.ToString() == "3"?"selected=selected":"")>Templates</option>
+                            <option value="4" @(Model.group_type.ToString() == "4"?"selected=selected":"")>Portlets</option>
+                            <option value="5" @(Model.group_type.ToString() == "5"?"selected=selected":"")>Plugins</option>
+                            <option value="6" @(Model.group_type.ToString() == "6"?"selected=selected":"")>XML</option>
+                            <option value="7" @(Model.group_type.ToString() == "7"?"selected=selected":"")>RSS Channels</option>
+                            <option value="8" @(Model.group_type.ToString() == "8"?"selected=selected":"")>Classification</option>
+                            <option value="9" @(Model.group_type.ToString() == "9"?"selected=selected":"")>File Types</option>
+                            <option value="10" @(Model.group_type.ToString() == "10"?"selected=selected":"")>URL Redirects</option>
+                            <option value="11" @(Model.group_type.ToString() == "11"?"selected=selected":"")>Custom Contents</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" data-dismiss="modal" class="btn"><i class="icon-remove"></i> Close</button>
+        <button type="submit" class="btn green"><i class="icon-save"></i> Save & Close</button>
+    </div>
+}

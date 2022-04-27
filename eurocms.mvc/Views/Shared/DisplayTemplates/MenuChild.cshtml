@@ -1,0 +1,40 @@
+﻿@model MvcSiteMapProvider.Web.Html.Models.SiteMapNodeModelList
+@using System.Web.Mvc.Html
+@using MvcSiteMapProvider.Web.Html.Models
+
+<ul class="sub-menu">
+    @foreach (var node in Model)
+    {
+         
+            if (node.Children.Any()) {
+                <li  style="position:relative;" class="@(node.IsInCurrentPath == true ?"active":"") @(node.Attributes.ContainsKey("visibility")?node.Attributes["visibility"].ToString():"")"> 
+                    @if (node.Attributes.ContainsKey("quickAdd"))
+                    {
+                        <a onclick="return true;" href="@Url.Action("Create", node.Controller)" class="add-ico"><span class="badge badge-roundless badge-important">+</span></a>
+                    }
+                    <a class="@(node.Attributes.ContainsKey("quickAdd") ? "": "open-child")" href="@node.Url" >
+				        <i class="@node.ImageUrl.Replace("/","")"></i> 
+				        <span class="title">@node.Title</span>
+				        <span class="@(node.Attributes.ContainsKey("quickAdd") ? "hide": "arrow")"></span>
+				    </a>
+                    @Html.DisplayFor( m => node.Children, "MenuChild") 
+                </li>
+            }
+            else
+            {
+                <li  style="position:relative;" class="@(node.IsInCurrentPath == true ?"active":"") @(node.Attributes.ContainsKey("visibility")?node.Attributes["visibility"].ToString():"")"> 
+                    @if (node.Attributes.ContainsKey("quickAdd"))
+                    {
+                        <a onclick="return true;" href="@Url.Action("Create", node.Controller)" class="add-ico"><span class="badge badge-roundless badge-important">+</span></a>
+                    }
+
+                    <a href="@node.Url">
+				        <i class="@node.ImageUrl.Replace("/","")"></i> 
+				        <span class="title">@node.Title</span>
+				    </a>
+                 
+                </li>
+            }
+        
+    }
+</ul>

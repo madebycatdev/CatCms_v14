@@ -1,0 +1,28 @@
+﻿@{
+    ViewBag.Title = "ArticleFileRevision";
+}
+
+<div class="portlet box grey">
+    <div class="portlet-title">
+        <div class="caption"><i class="icon-reorder"></i>Article File Revisions Delete</div>
+    </div>
+    <div class="portlet-body">
+        @using (Html.BeginForm("ArticleFileRevisionDelete", "Tool", FormMethod.Post, new { @class = "form-horizontal", @id = "zEdit", enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            <div class="row-fluid">
+                <div class="control-group">
+                    <label class="control-label" for="RevisionCount">Except Last Revision Count:</label>
+                    <div class="controls">
+                        <input class="m-wrap span5" type="text" name="RevisionCount" id="RevisionCount" value="" />
+                    </div>
+                </div>
+            </div>
+            <div class="form-actions">
+                <button class="btn green">Save <i class="icon-save"></i></button>
+            </div>
+
+        }
+    </div>
+</div>

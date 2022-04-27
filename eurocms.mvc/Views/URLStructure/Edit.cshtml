@@ -1,0 +1,337 @@
+﻿
+@model EuroCMS.Model.URLStructure
+
+@{
+	ViewBag.Title = "Edit URL Structure";
+	//Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+@{
+	List<SelectListItem> listSelect = new List<SelectListItem>();
+
+	SelectListItem item0 = new SelectListItem();
+	item0.Text = "Site / Language / Zone Group / Zone / Article";
+	item0.Value = "##site##/##lang##/##zonegroup##/##zone##/##article##";
+
+	SelectListItem item1 = new SelectListItem();
+	item1.Text = "Site / Zone Group / Zone / Article";
+	item1.Value = "##site##/##zonegroup##/##zone##/##article##";
+
+	SelectListItem item2 = new SelectListItem();
+	item2.Text = "Site / Language / Zone / Article";
+	item2.Value = "##site##/##lang##/##zone##/##article##";
+	
+	SelectListItem item3 = new SelectListItem();
+	item3.Text = "Site / Zone / Article";
+	item3.Value = "##site##/##zone##/##article##";
+
+	SelectListItem item30 = new SelectListItem();
+	item30.Text = "Site / Language / Zone Group / Article";
+	item30.Value = "##site##/##lang##/##zonegroup##/##article##";
+
+	SelectListItem item31 = new SelectListItem();
+	item31.Text = "Site / Zone Group / Article";
+	item31.Value = "##site##/##zonegroup##/##article##";
+
+	SelectListItem item4 = new SelectListItem();
+	item4.Text = "Site / Language / Article";
+	item4.Value = "##site##/##lang##/##article##";
+
+	SelectListItem item40 = new SelectListItem();
+	item40.Text = "Site / Article";
+	item40.Value = "##site##/##article##";
+
+	SelectListItem item5 = new SelectListItem();
+	item5.Text = "Language / Zone Group / Zone / Article";
+	item5.Value = "##lang##/##zonegroup##/##zone##/##article##";
+
+	SelectListItem item50 = new SelectListItem();
+	item50.Text = "Language / Zone Group / Article";
+	item50.Value = "##lang##/##zonegroup##/##article##";
+
+	SelectListItem item6 = new SelectListItem();
+	item6.Text = "Language / Zone / Article";
+	item6.Value = "##lang##/##zone##/##article##";
+	
+	SelectListItem item7 = new SelectListItem();
+	item7.Text = "Language / Article";
+	item7.Value = "##lang##/##article##";
+
+	SelectListItem item8 = new SelectListItem();
+	item8.Text = "Zone Group / Zone / Article";
+	item8.Value = "##zonegroup##/##zone##/##article##";
+
+	SelectListItem item9 = new SelectListItem();
+	item9.Text = "Zone Group / Article";
+	item9.Value = "##zonegroup##/##article##";
+
+	SelectListItem item10 = new SelectListItem();
+	item10.Text = "Zone / Article";
+	item10.Value = "##site##/##article##";
+
+	SelectListItem item11 = new SelectListItem();
+	item11.Text = "Article";
+	item11.Value = "##article##";
+	
+
+	listSelect.Add(item0);
+	listSelect.Add(item30); 
+	listSelect.Add(item2); 
+	listSelect.Add(item4);
+	listSelect.Add(item1); 
+	listSelect.Add(item31);
+	listSelect.Add(item3);
+	listSelect.Add(item40);
+	listSelect.Add(item5);
+	listSelect.Add(item50);
+	listSelect.Add(item6);
+	listSelect.Add(item7);
+	listSelect.Add(item8);
+	listSelect.Add(item9);
+	listSelect.Add(item10);
+	listSelect.Add(item11);
+
+}
+
+<style type="text/css">
+
+	#overlayURLStructure {
+		background-color: rgba(0, 0, 0, 0.8);
+		z-index: 9998;
+		position: fixed;
+		left: 0;
+		top: 0;
+		width: 100%;
+		height: 100%;
+		display: none;
+	}
+
+	#urlStructureLoading {
+		position:fixed;
+		left:50%;
+		top:50%;
+		margin:-40px 0 0 -40px;
+		z-index:9999;
+	}
+
+</style>
+
+<script type="text/javascript">
+
+	$(document).ready(function () {
+
+		$(".chosenSelect").chosen({
+			width: "100%",
+			allow_single_deselect: true
+		});
+
+	});
+
+
+
+	function URLStructureUpdate() {
+
+
+		$("#form-horizontal").validate({
+			submitHandler: function () {
+				var data = $("#urlStructureEdit").serialize();
+
+				$("#formActions").hide();
+				$("#urlStructureLoading").show();
+				$("#overlayURLStructure").show();
+
+				$.ajax({
+					url: '/cms/URLStructure/AjaxEdit',
+					type: 'POST',
+					data: data,
+					dataType: 'json',
+					success: function (response) {
+
+						$("#formActions").show();
+						$("#urlStructureLoading").hide();
+						$("#overlayURLStructure").hide();
+
+						if (response != null) {
+							if (response.RedirectUrl != null) {
+								window.location.href = response.RedirectUrl;
+							}
+							else {
+								window.location.reload();
+							}
+						}
+						else {
+							window.location.reload();
+						}
+
+					},
+					error: function (xhr, ajaxOptions, thrownError) {
+
+						$("#formActions").show();
+						$("#urlStructureLoading").hide();
+						$("#overlayURLStructure").hide();
+
+						window.location.reload();
+					}
+				});
+			}
+
+		})
+
+
+	}
+
+
+
+</script>
+
+
+@{
+	if (ViewBag.ExistingArticle != null)
+	{
+		<div class="control-group">
+			<label class="control-label" for="">Existing Article URLS:</label>
+			<div class="controls">
+				<ul class="unstyled">
+					@{
+						int i = 0;
+						List<string> listURL = new List<string>();
+						listURL = ViewBag.ExistingURL;
+					 }
+					@foreach (EuroCMS.Model.vArticlesZonesFull articleZone in ViewBag.ExistingArticle)
+					{
+						<li><a href="/cms/Article/Edit/@articleZone.ArticleID" target="_blank"><i class="m-icon-swapright m-icon-blue url"></i> @HttpUtility.UrlDecode(HttpUtility.HtmlDecode(articleZone.Headline)) - Alias: @listURL[i].Trim() </a></li>
+						i++;
+					}
+				</ul>
+			</div>
+		</div>
+	}
+}
+
+@using (Html.BeginForm("Edit", "URLStructure", new { Id = Model != null ? Model.ID.ToString() : (Request["Id"] ?? "-1") }, FormMethod.Post, new { @class = "form-horizontal", @id = "urlStructureEdit" }))
+{     
+	@Html.AntiForgeryToken()
+	<div class="row-fluid">
+		<input type="hidden" name="Id" value="@(Model != null ? Model.ID.ToString() : (Request["Id"] ?? "-1"))" />
+
+  @{
+	if (ViewBag.ExistingURL == null)
+	{
+		<div class="alert alert-info">
+			<p class="lead">
+				URL Structure Hakkında
+			</p>
+			<ul>
+				<li>Bu işlemden önce mutlaka veritabanının bir yedeğini alınız.</li>
+				<li>Bulk update işleminden sonra aynı şekilde bir geriye dönüş ihtimali bulunmamaktadır.</li>
+				<li>Aşağıdaki "Protect Existing Urls" alanı "protect" olarak seçilmediği takdirde, şu an kullanılan sayfa url'leri 404 sayfasına gidecektir.</li>
+				<li>Bulk update esnasında sayfayı kapatmayınız.</li>
+				<li>Bulk update sonrası tekrar eden sayfa url'leri aşağıda bir liste halinde sunulacaktır. Bu sayfalara çakışmayı engellemek için verilen alias'ları listedeki linklere tıklayarak düzenleyebilirsiniz</li>
+			</ul>
+		</div>
+	}
+  }
+
+		<div class="control-group">
+			<label class="control-label" for="structureName">Structure Name:<span class="red">*</span></label>
+			<div class="controls">
+				<input class="span12 m-wrap margin-bottom-10" type="text" id="structureName" name="structureName" value="@(Model != null ? @Model.Name : "")" required/>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="domain">Domain(s): <span class="red">*</span></label>
+			<div class="controls">
+				<select id="domain" class="chosenSelect m-wrap span12 margin-bottom-10" name="domain" required>
+					<option></option>
+					@*<option value="-1">Please Select Domain</option>*@
+					@{
+						if (ViewBag.Domains != null)
+						{
+							foreach (EuroCMS.Model.Domain domain in ViewBag.Domains)
+							{
+								if (Model != null && Model.DomainID == domain.Id)
+								{
+									<option value="@domain.Id" selected="selected">@domain.Names</option>
+								}
+								else
+								{
+									<option value="@domain.Id">@domain.Names</option>
+								}
+							}
+						}
+					}
+				</select>
+
+			</div>
+		</div>
+
+		<div class="control-group">
+			<label class="control-label" for="structureType">Structure Type: <span class="red">*</span></label>
+			<div class="controls">
+				<select id="structureType" class="chosenSelect m-wrap span12 margin-bottom-10" name="structureType" required>
+					<option></option>
+					@foreach (SelectListItem item in listSelect)
+					{
+						if (Model != null && Model.Structure == item.Value)
+						{
+							<option value="@item.Value" selected="selected">@item.Text</option>
+						}
+						else
+						{
+							<option value="@item.Value">@item.Text</option>
+						}
+					}
+				</select>
+			</div>
+		</div>
+
+		<div class="control-group">
+			<label class="control-label" for="prefix">Prefix: </label>
+			<div class="controls">
+				<input class="span12 m-wrap margin-bottom-10" type="text" id="prefix" name="prefix" value="@(Model != null ? @Model.Prefix : "")" />
+			</div>
+		</div>
+
+		@*<div class="control-group">
+			<label class="control-label" for="protecturl">Protect Existing Urls: </label>
+			<div class="controls">
+				<label class="smallWrap">
+					<div class="radio" id="protecturl1">
+						<span class="checked">
+							<input type="radio" @(Model == null || (Model != null && Model.IsProtect) ? "checked='checked'" : "") id="protecturl1" name="protecturl" value="1"></span></div>Protect
+				</label>
+				<label class="smallWrap">
+					<div class="radio" id="protecturl0"><span><input type="radio" @(Model != null && !Model.IsProtect ? "checked='checked'" : "") id="protecturl0" name="protecturl" value="0"></span></div>Don't Protect
+				</label>
+			</div>
+
+		</div>*@
+
+		<div class="control-group">
+			<label class="control-label" for="protectUrl_StatusSwitch">Protect Existing Urls: </label>
+			<div class="controls">
+				<input type="hidden" value="@(Model != null ? Model.IsProtect.ToString() : "0")" name="protecturl" id="protectUrl_status" data-act="1" data-psf="0" class="switchBt" />
+				<div class="switch" data-on="success" data-off="default">
+					<input type="checkbox" class="toggle success-toggle-button" name="protectUrl_StatusSwitch" id="protectUrl_StatusSwitch" @((Model != null && Model.IsProtect) ? "checked" : "") />
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="formActions" class="form-actions">
+		@*<button type="submit" class="btn red" title="Save URL Structure Details"><i class="icon-save"></i> Save</button>*@
+		<button type="button" class="btn" title="Cancel Changes" onclick="discardChanges('/cms/URLStructure'),false;"><i class="icon-remove"></i> Cancel</button>
+		<button type="submit" class="btn green" title="Save URL Structure Details" onclick="URLStructureUpdate()" ><i class="icon-save"></i> Save</button>
+	</div>
+
+	<img id="urlStructureLoading" src="/cms/content/img/URLStructureLoader.gif" class="hide"/>
+	<div id="overlayURLStructure"> </div>
+
+}
+
+
+
+
+

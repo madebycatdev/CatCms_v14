@@ -1,0 +1,21 @@
+﻿ 
+@{
+    ViewBag.Title = "Install";
+    Layout = "~/Views/Shared/Login.cshtml";
+}
+
+<h2>Install</h2>
+<p> EuroCMS initialized with following operations. </p>
+<ul>
+    @foreach (string s in EuroCMS.Admin.GlobalVars.build_logs)
+    { 
+         <li>@s</li>
+    }
+</ul>
+<p>
+    Please <a href="@Url.Action("Dashboard")">click</a> to continue
+</p>
+
+
+
+

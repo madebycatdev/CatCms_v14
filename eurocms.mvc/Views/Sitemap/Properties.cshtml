@@ -1,0 +1,122 @@
+﻿@model EuroCMS.Admin.Models.SitemapPropertyView
+
+@{
+    ViewBag.Title = "SitemapProperties";
+    Layout = null;
+}
+
+@using (Html.BeginForm("Properties", "Sitemap", new { }, FormMethod.Post, new { @class = "form-horizontal", @id = "pProperties" }))
+{
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+        <h3>Sitemap Properties:</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row-fluid">
+            <div class="control-group">
+                <label class="control-label" for="inpZoneID">Zone Name:</label>
+                <div class="controls">
+                    @Html.DropDownList("zone_id", ViewBag.Zones as List<SelectListItem>, new { @class = "m-wrap span12" })
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inpItemCount">Menu Depth:</label>
+                <div class="controls">
+                    <select name="menu_depth" id="menu_depth">
+                        <option value="1" @(Model.MenuDepth == 1 ? " selected" : "")>1</option>
+                        <option value="2" @(Model.MenuDepth == 2 ? " selected" : "")>2</option>
+                        <option value="3" @(Model.MenuDepth == 3 ? " selected" : "")>3</option>
+                        <option value="4" @(Model.MenuDepth == 4 ? " selected" : "")>4</option>
+                        <option value="5" @(Model.MenuDepth == 5 ? " selected" : "")>5</option>
+                        <option value="6" @(Model.MenuDepth == 6 ? " selected" : "")>6</option>
+                        <option value="7" @(Model.MenuDepth == 7 ? " selected" : "")>7</option>
+                        <option value="8" @(Model.MenuDepth == 8 ? " selected" : "")>8</option>
+                        <option value="9" @(Model.MenuDepth == 9 ? " selected" : "")>9</option>
+                        <option value="10" @(Model.MenuDepth == 10 ? " selected" : "")>10</option>
+                        <option value="11" @(Model.MenuDepth == 11 ? " selected" : "")>11</option>
+                        <option value="12" @(Model.MenuDepth == 12 ? " selected" : "")>12</option>
+                        <option value="13" @(Model.MenuDepth == 13 ? " selected" : "")>13</option>
+                        <option value="14" @(Model.MenuDepth == 14 ? " selected" : "")>14</option>
+                        <option value="15" @(Model.MenuDepth == 15 ? " selected" : "")>15</option>
+                        <option value="16" @(Model.MenuDepth == 16 ? " selected" : "")>16</option>
+                        <option value="17" @(Model.MenuDepth == 17 ? " selected" : "")>17</option>
+                        <option value="18" @(Model.MenuDepth == 18 ? " selected" : "")>18</option>
+                        <option value="19" @(Model.MenuDepth == 19 ? " selected" : "")>19</option>
+                        <option value="20" @(Model.MenuDepth == 21 ? " selected" : "")>20</option>
+                    </select>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inpOrderID">Item Ordering:</label>
+                <div class="controls">
+                    <select name="inpOrderID" id="inpOrderID">
+                        <option value="0" @(Model.ItemOrdering == 0 ? " selected" : "")>Article Start Date ASC</option>
+                        <option value="14" @(Model.ItemOrdering == 14 ? " selected" : "")>Article Start Date DESC</option>
+                        <option value="15" @(Model.ItemOrdering == 15 ? " selected" : "")>Article Create Date ASC</option>
+                        <option value="16" @(Model.ItemOrdering == 16 ? " selected" : "")>Article Create Date DESC</option>
+                        <option value="1" @(Model.ItemOrdering == 1 ? " selected" : "")>Article Last Update</option>
+                        <option value="2" @(Model.ItemOrdering == 2 ? " selected" : "")>Article Headline</option>
+                        <option value="3" @(Model.ItemOrdering == 3 ? " selected" : "")>Article Order Asc</option>
+                        <option value="11" @(Model.ItemOrdering == 11 ? " selected" : "")>Article Order Desc</option>
+                        <option value="4" @(Model.ItemOrdering == 4 ? " selected" : "")>Article Custom Date 1 DESC</option>
+                        <option value="12" @(Model.ItemOrdering == 12 ? " selected" : "")>Article Custom Date 1 ASC</option>
+                        <option value="5" @(Model.ItemOrdering == 5 ? " selected" : "")>Article Custom Date 2 DESC</option>
+                        <option value="13" @(Model.ItemOrdering == 13 ? " selected" : "")>Article Custom Date 2 ASC</option>
+                        <option value="6" @(Model.ItemOrdering == 6 ? " selected" : "")>Article Custom Flag 1</option>
+                        <option value="7" @(Model.ItemOrdering == 7 ? " selected" : "")>Article Custom Flag 2</option>
+                        <option value="8" @(Model.ItemOrdering == 8 ? " selected" : "")>Article Custom Flag 3</option>
+                        <option value="9" @(Model.ItemOrdering == 9 ? " selected" : "")>Article Custom Flag 4</option>
+                        <option value="10" @(Model.ItemOrdering == 10 ? " selected" : "")>Article Custom Flag 5</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="inpExcludeZoneIds">Exclude Zone Id(s):</label>
+                <div class="controls">
+                    <input class="m-wrap span10" type="text" name="inpExcludeZoneIds" id="inpExcludeZoneIds" size="60" maxlength="100" value="@Model.ExcludeZoneIds" />
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="inpExcludeArticleIds">Exclude Article Id(s):</label>
+                <div class="controls">
+                    <input class="m-wrap span10" type="text" name="inpExcludeArticleIds" id="inpExcludeArticleIds" size="60" maxlength="100" value="@Model.ExcludeArticleIds" />
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="inpPagerClass">Class Name:</label>
+                <div class="controls">
+                    <input class="m-wrap span10" type="text" name="inpClass" id="inpClass" size="60" maxlength="100" value="@Model.ClassName" />
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="inpContainer">Container Tag:</label>
+                <div class="controls">
+                    <input class="m-wrap span10" type="text" name="inpContainer" id="inpContainer" size="60" maxlength="100" value="@Model.ContainerTag" /><br />
+                    <span class="smallElement">Default: div, use NA for non-container tag</span>
+                </div>
+            </div>
+
+
+
+
+            <div class="control-group">
+                <label class="control-label" for="inpOrderID">Sitemap Type:</label>
+                <div class="controls">
+                    <select name="SitemapType" id="SitemapType">
+                        <option value="0" @(Model.SitemapType == 0 ? " selected" : "")>Display Only Zone Level</option>
+                        <option value="1" @(Model.SitemapType == 1 ? " selected" : "")>Display Zones & Articles</option>
+                    </select>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" type="button">Close</button>
+        <button onclick="applyPortlet(this),false;" id="saveClose" class="btn blue" type="button">Save & Close</button>
+    </div>
+}

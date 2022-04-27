@@ -1,0 +1,73 @@
+﻿@model EuroCMS.Admin.entity.cms_templates
+ 
+<script type="text/javascript">
+    $(document).ready(function () {
+        jHtmlAreaInit("editor_html");
+    });
+</script> 
+<div class="tabbable tabbable-custom">
+	<div class="tab-content new-tab-content">
+		<div class="row-fluid">
+			@using (Html.BeginForm("Create", "Template", FormMethod.Post, new { @class = "form-horizontal", @id = "layoutCreate"}))
+			{
+				@Html.CmsValidationSummary(string.Empty)
+				@Html.AntiForgeryToken()
+				<div class="control-group">
+					<label class="control-label" for="template_name">Template Name:<span class="red">*</span></label>
+					<div class="controls">
+						<input type="text" name="template_name" id="template_name" class="m-wrap span12" value="@HttpUtility.HtmlDecode(Model.template_name)" required>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="structure_description">Description:</label>
+					<div class="controls">
+						<textarea name="structure_description" id="structure_description" rows="4" class="span12 m-wrap">@Model.structure_description</textarea>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="group_id">Group:</label>
+					<div class="controls">
+						  @Html.DropDownListFor(d => d.group_id, ViewBag.Groups as IEnumerable<SelectListItem>, "Not Grouped", new { @class ="span12 m-wrap"})
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="template_type">Template Type:</label>
+					<div class="controls">
+						<select name="template_type" id="template_type" tabindex="1" class="span12 m-wrap">
+							 <option value="0" @(Model.template_type.ToString() == "0"?"selected=selected":"")>Screen</option>
+							 <option value="1" @(Model.template_type.ToString() == "1"?"selected='selected'":"")>Mobile</option>
+						</select>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="template_doctype">Template DOCTYPE:</label>
+					<div class="controls">
+						<textarea name="template_doctype" id="template_doctype" rows="4" class="span12 m-wrap">@HttpUtility.HtmlDecode(Model.template_doctype)</textarea>
+					</div>
+				</div>
+				<div class="control-group hide">
+					<label class="control-label" for="content_1_editor_type">Editor Type:</label>
+					<div class="controls">
+						<label class="smallWrap">
+						   <input name="content_1_editor_type" value="H" checked="checked" id="content_1_editor_type1" type="radio" />
+						   HTML Editor
+						</label>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="editor_html">Template:</label>
+					<div class="controls editorContent">
+						<div class="span12 active" id="type_H">
+							<textarea id="editor_html" class="htmlEditor span12" name="editor_html">@Html.Raw(@Model.template_html)</textarea>
+						</div>
+					</div>
+				</div>
+				<div class="form-actions">
+					<button type="button" class="btn" title="Cancel Changes" onclick="discardChanges('@Url.Action("Index")'),false;"><i class="icon-remove"></i> Cancel</button>
+					<button type="submit" class="btn green" title="Save Template"><i class="icon-save"></i> Save</button>
+				</div>
+			}
+		</div>
+	</div>
+</div>
+@section ModalSelectArticle { @Html.Partial("ModalSelectArticle", ViewData["ZoneGroups"] as List<EuroCMS.Admin.entity.cms_zone_groups>) }

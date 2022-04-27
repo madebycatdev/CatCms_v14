@@ -1,0 +1,84 @@
+﻿@model MembershipUser
+ 
+@Html.ValidationSummary("") 
+
+<div class="span6">
+@using (Html.BeginForm("ChangeProfile", "Account", FormMethod.Post, new { @enctype = "multipart/form-data" })) 
+{ 
+    @Html.AntiForgeryToken()
+           
+              var profile = System.Web.Profile.ProfileBase.Create(User.Identity.Name, false);
+              var avatar = (byte[])profile.GetPropertyValue("System.Avatar");
+     
+             <h3>Change Information</h3>
+             <p>
+               <label for="FullName">Avatar:</label>
+               @if(avatar !=null)
+               {
+                   <img id="Avatar" src="data:image/png;base64,@System.Convert.ToBase64String(avatar)" width="73" height="73" /> 
+                   <input type="button" onclick="$('#RemoveAvatar').val('true'); $('#Avatar').remove(); $(this).remove();" value="Remove" />
+               }
+               else
+               {
+                    <img src="~/Content/img/avatar.png" width="24" height="24" /> 
+               }
+               <input type="file" name="Avatar" />  <i>Only jpg, png, gif files and less than 5mb.</i>
+               <input type="hidden" id="RemoveAvatar" name="RemoveAvatar" value="false" />
+             </p>
+             <p>
+               <label for="FullName">User Name:</label>
+                @Model.UserName
+             </p>
+             <p>
+                <label for="FullName">Registered:</label>
+                @Model.CreationDate.ToString("f")
+             </p>
+             <p>
+               <label for="System_FullName">Full Name:</label> 
+               @Html.TextBox("System.FullName", Html.Raw( profile.GetPropertyValue("System.FullName") ) )
+               @Html.ValidationMessage("System.FullName")
+             </p>
+             <p>
+               <label for="email">Email:</label> 
+               @Html.TextBox("email", Html.Encode(Model.Email))
+               @Html.ValidationMessage("email") 
+            </p>
+            <p>
+                 <button class="btn red" type="submit" value="Save">
+                     <i class="icon-save"></i> Save
+                 </button>
+            </p>
+
+}
+</div>
+
+<div class="span6">
+@using (Html.BeginForm("ChangePassword", "Account", FormMethod.Post)) 
+{ 
+    @Html.AntiForgeryToken()
+    <h3>Change Password</h3>
+    <p>
+        New passwords are required to be a minimum of  @Html.Encode(ViewData["PasswordLength"])  characters in length.
+    </p>
+    <p>
+        <label for="currentPassword">Current password:</label>
+        @Html.Password("currentPassword") 
+        @Html.ValidationMessage("currentPassword") 
+    </p>
+    <p>
+        <label for="newPassword">New password:</label>
+        @Html.Password("newPassword") 
+        @Html.ValidationMessage("newPassword") 
+    </p>
+    <p>
+        <label for="confirmPassword">Confirm new password:</label>
+        @Html.Password("confirmPassword") 
+        @Html.ValidationMessage("confirmPassword") 
+    </p>
+    <p>
+        <button class="btn red" type="submit" value="Change Password">
+            <i class="icon-lock"></i> Change Password
+        </button>
+    </p>
+}
+</div>

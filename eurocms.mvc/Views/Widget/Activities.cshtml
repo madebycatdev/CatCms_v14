@@ -1,0 +1,118 @@
+﻿@model List<EuroCMS.Model.WidgetConfig>
+@using PagedList.Mvc;
+
+@if (Model != null && Model.Count > 0)
+{
+    @Html.HiddenFor(x => x[0].WidgetUserID)
+    <input type="hidden" name="users[]" value=@Model.Where(x => x.ParamKey == "Users").FirstOrDefault().ParamValue />
+    <input type="hidden" name="days" value=@Model.Where(x => x.ParamKey == "ActivityDays").FirstOrDefault().ParamValue />
+}
+<input id="WidgetType" name="WidgetType" type="hidden" value="Activities" />
+
+@{
+    int pageSize = 50;
+    int totalResult = 0;
+    int currentPage = 1;
+
+    if (Request.QueryString["page"] != null)
+    {
+        try
+        {
+            currentPage = Convert.ToInt32(Request.QueryString["page"]);
+        }
+        catch (Exception ex)
+        {
+            currentPage = 1;
+        }
+    }
+
+    DateTime endDate = DateTime.Now;
+    DateTime beginDate = DateTime.Now.AddDays(-30);
+
+    List<int> ErrorEvents = new List<int> { 3005, 4005, 3006 };
+    EuroCMS.Admin.Models.WebEventLogDbContext context = new EuroCMS.Admin.Models.WebEventLogDbContext();
+    var result = context.GetWebEventLogs(string.Empty, beginDate, endDate, currentPage - 1, pageSize, out totalResult);
+    var resultAsPagedList = new PagedList.StaticPagedList<EuroCMS.Admin.Models.WebEventLogModel>(result, currentPage, pageSize, totalResult);
+}
+
+<div class="activities">
+    <div class="scroller" style="data-always-visible=" 1" data-rail-visible="0">
+        <ul class="feeds"> 
+
+            @if (resultAsPagedList != null && resultAsPagedList.Count > 0)
+            {
+                foreach (var log in resultAsPagedList)
+                {
+                    string sub = string.Empty;
+                    string name = string.Empty;
+                    if (log.Details.Contains("User:"))
+                    {
+                        sub = log.Details.Substring(log.Details.IndexOf("User:") + "User:".Length);
+                        name = sub.Substring(0, sub.IndexOf("\n"));
+                        name = name.Trim().ToLower();
+                    }
+                    if (string.IsNullOrEmpty(name))
+                    {
+                        if (log.Details.Contains("User ID:"))
+                        {
+                            sub = log.Details.Substring(log.Details.IndexOf("User ID:") + "User ID:".Length);
+                            name = sub.Substring(0, sub.IndexOf("\n"));
+                            name = name.Trim().ToLower();
+                        }
+                    }
+
+                    if (Model.Where(x => x.ParamKey == "Users").FirstOrDefault().ParamValue != "all")
+                    {
+                        string d = Model.Where(x => x.ParamKey == "Users").FirstOrDefault().ParamValue.ToLower();
+                        if ((d != name && !d.Contains(name)) || string.IsNullOrEmpty(name))
+                        {
+                            break;
+                        }
+                    }
+                    <li>
+                        <div class="col1">
+                            <div class="cont">
+                                <div class="cont-col1">
+                                    <div class="label label-info">
+                                        <i class="icon-bell-alt"></i>
+                                    </div>
+                                </div>
+                                <div class="cont-col2">
+                                    <div class="desc">
+                                        @(string.IsNullOrEmpty(name) ? "" : name + " - ") @log.Message
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col2">
+                            <div class="date">
+                                @{
+                    TimeSpan tDiff = DateTime.Now - log.EventTime;
+                    string resultDate = string.Empty;
+                    resultDate += (tDiff.Days > 0) ? tDiff.Days + "g " : string.Empty;
+                    resultDate += (tDiff.Hours > 0) ? tDiff.Hours + "sa " : string.Empty;
+                    if (tDiff.Days == 0)
+                    {
+                        resultDate += (tDiff.Minutes > 0) ? tDiff.Minutes + "dk " : string.Empty;   //sadece 1 günü geçmemişse dk ekle
+                    }
+                    <span>@resultDate</span>
+                                }
+                            </div>
+                        </div>
+                    </li>
+                }
+            }
+
+        </ul>
+    </div>
+    @Html.PagedListPager(resultAsPagedList, page => Url.Action("Dashboard", "Home",
+                new
+                {
+                    page
+                }))
+</div>
+<script>
+    $(document).ready(function () {
+        $('#dvPanelTitle@((Model == null || Model.Count == 0) ? "" : Model.FirstOrDefault().WidgetUserID.ToString())').html('<i class="icon-reorder"></i>Last Activities');
+    });
+</script>

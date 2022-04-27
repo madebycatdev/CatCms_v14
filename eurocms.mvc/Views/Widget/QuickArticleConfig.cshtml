@@ -1,0 +1,99 @@
+﻿@using EuroCMS.Admin.Common
+@model List<EuroCMS.Model.WidgetConfig>
+
+@{
+    EuroCMS.Model.CmsDbContext dbContext = new EuroCMS.Model.CmsDbContext();
+    List<EuroCMS.Model.Zone> zones = dbContext.Zones.Where(x => x.Status == "A").ToList();
+    List<EuroCMS.Model.Classification> clsfs = dbContext.Classifications.ToList();
+    List<EuroCMS.Model.Language> languages = dbContext.Languages.ToList();
+    List<string> selectedZoneIds = new List<string>();
+    int widgetUserId = -1;
+    if (Model != null && Model.Count > 0)
+    {
+        widgetUserId = Model.FirstOrDefault().WidgetUserID;
+    }
+    //selected="selected"
+    if (Model != null && Model.Count > 0)
+    {
+        string selectedzs = ( Model.Where(x => x.ParamKey == "Zones").FirstOrDefault() != null)? Model.Where(x => x.ParamKey == "Zones").FirstOrDefault().ParamValue : string.Empty;
+        if (!string.IsNullOrEmpty(selectedzs))
+        {
+            selectedZoneIds = selectedzs.Split(',').ToList();
+        }
+    }
+        if (Model != null && Model.Count > 0)
+        {
+            @Html.HiddenFor(x => x[0].WidgetUserID)
+        }
+    <div class="widgetConfig">
+        <input id="WidgetType" name="WidgetType" type="hidden" value="QuickArticle" />
+
+        <div class="row-fluid">
+            <div class="control-group">
+                <label class="control-label" for="zones">Zones:</label>
+                <div class="controls">
+                    <div id="newZones">
+                        <select class="chosen-select" onclick="onZoneChanged(this);" data-placeholder="Select a Zone" name="zones[]" id="zone2" multiple>
+                            @if (zones != null)
+                            {
+                                for (int i = 0; i < zones.Count; i++)
+                                {
+                                    <option value="@zones[i].Id" @(selectedZoneIds.Contains(zones[i].Id.ToString()) ? "selected=selected" : "") ondblclick="gotoObj('zone',@zones[i].Id)">@HttpUtility.HtmlDecode(@zones[i].Name)  (@zones[i].Id)</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="control-group">
+                <label class="control-label" for="ClsfId">Classification: </label>
+                <div class="controls">
+                    <select class="m-wrap span5" name="ClsfId" id="ClsfId">
+                        <option value="">Not Classified</option>
+                        @foreach (EuroCMS.Model.Classification c in clsfs)
+                        {
+                            if (Model == null || Model.Count == 0)
+                            {
+                        <option value=@c.ID>@c.Name</option>
+                            }
+                            else
+                            {
+                        @*<option value=@c.ID @((Model.Where(x => x.ParamKey == "ClassificationID").FirstOrDefault().ParamValue == c.ID.ToString()) ? "selected=selected" : "")>@c.Name</option>*@
+                              <option value=@c.ID @((Model.Where(x => x.ParamKey == "ClassificationID").FirstOrDefault() != null && Model.Where(x => x.ParamKey == "ClassificationID").FirstOrDefault().ParamValue == c.ID.ToString()) ? "selected=selected" : "")>@c.Name</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="control-group">
+                <label class="control-label" for="Language">Language: </label>
+                <div class="controls">
+                    <select class="m-wrap span2" id="Language" name="Language">
+                        @foreach (EuroCMS.Model.Language l in languages)
+                        {
+                            if (Model == null || Model.Count == 0)
+                            {
+                                <option value=@l.ID> @HttpUtility.HtmlDecode(l.Name)</option>
+                            }
+                            else
+                            {
+                                <option value=@l.ID @((Model.Where(x => x.ParamKey == "LanguageID").FirstOrDefault() != null && Model.Where(x => x.ParamKey == "LanguageID").FirstOrDefault().ParamValue == l.ID.ToString()) ? "selected=selected" : "")> @HttpUtility.HtmlDecode(l.Name)</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="controls">
+
+                <button type="button" onclick="ConfigSaved(this)" name="save" value="true" class="btn blue"><i class="icon-save"></i> Save & Go on </button>
+            </div>
+        </div>
+    </div>
+
+}

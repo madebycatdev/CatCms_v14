@@ -1,0 +1,69 @@
+﻿@model EuroCMS.Admin.entity.cms_article_revision
+ 
+@{
+    var clsf = ViewData["classification_details"] as EuroCMS.Admin.entity.cms_asp_select_classification_details_Result; 
+}
+
+@if(Model !=null)
+{
+    <div class="control-group articleDates">
+        <label class="control-label">Article Dates</label>
+        <div class="controls">
+            <div class="span4">
+                <label class="control-label">Publishing Start Date</label>
+                <div class="controls">
+				    <div class="input-append date form_datetime">
+					    <input id="startdate_hour" name="startdate" size="16" type="text" value="@(Model.startdate > DateTime.MinValue ? Model.startdate.ToString(System.Globalization.CultureInfo.InvariantCulture) : "")" class="m-wrap">
+					    <span class="add-on"><i class="icon-calendar"></i></span>
+				    </div>
+			    </div>
+            </div>
+            <div class="span4">
+                <label class="control-label">
+                    @(clsf !=null && !string.IsNullOrEmpty(clsf.enddate_text) ? clsf.enddate_text: "Publishing End Date")
+                    @if (clsf != null && clsf.enddate_cb) { 
+                       <span class="required">*</span> 
+                    }
+                </label>
+                <div class="controls">
+				    <div class="input-append date form_datetime">
+					    <input id="enddate_hour" name="enddate" size="16" type="text" value="@(Model.enddate != null ? Model.enddate.Value.ToString(System.Globalization.CultureInfo.InvariantCulture) : "")" class="m-wrap">
+					    <span class="add-on"><i class="icon-calendar"></i></span>
+				    </div>
+			    </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="control-group">
+        <!-- summary -->
+        <label class="control-label" for="summary">
+            @(clsf !=null && !string.IsNullOrEmpty(clsf.summary_text) ? clsf.summary_text: "Summary"):
+            @if (clsf != null && clsf.summary_cb)
+            { 
+               <span class="required">*</span> 
+            }
+        </label>
+        <div class="controls">
+            <textarea class="m-wrap span12" rows="4" name="summary" id="summary">@Model.summary</textarea>
+        </div>
+        <!-- // summary -->
+    </div> 
+    @*<div class="control-group">
+        <!-- keywords -->
+        <label class="control-label" for="keywords">
+            @(clsf !=null && !string.IsNullOrEmpty(clsf.keywords_text) ? clsf.keywords_text: "Meta Keywords"):
+            @if (clsf != null && clsf.keywords_cb)
+            { 
+               <span class="required">*</span> 
+            }
+        </label>
+        <div class="controls">
+            <textarea class="m-wrap span12" rows="4" name="keywords" id="keywords">@Model.keywords</textarea>
+        </div>
+        <!-- // keywords -->
+    </div>*@
+  
+    
+    
+}

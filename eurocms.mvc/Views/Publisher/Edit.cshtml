@@ -1,0 +1,74 @@
+﻿
+@model  EuroCMS.Admin.entity.cms_asp_select_publisher_details_Result
+ 
+@{
+    ViewBag.Title = "Edit";
+    Layout = null;
+}
+
+@using (Html.BeginForm("Edit", "Publisher", FormMethod.Post, new { @class = "form-horizontal", @id = "publisherEdit" }))
+{
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+        <h3>Edit Publisher:</h3>
+    </div> 
+    <div class="modal-body">
+        <div class="row-fluid">
+            <div class="control-group">
+                <label class="control-label" for="publisher_name">Publisher Name:</label>
+                <div class="controls">
+					<input type="text" id="publisher_name" name="publisher_name" value="@Model.publisher_name" class="span12 m-wrap">
+				</div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="status1">Status:</label>
+                <div class="controls">
+                             
+                    @if (Model.publisher_status=="A")
+                    { 
+                        <input class="fl" type="radio" name="status" value="1" checked="checked" id="status1"> <span class="smallElement">Active</span>
+                        <input class="fl" type="radio" name="status" value="0" id="status0"> <span class="smallElement">Passive</span>      
+                    }
+                    else
+                    {
+                        <input class="fl" type="radio" name="status" value="1" id="status1"> <span class="smallElement">Active</span>
+                        <input class="fl" type="radio" name="status"  checked="checked" value="0" id="status0"> <span class="smallElement">Passive</span>      
+                    }
+                                 
+                </div>
+            </div><br />
+            <div class="control-group">
+                <label class="control-label" for="username">User Name:</label>
+                <div class="controls">
+					<input type="text" id="username" name="username" value="@Model.username" class="span12 m-wrap">
+                   
+				</div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="password">Password:</label>
+                <div class="controls">
+					<input type="password" id="password" name="password" value="@Model.password" class="span12 m-wrap">
+                   
+				</div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="publisher_email">Publisher E-mail:</label>
+                <div class="controls">
+					<input type="text" id="publisher_email" name="publisher_email" value="@Model.publisher_email" class="span12 m-wrap">
+                   
+				</div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="publisher_note">Publisher Note:</label>
+                <div class="controls">
+					<textarea  id="publisher_note" name="publisher_note"  class="span12 m-wrap">@Model.publisher_note</textarea>
+                   
+				</div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" data-dismiss="modal" class="btn"><i class="icon-remove"></i> Close</button>
+        <button type="submit" class="btn blue" id="saveClose"><i class="icon-save"></i> Save & Close</button>
+    </div>
+}

@@ -1,0 +1,24 @@
+﻿<div class="tabbable tabbable-custom">
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#tab_1_1">Configure Caching</a></li>
+        <li class=""><a data-toggle="tab" href="#tab_1_2">Cache Profiles</a></li>
+        <li class=""><a data-toggle="tab" href="#tab_1_3">SQL Cache Dependency</a></li>
+    </ul>
+    <div class="tab-content">
+        <div id="tab_1_1" class="tab-pane active">
+            @Html.Partial("OutputCache", ViewData["OutputCache"]  as System.Web.Configuration.OutputCacheSection)
+        </div>
+        <div id="tab_1_2" class="tab-pane">
+            @Html.Partial("OutputCacheSettings", ViewData["OutputCacheSettings"] as System.Web.Configuration.OutputCacheSettingsSection)
+        </div>
+        <div id="tab_1_3" class="tab-pane">
+            @Html.Partial("SqlCacheDependency", ViewData["SqlCacheDependency"] as System.Web.Configuration.SqlCacheDependencySection)
+        </div>
+    </div>
+</div>
+
+ 
+
+
+
+

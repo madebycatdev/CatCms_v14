@@ -1,0 +1,24 @@
+﻿@model IList<EuroCMS.Admin.entity.cms_asp_select_article_relateds_by_revision_Result>
+
+<label class="control-label" for="relateds">Related Articles</label>
+
+<div class="controls">
+    <select name="relateds[]" id="relateds" multiple="multiple" class="m-wrap span12 margin-bottom-10">
+    @if (Model != null && Model.Count > 0)
+    {
+        foreach (var related in Model)
+        {
+            <option selected="selected" value="@related.zone_id-@related.article_id">@related.out_name</option>
+        }
+    }
+    </select><br />      
+     
+    <a class="btn icn-only changeButton green" onclick="openModal('relatedArticle','#aCreate',this)" data-toggle="modal" href="#selectArticle"><i class="icon-plus"></i> Add</a>
+    <a class="btn icn-only red" onclick="removeObj('relateds'); return false;" href="#"><i class="icon-remove"></i> Remove</a>
+  
+</div>
+					
+					
+						 
+					
+			

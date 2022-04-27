@@ -1,0 +1,100 @@
+#plbg {
+	position: absolute;
+	width: 99%;
+	height: 99%;
+	left: 0;
+	top: 0;
+	background: #000;
+	opacity: .6;
+	filter: alpha(opacity=60);
+	-moz-opacity: .6;
+	-khtml-opacity: .6;
+	z-index: 199;
+	display: none;
+}
+
+#pl {
+	width: 99%;
+	height: 99%;
+	top: 0;
+	left: 0;
+	position: absolute;
+	z-index: 399;
+	display: none;
+	text-align: center;
+}
+
+#plc,
+#plp {
+	margin: 80px auto 0pt;
+	position: relative;
+	background-color: #FFFFFF;
+	border: 1px solid #999999;
+	padding: 10px;
+	text-align: left;
+}
+
+.edBut {
+	font-family: Arial, sans-serif, Tahoma;
+	font-size: 12px;
+	background-color: #e02222;
+	color: #fff;
+	cursor: pointer;
+	position: absolute;
+	text-align: center;
+	padding: 10px;
+	z-index: 99999;
+}
+
+.editButtonz {
+	width: auto;
+	height: 100px;
+	position: absolute;
+	cursor: pointer;
+	color: #000;
+	font-size: 9px;
+	text-align: left;
+	z-index: 999999;
+	-webkit-box-shadow: 2px 2px 1px 1px rgba(0, 0, 0, 0.25);
+	-moz-box-shadow: 2px 2px 1px 1px rgba(0, 0, 0, 0.25);
+	box-shadow: 2px 2px 1px 1px rgba(0, 0, 0, 0.25);
+}
+
+.editButtonz li {
+	list-style-type: disc;
+	display: inline-block;
+}
+
+.editButtonz a {
+	background: #efefef;
+	font-family: Arial, sans-serif, Tahoma;
+	font-size: 12px;
+	color: #000;
+	display: block;
+	width: 100%;
+	padding: 10px;
+	border: none;
+	border-right: 1px solid #999;
+}
+
+.editButtonz a:hover {
+	background: #ddd;
+	color: #000;
+}
+
+.editButton {
+	position: absolute;
+	/*top: 0;
+	left: 0;*/
+	z-index: 99999;
+	display:block !important;
+}
+
+form {
+	margin-bottom: 0px;
+}
+
+higlight {
+	background-color: #FF9900;
+	color: #FFFFFF;
+}

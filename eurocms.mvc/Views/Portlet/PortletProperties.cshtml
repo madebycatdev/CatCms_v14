@@ -1,0 +1,302 @@
+﻿@{
+    ViewBag.Title = "PortletProperties";
+    Layout = null;
+}
+
+@using (Html.BeginForm("PortletProperties", "Portlet", new { RevisionId = Request["RevisionId"] ?? "-1", ClsfId = Request["ClsfId"] }, FormMethod.Post, new { @class = "form-horizontal", @id = "pProperties" })) 
+{
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+        <h3>Portlet Properties:</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row-fluid">
+            <form method="post">
+                <div class="control-group">
+                    <label class="control-label" for="inpZoneID">Zone Name:</label>
+                    <div class="controls">
+                        <select name="inpZoneID" id="inpZoneID" class="m-wrap span12">
+                            <option value="0" selected="selected">-- Current Zone --</option>
+                            <option value="-2">-- Related Articles Portlet --</option>
+		                    <option value="-4">-- Tag Display Portlet --</option>
+                            <option value="-1">-- Article File Portlet --</option>
+                            <option value="-3">-- Selected Articles Portlet --</option>
+                            <option value="-5">-- Custom Content --</option>
+                            <option value="1">Your Site / Default Zone Group / Test</option>
+                            <option value="2">Your Site / mehmet / mehmet</option>
+                            <option value="5">Your Site / SARA deneme / Genel</option>
+                            <option value="4">Your Site / SARA deneme / HABER DETAY</option>
+                            <option value="7" >Your Site / SARA deneme / Menuler</option>
+                            <option value="3" >Your Site / SARA deneme / SARA deneme</option>
+                            <option value="6" >Your Site / SARA deneme / Top Menu</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="inpItemCount">Item Count:</label>
+                    <div class="controls">
+                        <select name="inpItemCount" id="inpItemCount">
+                            <option value="-365">Last 1 Year</option>
+                            <option value="-180">Last 6 Month</option>
+                            <option value="-90">Last 3 Month</option>
+                            <option value="-60">Last 2 Month</option>
+                            <option value="-30">Last Month</option>
+                            <option value="-14">Last 2 Week</option>
+                            <option value="-7">Last Week</option>
+                            <option value="0" selected="selected">0 [Unlimited]</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                            <option value="13">13</option>
+                            <option value="14">14</option>
+                            <option value="15">15</option>
+                            <option value="16">16</option>
+                            <option value="17">17</option>
+                            <option value="18">18</option>
+                            <option value="19">19</option>
+                            <option value="20">20</option>
+                            <option value="21">21</option>
+                            <option value="22">22</option>
+                            <option value="23">23</option>
+                            <option value="24">24</option>
+                            <option value="25">25</option>
+                            <option value="26">26</option>
+                            <option value="27">27</option>
+                            <option value="28">28</option>
+                            <option value="29">29</option>
+                            <option value="30">30</option>
+                            <option value="31">31</option>
+                            <option value="32">32</option>
+                            <option value="33">33</option>
+                            <option value="34">34</option>
+                            <option value="35">35</option>
+                            <option value="36">36</option>
+                            <option value="37">37</option>
+                            <option value="38">38</option>
+                            <option value="39">39</option>
+                            <option value="40">40</option>
+                            <option value="41">41</option>
+                            <option value="42">42</option>
+                            <option value="43">43</option>
+                            <option value="44">44</option>
+                            <option value="45">45</option>
+                            <option value="46">46</option>
+                            <option value="47">47</option>
+                            <option value="48">48</option>
+                            <option value="49">49</option>
+                            <option value="50">50</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="inpOrderID">Item Ordering:</label>
+                    <div class="controls">
+                        <select name="inpOrderID" id="inpOrderID">
+                            <option value="3" selected="selected">Article Order Asc</option>
+                            <option value="0" >Article Start Date ASC</option>
+                            <option value="14">Article Start Date DESC</option>
+                            <option value="15">Article Create Date ASC</option>
+                            <option value="16">Article Create Date DESC</option>
+                            <option value="1">Article Last Update</option>
+        	                <option value="2">Article Headline</option>
+                            <option value="11">Article Order Desc</option>
+                            <option value="4">Article Custom Date 1 DESC</option>
+                            <option value="12">Article Custom Date 1 ASC</option>
+                            <option value="5">Article Custom Date 2 DESC</option>
+                            <option value="13">Article Custom Date 2 ASC</option>
+                            <option value="6">Article Custom Flag 1</option>
+                            <option value="7">Article Custom Flag 2</option>
+                            <option value="8">Article Custom Flag 3</option>
+                            <option value="9">Article Custom Flag 4</option>
+                            <option value="10">Article Custom Flag 5</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="inpHeader">Portlet Header:</label>
+                    <div class="controls">
+                        <input class="m-wrap span10" type="text" name="inpHeader" id="inpHeader" size="60" maxlength="100" value="" />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="inpClass">Class Name:</label>
+                    <div class="controls">
+                        <input class="m-wrap span10" type="text" name="inpClass" id="inpClass" size="60" maxlength="100" value="" />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="inpContainer">Container Tag:</label>
+                    <div class="controls">
+                        <input class="m-wrap span10" type="text" name="inpContainer" id="inpContainer" size="60" maxlength="100" value="NA" /><br />
+                        <span class="smallElement">Default: div, use NA for non-container tag</span>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="include_articles">Display Article IDs:</label>
+                    <div class="controls">
+                        <input type="hidden" name="inpInclude" id="inpInclude" value="" />
+                        <select name="include_articles" id="include_articles" size="4" style="height:120px; width:99%; overflow:hidden; visibility:visible;">
+                        </select>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Actions</label>
+                    <div class="controls">
+                        <button onClick="return openAZL('portlet_manager_include'),false;" title="Add new article ID" class="btn blue" type="button"><i class="icon-plus"></i> Add</button>
+                        <button onClick="return removeAZL('include_articles'),false;" title="Remove selected article ID" class="btn blue" type="button"><i class="icon-trash"></i> Remove</button>
+                        <button onClick="return MoveSelectOptionUp('include_articles'),false;" title="Move selected article up" class="btn blue" type="button"><i class="icon-arrow-up"></i> Move Up</button>
+                        <button onClick="return MoveSelectOptionDown('include_articles'),false;" title="Move selected article down" class="btn blue" type="button"><i class="icon-arrow-down"></i> Move Down</button><br />
+                        <span class="smallElement">Zone ID - Article ID # with comma (Disables zone selection, item count, ordering)</span>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="exclude_articles">Exclude Article IDs:</label>
+                    <div class="controls">
+                        <input type="hidden" name="inpExclude" id="inpExclude" value="" />
+                        <select name="exclude_articles" id="exclude_articles" size="4" style="height:120px; width:99%; overflow:hidden; visibility:visible;">
+                        </select>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Action:</label>
+                    <div class="controls">
+                        <button onClick="return openAZL('portlet_manager_exclude'),false;" title="Add new article ID" class="btn blue" type="button"><i class="icon-plus"></i> Add</button>
+                        <button onClick="return removeAZL('exclude_articles'),false;" title="Remove selected article ID" class="btn blue" type="button"><i class="icon-trash"></i> Remove</button><br />
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="inpExSelf">Exclude Self:</label>
+                    <div class="controls">
+                        <div class="switch" data-on="success" data-off="default">
+                            <input name="inpExSelf"
+                                   data-act="1"
+                                   data-psf="0"
+                                   value="@(Model.inpExSelf ? "1" : "0")"
+                                   type="checkbox"
+                                   class="toggle success-toggle-button"
+                                   id="inpExSelf"
+                                   @(Model.inpExSelf == true ? "checked" : "") />
+                        </div>
+
+                    </div>
+                </div>
+
+                @*<-->div class="control-group">
+                    <label>
+                        <input class="fl" type="checkbox" name="inpExSelf" id="inpExSelf" value="1" />
+                        <span class="smallElement">Exclude Self</span>
+                    </label>
+                </!--div>*@
+                <div class="control-group">
+                    <label class="control-label">Paging</label>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="inpPagerClass">Class Name:</label>
+                    <div class="controls">
+                        <input class="m-wrap span10" type="text" name="inpPagerClass" id="inpPagerClass" size="60" maxlength="100" value="" />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="inpPagerCount">Paging:</label>
+                    <div class="controls">
+                        <select name="inpPagerCount" id="inpPagerCount">
+				            <option value="0">0 [Unlimited]</option>
+                            <option value="1" >1</option>
+                            <option value="2" >2</option>
+                            <option value="3" >3</option>
+                            <option value="4" >4</option>
+                            <option value="5" >5</option>
+                            <option value="6" >6</option>
+                            <option value="7" >7</option>
+                            <option value="8" >8</option>
+                            <option value="9" >9</option>
+                            <option value="10" >10</option>
+                            <option value="11" >11</option>
+                            <option value="12" >12</option>
+                            <option value="13" >13</option>
+                            <option value="14" >14</option>
+                            <option value="15" >15</option>
+                            <option value="16" >16</option>
+                            <option value="17" >17</option>
+                            <option value="18" >18</option>
+                            <option value="19" >19</option>
+                            <option value="20" >20</option>
+                            <option value="21" >21</option>
+                            <option value="22" >22</option>
+                            <option value="23" >23</option>
+                            <option value="24" >24</option>
+                            <option value="25" >25</option>
+                            <option value="26" >26</option>
+                            <option value="27" >27</option>
+                            <option value="28" >28</option>
+                            <option value="29" >29</option>
+                            <option value="30" >30</option>
+                            <option value="31" >31</option>
+                            <option value="32" >32</option>
+                            <option value="33" >33</option>
+                            <option value="34" >34</option>
+                            <option value="35" >35</option>
+                            <option value="36" >36</option>
+                            <option value="37" >37</option>
+                            <option value="38" >38</option>
+                            <option value="39" >39</option>
+                            <option value="40" >40</option>
+                            <option value="41" >41</option>
+                            <option value="42" >42</option>
+                            <option value="43" >43</option>
+                            <option value="44" >44</option>
+                            <option value="45" >45</option>
+                            <option value="46" >46</option>
+                            <option value="47" >47</option>
+                            <option value="48" >48</option>
+                            <option value="49" >49</option>
+                            <option value="50" >50</option>
+			            </select>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="inpPagerLocation">Pager Position:</label>
+                    <div class="controls">
+                        <select name="inpPagerLocation" id="inpPagerLocation">
+				            <option value="0" selected="selected">Top</option>
+				            <option value="1">Bottom</option>
+				            <option value="2">Both</option>
+			            </select>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="inpPagerHeader">Pager Header:</label>
+                    <div class="controls">
+                        <input class="m-wrap span10" type="text" name="inpPagerHeader" id="inpPagerHeader" size="60" maxlength="255" value="" />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="inpPrevNext">Previos - Next Caption:</label>
+                    <div class="controls">
+                        <input class="m-wrap span10" type="text" name="inpPrevNext" id="inpPrevNext" size="60" maxlength="255" value="" />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="inpSeperator">Item Seperator:</label>
+                    <div class="controls">
+                        <input class="m-wrap span10" type="text" name="inpSeperator" id="inpSeperator" size="60" maxlength="255" value="" />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" type="button">Close</button>
+        <button onclick="applyPortlet(this),false;" id="saveClose" class="btn blue" type="button">Save & Close</button>
+    </div>
+}

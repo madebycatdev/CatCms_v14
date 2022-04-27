@@ -1,0 +1,133 @@
+﻿@model List<EuroCMS.Model.InstantMessaging>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    EuroCMS.Model.CmsDbContext dbContext = new EuroCMS.Model.CmsDbContext();
+}
+
+<div class="row-fluid">
+    <div class="tabbable tabbable-custom tabbable-full-width">
+        <div id="tab_1_4" class="tab-pane">
+            @*<div class="row-fluid search-forms search-default">
+                    <form class="form-search" action="#">
+                        <div class="chat-form">
+                            <div class="input-cont">
+                                <input type="text" placeholder="Search..." class="m-wrap" />
+                            </div>
+                            <button type="button" class="btn green">Search &nbsp; <i class="m-icon-swapright m-icon-white"></i></button>
+                        </div>
+                    </form>
+                </div>*@
+            <div class="portlet-body" style="display: block;">
+                <table class="table table-striped table-bordered table-advance table-hover">
+                    <thead>
+                        <tr>
+                            <th>User Name</th>
+                            <th>Message Summary</th>
+                            <th>Content Name</th>
+                            <th>Request Type</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @{
+                            if (Model != null)
+                            {
+                                foreach (EuroCMS.Model.InstantMessaging instanMessaging in Model)
+                                {
+                                    string summary = "";
+                                    string requestType = "";
+                                    string fromUserName = "";
+                                    string fromUserFullName = "";
+                                    string contentName = "";
+                                    Guid fromUserId = new Guid();
+                                    fromUserId = instanMessaging.From;
+                                    fromUserName = dbContext.vAspNetMembershipUsers.Where(v => v.UserId == fromUserId).FirstOrDefault().UserName;
+                                    var currentUserProfile = System.Web.Profile.ProfileBase.Create(fromUserName, false);
+                                    fromUserFullName = currentUserProfile.GetPropertyValue("System.FullName").ToString().Trim();
+
+                                    summary = instanMessaging.Message ?? "";
+                                    summary = summary.Trim();
+                                    summary = summary.Length <= 100 ? summary : summary.Substring(0, 96) + "...";
+
+                                    requestType = instanMessaging.Type;
+                                    switch (requestType)
+                                    {
+                                        case "AA":
+                                            requestType = "Article Approve";
+                                            contentName = dbContext.Articles.Where(a => a.Id == instanMessaging.RelatedId).FirstOrDefault() != null ? dbContext.Articles.Where(a => a.Id == instanMessaging.RelatedId).FirstOrDefault().Headline : "";
+                                            break;
+                                        case "ZA":
+                                            requestType = "Zone Approve";
+                                            contentName = dbContext.Zones.Where(z => z.Id == instanMessaging.RelatedId).FirstOrDefault() != null ? dbContext.Zones.Where(z => z.Id == instanMessaging.RelatedId).FirstOrDefault().Name : "";
+                                            break;
+                                        case "FA":
+                                            requestType = "Article File Approve";
+                                            contentName = dbContext.Files.Where(f => f.FileId == instanMessaging.RelatedId).FirstOrDefault() != null ? dbContext.Files.Where(f => f.FileId == instanMessaging.RelatedId).FirstOrDefault().File1 : "";
+                                            break;
+                                    }
+
+                                    string trClass = "";
+                                    trClass = instanMessaging.ReadDate == null ? "class=warning" : string.Empty;
+
+                                    string trElementId = "instantMessage" + instanMessaging.ID.ToString();
+                                    string requestDate = instanMessaging.CreateDate.ToString("dd.MM.yyyy hh:mm:ss");
+                                    <tr id="@trElementId" @trClass>
+                                        <td><a href="/cms/InstanteMessage/Detail/@instanMessaging.ID.ToString()">@fromUserFullName</a></td>
+                                        <td class="hidden-phone">@summary</td>
+                                        <td>@contentName</td>
+                                        <td>@requestType</td>
+                                        <td>@requestDate</td>
+                                        <td>
+                                            <button type="submit" class="btn icn-only margin-bottom-5" onclick="OpenMessage(@instanMessaging.ID)" title="View Detail This Request"><i class="icon-play-circle"></i></button>
+                                            <form action="/cms/InstantMessage/Read/@instanMessaging.ID.ToString()" method="post">
+                                                <button type="submit" class="btn icn-only margin-bottom-5" title="Mark As Read This Request"><i class="icon-check"></i></button>
+                                            </form>
+                                            <form action="/cms/InstantMessage/Delete/@instanMessaging.ID.ToString()" method="post">
+                                                <button type="submit" class="btn icn-only margin-bottom-5" title="Delete This Request" data-message="Are you sure want to remove this request?" onclick="return deleteObject(this);"><i class="icon-trash"></i></button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="space5"></div>
+
+            @{
+                if (Convert.ToBoolean(ViewBag.IsPager))
+                {
+                    int pageCount = 0;
+                    pageCount = Convert.ToInt32(ViewBag.PageCount);
+                    if (pageCount > 0)
+                    {
+                        <div class="pagination pagination-left">
+                            <ul>
+                                @{
+                        for (int i = 1; i < pageCount + 1; i++)
+                        {
+                            if (Convert.ToInt32(ViewBag.CurrentPage) == i)
+                            {
+                                <li><a class="active" href="/cms/InstantMessage/Index?page=@i">@i</a></li>
+                            }
+                            else
+                            {
+                                <li><a href="/cms/InstantMessage/Index?page=@i">@i</a></li>
+                            }
+
+                        }
+                                }
+                            </ul>
+                        </div>
+                    }
+                }
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,128 @@
+﻿@model EuroCMS.Admin.entity.cms_asp_select_portlet_details_Result
+
+<script type="text/javascript">
+    //$(document).ready(function () {
+    //    CKEDITOR.replace('editor_html', { height: "300px" });
+    //});
+</script>
+
+
+
+@using (Html.BeginForm("Edit", "Portlet", FormMethod.Post, new { @class = "form-horizontal", @id = "portletCreate" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="tabbable tabbable-custom">
+		<div class="tab-content new-tab-content">
+			<div class="row-fluid">
+				<div class="control-group">
+					<label class="control-label" for="portlet_status">Portlet Status:</label>
+					<div class="controls">
+						@*
+						<input type="hidden" value="@Model.portlet_status" name="portlet_status" id="portletStatus_status" data-act="1" data-psf="0" class="switchBt" />
+						*@
+						<div class="switch" data-on="success" data-off="danger">
+							@*
+							<input type="checkbox" class="toggle success-toggle-button" name="portletStatus_StatusSwitch" id="portletStatus_StatusSwitch" @(HttpUtility.HtmlDecode(Model.portlet_status.ToString()) == "1" ? "checked" : "") />
+							*@
+							<input 
+								name="portlet_status" 
+								data-act="1" 
+								data-psf="0" 
+								value="@Model.portlet_status" 
+								type="checkbox" 
+								class="toggle success-toggle-button" 
+								id="portlet_status" 
+								@(HttpUtility.HtmlDecode(Model.portlet_status.ToString()) == "1" ? "checked" : "") 
+							/>
+						</div>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="portlet_name">Portlet Name: <span class="red">*</span></label>
+					<div class="controls">
+						<input class="span12 m-wrap" type="text" id="portlet_name" name="portlet_name" value="@Model.portlet_name" required>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="structure_description">Description:</label>
+					<div class="controls">
+						<textarea class="span12 m-wrap" id="structure_description" name="structure_description" rows="4">@Model.structure_description</textarea>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="group_id">Group:</label> 
+					<div class="controls">
+						@Html.DropDownListFor(g=>g.group_id, ViewBag.Groups as IEnumerable<SelectListItem>, "Not Grouped", new { @class ="m-wrap span12"})
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="portlet_css">Portlet CSS:</label>
+					<div class="controls">
+						<textarea class="span12 m-wrap" id="portlet_css" name="portlet_css" rows="4">@Html.Raw(Model.portlet_css)</textarea>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="portlet_header">Portlet Header:</label>
+					<div class="controls">
+						<textarea class="span12 m-wrap" id="portlet_header" name="portlet_header" rows="4">@Html.Raw(Model.portlet_header)</textarea>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="portlet_footer">Portlet Footer:</label>
+					<div class="controls">
+						<textarea class="span12 m-wrap" id="portlet_footer" name="portlet_footer" rows="4">@Html.Raw(Model.portlet_footer)</textarea>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="enable_shortcut">Enabled Shortcut</label>
+					<div class="controls">
+						@*
+						
+						
+						<input type="hidden" value="@Model.enable_shortcut" name="enable_shortcut" id="enableShortcut_status" data-act="Y" data-psf="N" class="switchBt" />
+						*@
+						<div class="switch" data-on="success" data-off="danger">
+							@*
+							<input type="checkbox" class="toggle success-toggle-button" name="enableShortcut_StatusSwitch" id="enableShortcut_StatusSwitch" @(HttpUtility.HtmlDecode(Model.enable_shortcut.ToString()) == "Y" ? "checked" : "") />
+							*@
+							<input 
+								name="enable_shortcut" 
+								data-act="Y" 
+								data-psf="N" 
+								value="@Model.enable_shortcut" 
+								type="checkbox" 
+								class="toggle success-toggle-button" 
+								id="enable_shortcut" 
+								@(HttpUtility.HtmlDecode(Model.enable_shortcut.ToString()) == "Y" ? "checked" : "") 
+							/>
+						</div>
+					</div>
+				</div>
+				<div class="control-group hide">
+					<label class="control-label" for="editor_type">Editor Type</label>
+					<div class="controls">
+						<label class="smallWrap">
+							<input type="radio" name="editor_type" value="H" checked="checked" id="editor_type1" @(Model.content_editor_type == "1"?"checked=checked":"") />
+							HTML Editor
+						</label>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="portlet_html">Portlet HTML</label>
+					<div class="controls">
+						<div id="type_H">
+							<textarea class="span12 htmlEditor" name="editor_html">@Html.Raw(Model.portlet_html)</textarea>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="form-actions">
+				<button type="button" class="btn" title="Cancel Changes" onclick="discardChanges('@Url.Action("Index")'),false;"><i class="icon-remove"></i> Cancel</button>
+				<button type="submit" class="btn green" title="Save Portlet Details"><i class="icon-save"></i> Save</button>
+
+			</div>
+		</div>
+	</div>
+}
+
+@section ModalSelectArticle { @Html.Partial("ModalSelectArticle") }

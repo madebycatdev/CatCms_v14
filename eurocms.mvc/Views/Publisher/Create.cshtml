@@ -1,0 +1,60 @@
+﻿@{
+    Layout = null;
+}
+
+@using (Html.BeginForm("Create", "Publisher", FormMethod.Post, new { @class = "form-horizontal", @id = "publisherCreate" }))
+{
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+        <h3>Create New Publisher:</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row-fluid">
+            <div class="control-group">
+                <label class="control-label" for="publisher_name">Publisher Name:</label>
+                <div class="controls">
+					<input type="text" id="publisher_name" name="publisher_name" class="span12 m-wrap">
+				</div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="status1">Status:</label>
+                <div class="controls">
+                        <input class="fl" type="radio" name="status" value="1" checked="checked" id="status1"> <span class="smallElement">Active</span>
+                    <input class="fl" type="radio" name="status" value="0" id="status0"> <span class="smallElement">Passive</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="username">User Name:</label>
+                <div class="controls">
+					<input type="text" id="username" name="username" class="span12 m-wrap">
+                   
+				</div>
+            </div>
+            <div class="control-group">
+                    <label class="control-label" for="password">Password:</label>
+                    <div class="controls">
+						<input type="password" id="password" name="password" class="span12 m-wrap">
+                   
+					</div>
+                </div>
+            <div class="control-group">
+                <label class="control-label" for="publisher_email">Publisher E-mail:</label>
+                <div class="controls">
+					<input type="text" id="publisher_email" name="publisher_email" class="span12 m-wrap">
+                   
+				</div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="publisher_note">Publisher Note:</label>
+                <div class="controls">
+					<textarea  id="publisher_note" name="publisher_note" class="span12 m-wrap"></textarea>
+                   
+				</div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" data-dismiss="modal" class="btn"><i class="icon-remove"></i> Close</button>
+        <button type="submit" class="btn blue"><i class="icon-save"></i> Save & Close</button>
+    </div>
+}

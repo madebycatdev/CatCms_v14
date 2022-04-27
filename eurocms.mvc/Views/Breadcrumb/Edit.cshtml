@@ -1,0 +1,248 @@
+﻿@model EuroCMS.Admin.entity.cms_asp_select_breadcrumb_Result
+<div class="tabbable tabbable-custom">
+	<div class="tab-content new-tab-content">
+		<div class="row-fluid">
+		@using (Html.BeginForm("Edit", "BreadCrumb", FormMethod.Post, new { @class = "form-horizontal", @id = "breadCrumbCreate" }))
+		{
+			@Html.ValidationSummary(true)
+			@Html.AntiForgeryToken()
+			<input type="hidden" name="excluded_sites" id="excluded_sites" value="@Model.excluded_sites" />
+			<input type="hidden" name="excluded_zonegroups" id="excluded_zonegroups" value="@Model.excluded_zonegroups" />
+			<input type="hidden" name="excluded_zones" id="excluded_zones" value="@Model.excluded_zones" />
+			
+			<div class="control-group">
+				<label class="control-label" for="breadcrumb_name">Bread Crumb Name:<span class="red">*</span></label>
+				<div class="controls">
+					<input type="text" name="breadcrumb_name" id="breadcrumb_name" value="@Model.breadcrumb_name" class="m-wrap span12" required>
+				</div>
+			</div> 
+			<div class="control-group">
+				<label class="control-label" for="deep_level">Deep Level:</label>
+				<div class="controls">
+					<select id="deep_level" name="deep_level" tabindex="1" class="m-wrap span12">
+						@for (int l = 1; l <= 20; l++)
+						{ 
+						   <option value="@l" @(Model.deep_level == l ? "selected=selected": "")>@l</option> 
+						}
+					</select>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="seperator">Seperator:</label>
+				<div class="controls">
+					<input type="text" name="seperator" id="seperator" value="@Model.seperator" class="m-wrap span12">
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="ul_class">Main Items Container Class:</label>
+				<div class="controls">
+						<input type="text" name="ul_class" id="ul_class" value="@Model.ul_class" class="m-wrap span12">
+				</div>
+			</div>        
+			<div class="control-group">
+				<label class="control-label" for="breadcrumb_main_container">Main Items Container Tag:</label>
+				<div class="controls">
+					<input type="text" name="breadcrumb_main_container" id="breadcrumb_main_container" value="@Model.breadcrumb_main_container" class="m-wrap span12">
+				</div>
+			</div> 
+			<div class="control-group">
+				<label class="control-label" for="breadcrumb_main_item_container">Main Item Tag:</label>
+				<div class="controls">
+					<input type="text" name="breadcrumb_main_item_container" id="breadcrumb_main_item_container" value="@Model.breadcrumb_main_item_container" class="m-wrap span12">
+				</div>
+			</div> 
+			<div class="control-group">
+				<label class="control-label" for="breadcrumb_sub_container">Sub Items Container Tag:</label>
+				<div class="controls">
+					<input type="text" name="breadcrumb_sub_container" id="breadcrumb_sub_container" value="@Model.breadcrumb_sub_container" class="m-wrap span12">
+				</div>
+			</div> 
+			<div class="control-group">
+				<label class="control-label" for="breadcrumb_sub_item_container">Sub Item Tag:</label>
+				<div class="controls">
+					<input type="text" name="breadcrumb_sub_item_container" id="breadcrumb_sub_item_container" value="@Model.breadcrumb_sub_item_container" class="m-wrap span12">
+				</div>
+			</div> 
+			<div class="control-group">
+				<label class="control-label" for="include_submenus">Show Submenus:</label>
+				<div class="controls">  
+				   @*
+				   <input type="hidden" value="@Model.include_submenus" name="include_submenus" id="includeSubmenus_status" data-act="Y" data-psf="N" class="switchBt" />
+					*@
+					<div class="switch" data-on="success" data-off="default">
+						@*
+						<input type="checkbox" class="toggle success-toggle-button" name="includeSubmenus_StatusSwitch" id="includeSubmenus_StatusSwitch" @(HttpUtility.HtmlDecode(Model.include_submenus.ToString()) == "Y" ? "checked" : "") />
+						*@
+						<input 
+								name="include_submenus" 
+								data-act="Y" 
+								data-psf="N" 
+								value="@Model.include_submenus" 
+								type="checkbox" 
+								class="toggle success-toggle-button" 
+								id="include_submenus" 
+								@(HttpUtility.HtmlDecode(Model.include_submenus.ToString()) == "Y" ? "checked" : "") 
+							/>
+					</div>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="include_site">Include Site Name:</label>
+				<div class="controls">
+					@*
+					<input type="hidden" value="@Model.include_site" name="include_site" id="includeSite_status" data-act="Y" data-psf="N" class="switchBt" />
+					*@
+					<div class="switch" data-on="success" data-off="default">
+						@*
+						<input type="checkbox" class="toggle success-toggle-button" name="includeSite_StatusSwitch" id="includeSite_StatusSwitch" @(HttpUtility.HtmlDecode(Model.include_site.ToString()) == "Y" ? "checked" : "") />
+						*@
+						<input 
+							name="include_site" 
+							data-act="Y" 
+							data-psf="N" 
+							value="@Model.include_site"
+							type="checkbox" 
+							class="toggle success-toggle-button" 
+							id="include_site" 
+							@(HttpUtility.HtmlDecode(Model.include_site.ToString()) == "Y" ? "checked" : "") 
+						/>
+					</div>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="include_zonegroup">Include Zone Group Name:</label>
+				<div class="controls">
+					@*
+					<input type="hidden" value="@Model.include_zonegroup" name="include_zonegroup" id="includeZonegroup_status" data-act="Y" data-psf="N" class="switchBt" />
+					*@
+					<div class="switch" data-on="success" data-off="default">
+						@*
+						<input type="checkbox" class="toggle success-toggle-button" name="includeZonegroup_StatusSwitch" id="includeZonegroup_StatusSwitch" @(HttpUtility.HtmlDecode(Model.include_zonegroup.ToString()) == "Y" ? "checked" : "") />
+						*@
+						<input 
+							name="include_zonegroup" 
+							data-act="Y" 
+							data-psf="N" 
+							value="@Model.include_zonegroup"  
+							type="checkbox" 
+							class="toggle success-toggle-button" 
+							id="include_zonegroup" 
+							@(HttpUtility.HtmlDecode(Model.include_zonegroup) == "Y" ? "checked" : "") 
+						/>
+					</div>
+				</div>
+			</div>	
+			<div class="control-group">
+				<label class="control-label" for="include_headline">Include Current Article Headline:</label>
+				<div class="controls">
+					@*
+					<input type="hidden" value="@Model.include_headline" name="include_headline" id="includehHeadline_status" data-act="Y" data-psf="N" class="switchBt" />
+					*@
+					<div class="switch" data-on="success" data-off="default">
+						@*
+						<input type="checkbox" class="toggle success-toggle-button" name="includehHeadline_StatusSwitch" id="includehHeadline_StatusSwitch" @(HttpUtility.HtmlDecode(Model.include_headline.ToString()) == "Y" ? "checked" : "") />
+						*@
+						<input 
+							name="include_headline" 
+							data-act="Y" 
+							data-psf="N" 
+							value="@Model.include_headline" 
+							type="checkbox" 
+							class="toggle success-toggle-button" 
+							id="include_headline"
+							@(HttpUtility.HtmlDecode(Model.include_headline.ToString()) == "Y" ? "checked" : "")   
+						/>
+					</div>
+				</div>
+			</div>
+				
+			<div class="form-actions">
+				<button type="button" class="btn" title="Cancel Changes" onclick="discardChanges('@Url.Action("Index")'),false;"><i class="icon-remove"></i> Cancel</button>
+				<a id="excluded" class="changeButton btn blue icn-only" href="#selectExclude" data-toggle="modal" onclick="getSiteList('#addExclude'),openModal('defaultArticle','#zCreate')" title="Exclude(s)"><i class="icon-list-alt"></i> Exclude(s)</a>
+				<button type="submit" class="btn green" title="Save This Breadcrumb"><i class="icon-save"></i> Save</button>
+			</div>
+		}
+		</div> 
+
+
+
+		<div id="selectExclude" class="modal hide" tabindex="-1" data-width="760">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+				<h3>Excluded List:</h3>
+			</div>
+			<div class="modal-body">
+				<div class="row-fluid">
+					<form class="form">
+						<div class="control-group">
+							<label class="control-label" for="zGroup">Excluded Site(s):</label>
+							<div class="controls">
+								<select id="exclude_site" name="exclude_site" multiple="multiple" class="span12 m-wrap" size="2" ondblclick="return removeSelectedOptions('exclude_site'),moveSelectedOptions('exclude_site','not_exclude_site')"></select>
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="zone">Excluded Zone Group(s):</label>
+							<div class="controls">
+								<select id="exclude_zoneGroup" name="exclude_zoneGroup" multiple="multiple" class="span12 m-wrap" size="2" ondblclick="return removeSelectedOptions('exclude_zoneGroup'),moveSelectedOptions('exclude_zoneGroup','not_exclude_zGroup')"></select>
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="article">Excluded Zone(s):</label>
+							<div class="controls">
+								<select id="exclude_zone" name="exSite" multiple="multiple" class="span12 m-wrap" size="2" ondblclick="return removeSelectedOptions('exclude_zone'),moveSelectedOptions('exclude_zone','not_exclude_zone')"></select>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+			<div class="modal-footer">  
+				<span>(* Double click for remove)</span>
+				<button type="button" data-dismiss="modal" class="btn">Close</button>
+				<a class="btn blue icn-only" href="#addExclude" data-toggle="modal" onclick="getSiteList('not_exclude_site'),modalVisible('selectExclude')"><i class="icon-list-alt"></i> Add Exclude Item</a>
+				<button type="button" class="btn green" id="saveClose" onclick="return saveExclude(), false;">Save & Close</button>
+			</div>
+		</div>
+
+		<div id="addExclude" class="modal hide" tabindex="-1" data-width="760">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+				<h3>Add Exclude:</h3>
+			</div>
+			<div class="modal-body">
+				<div class="row-fluid">
+					<form class="form">
+						<div class="control-group">
+							<label class="control-label" for="zGroup">Excluded Site(s):</label>
+							<div class="controls">
+								<select id="not_exclude_site" name="not_exclude_site" multiple="multiple" class="span12 m-wrap" onchange="getZoneGroupList('#addExclude')" ondblclick="return moveSelectedOptions('not_exclude_site','exclude_site')">
+
+								</select>
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="zone">Excluded Zone Group(s):</label>
+							<div class="controls">
+								<select id="not_exclude_zGroup" name="not_exclude_zGroup" multiple="multiple" class="zGroup span12 m-wrap" onchange="getZoneList(this)" ondblclick="return moveSelectedOptions('not_exclude_zGroup','exclude_zoneGroup')">
+
+								</select>
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="article">Excluded Zone(s):</label>
+							<div class="controls">
+								<select id="not_exclude_zone" name="not_exclude_zone"  multiple="multiple" class="zone article span12 m-wrap" ondblclick="return moveSelectedOptions('not_exclude_zone','exclude_zone')">
+
+								</select>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<span>(* Double click for add)</span>
+				<button type="button" data-dismiss="modal" class="btn">Close</button>
+				<button type="button" class="btn green" onclick="return reshowExcludeList(),false;">Save & Close</button>
+			</div>
+		</div>
+	</div>
+</div>

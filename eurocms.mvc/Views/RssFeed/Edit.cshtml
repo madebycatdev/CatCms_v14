@@ -1,0 +1,231 @@
+﻿<script type="text/javascript">
+    var siteID = @( Session["CurrentSiteID"] ?? -1)
+    $(document).ready(function () {
+        //getSiteAndZoneGroups("#search_zone");
+        var channel_zones = document.getElementById('channel_content');
+        colorizeSelect(channel_zones);
+    });
+</script>
+
+
+@model EuroCMS.Admin.entity.cms_asp_select_rss_channel_details_Result
+ 
+@using (Html.BeginForm("Edit", "RssFeed", FormMethod.Post, new { @class = "form-horizontal", @id = "rssEdit" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="tabbable tabbable-custom">
+		<div class="tab-content new-tab-content">
+			<div class="row-fluid">
+				<div class="control-group">
+					<label class="control-label" for="channel_name">Channel Name: <span class="red">*</span></label>
+					<div class="controls">
+						<input class="span12 m-wrap" type="text" id="channel_name" name="channel_name" value="@Model.channel_name" required/>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="structure_description">Description:</label>
+					<div class="controls">
+						<textarea class="span12 m-wrap" id="structure_description" name="structure_description">@Model.structure_description</textarea>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="group_id">Group:</label>
+					<div class="controls">
+						@Html.DropDownListFor(d =>d.group_id, ViewBag.Groups as IEnumerable<SelectListItem>, "Not Grouped", new { @class ="span12 m-wrap"})
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="channel_status_A">Channel Status:</label>
+					<div class="controls">
+                        @*
+                        <input type="hidden" value="@(Model != null ? Model.channel_status : "P")" name="channel_status" id="channelStatus_status" data-act="A" data-psf="P" class="switchBt" />
+                        *@
+                        <div class="switch" data-on="success" data-off="default">
+                           	@*
+                           	<input type="checkbox" class="toggle success-toggle-button" name="channelStatus_StatusSwitch" id="channelStatus_StatusSwitch" @(Model.channel_status == "A" ? "checked" : "") />
+                           	*@
+                           	<input 
+								name="channel_status" 
+								data-act="A" 
+								data-psf="P" 
+								value="@(Model != null ? Model.channel_status : "P")"  
+								type="checkbox" 
+								class="toggle success-toggle-button" 
+								id="channel_status"
+								@(Model.channel_status == "A" ? "checked" : "") 
+							/>
+                        </div>
+					</div>
+				</div>
+
+				<div class="control-group">
+					<label class="control-label" for="url">Channel URL: <span class="red">*</span></label>
+					<div class="controls">
+						<input class="span12 m-wrap" type="text" id="url" name="url" value="@Model.url" required/>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="description">Channel Description:<span class="red">*</span></label>
+					<div class="controls">
+						<textarea class="span12 m-wrap" rows="3" id="description" name="description" required>@Model.description</textarea>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="managing_editor">Managing Editor:</label>
+					<div class="controls">
+						<input class="span12 m-wrap" type="text" id="managing_editor" name="managing_editor" value="@Model.managing_editor" />
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="copyright">Copyright:</label>
+					<div class="controls">
+						<input class="span12 m-wrap" type="text" id="copyright" name="copyright" value="@Model.copyright" />
+					</div>
+				</div>
+				<div class="control-group">
+					 <label class="control-label" for="lang_id">Channel Language:</label>
+					 <div class="controls">
+						  @Html.DropDownListFor(d=>d.lang_id, ViewBag.Languages as List<SelectListItem>, "Please Select",new { @class = "span12 m-wrap" })
+					 </div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="zone_group_id">Zone Group:</label>
+					<div class="controls">
+						@Html.GroupDropList("zone_group_id", ViewBag.ZoneGroups as List<GroupDropListItem>, "", new { @class = "span12 m-wrap", @onchange="return getZoneListRSS('#search_zone',this.id),false" } , "Only Sites & Zone Groups")
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="search_zone">Zone List:</label>
+					<div class="controls">
+						<select class="span12" id="search_zone" name="search_zone" multiple="multiple" size="6">
+							<!-- seçim yoksa Zone Group listesi alıcancak: Ajax Request: /ZoneGroup/ListBySiteID (JSON döner) -->
+							<!-- yukarıdan zone group seçilince zone listesi alınacak. Ajax Request: /Zone/ListByZoneGroupID (JSON döner) -->
+						</select>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="">Actions</label>
+					<div class="controls">
+						<button type="button" class="btn" title="Adds selected zone to list" onclick="return addZone(),false;"><i class="icon-arrow-down"></i> Add</button>
+						<button type="button" class="btn" title="Adds selected zone to exclude list" onclick="return addExcludeZone(),false;"><i class="icon-arrow-down"></i> Add Exclude</button>
+						<button type="button" class="btn" title="Adds selected zone to display this rss channel" onclick="return addDisplay(),false;"><i class="icon-arrow-down"></i> Add Display Only</button>
+						<button type="button" class="btn" title="Removes selected zone from list" onclick="return removeAZL('channel_content'),false;"><i class="icon-arrow-up"></i> Remove</button>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="channel_content">Channel Content:</label>
+					<div class="controls">
+						<select class="span12" id="channel_content" name="channel_content" multiple="multiple" size="6">
+							<!-- yukarıdaki seçimlere göre burası güncellenicek. -->
+							<!-- yukarıdaki seçim yapıp add exclude butonuna tıkayınca site ise S{site_id} şeklinde değer yazılacak -->
+							<!-- yukarıdaki seçim yapıp add exclude butonuna tıkayınca zoneGroup ise G{zone_group_id} şeklinde değer yazılacak -->
+							<!-- yukarıdaki seçim yapıp add exclude butonuna tıkayınca zone ise Z{zone_ise} şeklinde değer yazılacak -->
+							<!-- ayrıca seçim yapıp add exclude butonuna tıkayınca site ise XS{site_id} şeklinde değer yazılacak -->
+							<!-- ayrıca seçim yapıp add exclude butonuna tıkayınca zoneGroup ise XG{zone_group_id} şeklinde değer yazılacak -->
+							<!-- ayrıca seçim yapıp add exclude butonuna tıkayınca zone ise XZ{zone_ise} şeklinde değer yazılacak -->
+							<!-- ayrıca seçim yapıp add display only butonuna tıkayınca site ise DS{site_id} şeklinde değer yazılacak -->
+							<!-- ayrıca seçim yapıp add display only butonuna tıkayınca zoneGroup ise DG{zone_group_id} şeklinde değer yazılacak -->
+							<!-- ayrıca seçim yapıp add display only butonuna tıkayınca zone ise DZ{zone_ise} şeklinde değer yazılacak -->
+							<!-- başına D koyduklarının class'ını "optionD" ver, X koyduklarını ise "optionX" ver. Bunlar renkli görünecek o yüzden-->
+							<!-- form gönderilmeden önce tüm item'ler selected edilecek -->
+							 @Html.Partial("RssChannelContents", ViewData["rss_channel_contents"] as List<EuroCMS.Admin.entity.cms_asp_admin_select_rss_channel_content_Result>)
+							<!-- ORNEK DEGERLER -->
+						</select>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="singularize_articles">Singularize Articles:</label>
+					<div class="controls">
+						 <label class="checkbox">
+							@*
+							<input type="hidden" value="@Model.singularize_articles" name="singularize_articles" id="singularizeArticles_status" data-act="Y" data-psf="N" class="switchBt" />
+							*@
+							<div class="switch" data-on="success" data-off="default">
+								@*
+								<input type="checkbox" class="toggle success-toggle-button" name="singularizeArticles_StatusSwitch" id="singularizeArticles_StatusSwitch" @(HttpUtility.HtmlDecode(Model.singularize_articles.ToString()) == "Y" ? "checked" : "") />
+								*@
+								<input 
+									name="singularize_articles" 
+									data-act="Y" 
+									data-psf="N" 
+									value="@Model.singularize_articles" 
+									type="checkbox" 
+									class="toggle success-toggle-button" 
+									id="singularize_articles"
+									@(HttpUtility.HtmlDecode(Model.singularize_articles.ToString()) == "Y" ? "checked" : "")  
+								/>
+							</div>
+						</label>
+						  
+					</div>
+				</div>
+				
+				
+
+				<div class="control-group">
+					<label class="control-label" for="summary_content_field">Summary Content Field:</label>
+					<div class="controls">
+						<select class="span12 m-wrap" name="summary_content_field" id="summary_content_field">
+							<option>Please Select</option>
+							<option value="summary" @(Model.summary_content_field == "summary" ? "selected" : "")>Summary</option>
+							<option value="article_1" @(Model.summary_content_field == "article_1" ? "selected" : "")>Article 1</option>
+							<option value="article_2" @(Model.summary_content_field == "article_2" ? "selected" : "")>Article 2</option>
+							<option value="article_3" @(Model.summary_content_field == "article_3" ? "selected" : "")>Article 3</option>
+							<option value="article_4" @(Model.summary_content_field == "article_4" ? "selected" : "")>Article 4</option>
+							<option value="article_5" @(Model.summary_content_field == "article_5" ? "selected" : "")>Article 5</option>
+							<option value="custom_1" @(Model.summary_content_field == "custom_1" ? "selected" : "")>Custom 1</option>
+							<option value="custom_2" @(Model.summary_content_field == "custom_2" ? "selected" : "")>Custom 2</option>
+							<option value="custom_3" @(Model.summary_content_field == "custom_3" ? "selected" : "")>Custom 3</option>
+							<option value="custom_4" @(Model.summary_content_field == "custom_4" ? "selected" : "")>Custom 4</option>
+							<option value="custom_5" @(Model.summary_content_field == "custom_5" ? "selected" : "")>Custom 5</option>
+							<option value="custom_6" @(Model.summary_content_field == "custom_6" ? "selected" : "")>Custom 6</option>
+							<option value="custom_7" @(Model.summary_content_field == "custom_7" ? "selected" : "")>Custom 7</option>
+							<option value="custom_8" @(Model.summary_content_field == "custom_8" ? "selected" : "")>Custom 8</option>
+							<option value="custom_9" @(Model.summary_content_field == "custom_9" ? "selected" : "")>Custom 9</option>
+							<option value="custom_10" @(Model.summary_content_field == "custom_10" ? "selected" : "")>Custom 10</option>
+							<option value="custom_11" @(Model.summary_content_field == "custom_11" ? "selected" : "")>Custom 11</option>
+							<option value="custom_12" @(Model.summary_content_field == "custom_12" ? "selected" : "")>Custom 12</option>
+							<option value="custom_13" @(Model.summary_content_field == "custom_13" ? "selected" : "")>Custom 13</option>
+							<option value="custom_14" @(Model.summary_content_field == "custom_14" ? "selected" : "")>Custom 14</option>
+							<option value="custom_15" @(Model.summary_content_field == "custom_15" ? "selected" : "")>Custom 15</option>
+							<option value="custom_16" @(Model.summary_content_field == "custom_16" ? "selected" : "")>Custom 16</option>
+							<option value="custom_17" @(Model.summary_content_field == "custom_17" ? "selected" : "")>Custom 17</option>
+							<option value="custom_18" @(Model.summary_content_field == "custom_18" ? "selected" : "")>Custom 18</option>
+							<option value="custom_19" @(Model.summary_content_field == "custom_19" ? "selected" : "")>Custom 19</option>
+							<option value="custom_20" @(Model.summary_content_field == "custom_20" ? "selected" : "")>Custom 20</option>
+							<option value="none" @(Model.summary_content_field == "none" ? "selected" : "")>-None-</option>
+							<option value="template" @(Model.summary_content_field == "template" ? "selected" : "")>-Template-</option>
+						</select>
+					</div>
+				</div>
+				<div class="control-group hide">
+					<label class="control-label" for="content_template_editor_type">Editor Type:</label>
+					<div class="controls">
+						<label class="smallWrap">
+							<input name="content_template_editor_type" value="H" id="content_template_editor_type1" type="radio" @(Model.content_template_editor_type == "H" ? "checked=checked" : "") /> 
+							HTML Editor
+						</label>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="content_template">Feed Content Template:<span class="red">*</span></label>
+					<div class="controls">
+						<div id="type_H">
+							<textarea class="htmlEditor span12" name="editor_html" required>@Html.Raw(Model.content_template)</textarea>
+						</div>
+					</div>
+				</div>
+				<div class="form-actions">
+					<button onclick="discardChanges('@Url.Action("Index")'),false;" title="Cancel Changes" class="btn" type="button"><i class="icon-remove"></i> Cancel</button>
+					<button onclick="selectionObj();" class="btn green" type="submit" title="Save RSS Channel"><i class="icon-save"></i> Save</button>
+				</div>
+			</div>   
+		</div>   
+	</div>   
+}
+<script>
+     $(document).ready(function () {
+         getZoneListRSS('#search_zone', "zone_group_id");
+     })
+
+</script>

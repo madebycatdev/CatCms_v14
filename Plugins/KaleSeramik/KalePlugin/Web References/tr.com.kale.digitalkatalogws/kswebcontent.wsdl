@@ -1,0 +1,1688 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="GetirUrunTipleri">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="dil" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="ustUrunTipiID" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="markaID" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="kayitSayisi" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="objeTuru" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="seriID" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetirUrunTipleriResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetirUrunTipleriResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="KDAuthenticationHeader" type="tns:KDAuthenticationHeader" />
+      <s:complexType name="KDAuthenticationHeader">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="UserName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Environment" type="s:string" />
+        </s:sequence>
+        <s:anyAttribute />
+      </s:complexType>
+      <s:element name="GetirEbatlarUrunTipineGore">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="urunTipiID" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetirEbatlarUrunTipineGoreResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetirEbatlarUrunTipineGoreResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetirRenklerUrunTipineGore">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="urunTipiID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="dil" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetirRenklerUrunTipineGoreResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetirRenklerUrunTipineGoreResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetirMarkalar">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="dil" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetirMarkalarResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetirMarkalarResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetirYetkiliServisler">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="sehirID" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="ilceID" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="tur" type="tns:BayiTuru" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="BayiTuru">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Tur" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetirYetkiliServislerResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetirYetkiliServislerResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetirSatisNoktalari">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="tur" type="tns:BayiTuru" />
+            <s:element minOccurs="1" maxOccurs="1" name="ulkeID" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="sehirID" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="ilceID" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="dil" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetirSatisNoktalariResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetirSatisNoktalariResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetirSatisNoktalariImageList">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="cariKodu" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetirSatisNoktalariImageListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetirSatisNoktalariImageListResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetirReferansTurleri">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="markaID" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="dil" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetirReferansTurleriResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetirReferansTurleriResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetirReferanslar">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="referansTuruID" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="urunTipiID" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="markaID" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="yurtdisi" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="dil" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetirReferanslarResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetirReferanslarResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetirKampanyalar">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="dil" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetirKampanyalarResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetirKampanyalarResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetirEtkinlikler">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="dil" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetirEtkinliklerResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetirEtkinliklerResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetirKampanyaDetay">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="kampanyaID" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="dil" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetirKampanyaDetayResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetirKampanyaDetayResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetirEtkinlikDetay">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="etkinlikID" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="dil" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetirEtkinlikDetayResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetirEtkinlikDetayResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetirReferansDetay">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="referansID" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="dil" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetirReferansDetayResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetirReferansDetayResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetirSehirler">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="ulkeID" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="dil" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="bayiTipi" type="tns:EnumBayiTipi" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:simpleType name="EnumBayiTipi">
+        <s:restriction base="s:string">
+          <s:enumeration value="Hicbiri" />
+          <s:enumeration value="SatisNoktalari" />
+          <s:enumeration value="YetkiliServis" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="GetirSehirlerResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetirSehirlerResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetirIlceler">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="sehirID" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="dil" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="bayiTipi" type="tns:EnumBayiTipi" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetirIlcelerResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetirIlcelerResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetirUlkeler">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="dil" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetirUlkelerResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetirUlkelerResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetirSeriUrunleri">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="seriID" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="cinsID" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="kayitSayisi" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="dil" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetirSeriUrunleriResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetirSeriUrunleriResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetirIlgiliUrunlerUruneGore">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="urunID" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="kayitSayisi" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="dil" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetirIlgiliUrunlerUruneGoreResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetirIlgiliUrunlerUruneGoreResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetirIlgiliUrunlerSeriyeGore">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="seriID" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="kayitSayisi" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="dil" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetirIlgiliUrunlerSeriyeGoreResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetirIlgiliUrunlerSeriyeGoreResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetirUrunler">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="urunIDleri" type="tns:ArrayOfInt" />
+            <s:element minOccurs="0" maxOccurs="1" name="dil" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfInt">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="int" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetirUrunlerResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetirUrunlerResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetirSeoSeriDetay">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="seo" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="dil" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetirSeoSeriDetayResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetirSeoSeriDetayResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetirSeriDetay">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="seriID" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="dil" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetirSeriDetayResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetirSeriDetayResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetirUrunDetay">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="urunID" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="dil" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetirUrunDetayResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetirUrunDetayResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetirSeoUrunDetay">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="seo" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="dil" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetirSeoUrunDetayResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetirSeoUrunDetayResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetirFiltreler">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="tip" type="tns:EnumTip" />
+            <s:element minOccurs="0" maxOccurs="1" name="dil" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:simpleType name="EnumTip">
+        <s:restriction base="s:string">
+          <s:enumeration value="Seri" />
+          <s:enumeration value="Urun" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="GetirFiltrelerResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetirFiltrelerResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetirUrunAramaSonuc">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="filtreListesi" type="tns:ArrayOfFiltre" />
+            <s:element minOccurs="0" maxOccurs="1" name="keyword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="seriID" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="altUrunTipiID" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="dil" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfFiltre">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Filtre" nillable="true" type="tns:Filtre" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Filtre">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="FiltreBaslik" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FiltreTipi" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FiltreSecenekList" type="tns:ArrayOfFiltreSecenek" />
+          <s:element minOccurs="0" maxOccurs="1" name="FiltreKey" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FiltreDegeri" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfFiltreSecenek">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="FiltreSecenek" nillable="true" type="tns:FiltreSecenek" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="FiltreSecenek">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Label" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ImageURL" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Value" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetirUrunAramaSonucResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetirUrunAramaSonucResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetirSeriAramaSonuc">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="filtreListesi" type="tns:ArrayOfFiltre" />
+            <s:element minOccurs="0" maxOccurs="1" name="keyword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="urunTipiID" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="dil" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetirSeriAramaSonucResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetirSeriAramaSonucResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetirCinsler">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="seriID" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="dil" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetirCinslerResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetirCinslerResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetirYeniSeriler">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="markaID" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="dil" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetirYeniSerilerResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetirYeniSerilerResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetirUrunlerTumu">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Dil" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetirUrunlerTumuResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetirUrunlerTumuResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GenelAuthenticationHeader" type="tns:GenelAuthenticationHeader" />
+      <s:complexType name="GenelAuthenticationHeader">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="UserName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+        </s:sequence>
+        <s:anyAttribute />
+      </s:complexType>
+      <s:element name="GetirSeriTitle">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="seriID" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="dil" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetirSeriTitleResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetirSeriTitleResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetirUrunTitle">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="urunID" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="dil" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetirUrunTitleResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetirUrunTitleResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="GetirUrunTipleriSoapIn">
+    <wsdl:part name="parameters" element="tns:GetirUrunTipleri" />
+  </wsdl:message>
+  <wsdl:message name="GetirUrunTipleriSoapOut">
+    <wsdl:part name="parameters" element="tns:GetirUrunTipleriResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetirUrunTipleriKDAuthenticationHeader">
+    <wsdl:part name="KDAuthenticationHeader" element="tns:KDAuthenticationHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetirEbatlarUrunTipineGoreSoapIn">
+    <wsdl:part name="parameters" element="tns:GetirEbatlarUrunTipineGore" />
+  </wsdl:message>
+  <wsdl:message name="GetirEbatlarUrunTipineGoreSoapOut">
+    <wsdl:part name="parameters" element="tns:GetirEbatlarUrunTipineGoreResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetirEbatlarUrunTipineGoreKDAuthenticationHeader">
+    <wsdl:part name="KDAuthenticationHeader" element="tns:KDAuthenticationHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetirRenklerUrunTipineGoreSoapIn">
+    <wsdl:part name="parameters" element="tns:GetirRenklerUrunTipineGore" />
+  </wsdl:message>
+  <wsdl:message name="GetirRenklerUrunTipineGoreSoapOut">
+    <wsdl:part name="parameters" element="tns:GetirRenklerUrunTipineGoreResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetirRenklerUrunTipineGoreKDAuthenticationHeader">
+    <wsdl:part name="KDAuthenticationHeader" element="tns:KDAuthenticationHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetirMarkalarSoapIn">
+    <wsdl:part name="parameters" element="tns:GetirMarkalar" />
+  </wsdl:message>
+  <wsdl:message name="GetirMarkalarSoapOut">
+    <wsdl:part name="parameters" element="tns:GetirMarkalarResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetirMarkalarKDAuthenticationHeader">
+    <wsdl:part name="KDAuthenticationHeader" element="tns:KDAuthenticationHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetirYetkiliServislerSoapIn">
+    <wsdl:part name="parameters" element="tns:GetirYetkiliServisler" />
+  </wsdl:message>
+  <wsdl:message name="GetirYetkiliServislerSoapOut">
+    <wsdl:part name="parameters" element="tns:GetirYetkiliServislerResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetirYetkiliServislerKDAuthenticationHeader">
+    <wsdl:part name="KDAuthenticationHeader" element="tns:KDAuthenticationHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetirSatisNoktalariSoapIn">
+    <wsdl:part name="parameters" element="tns:GetirSatisNoktalari" />
+  </wsdl:message>
+  <wsdl:message name="GetirSatisNoktalariSoapOut">
+    <wsdl:part name="parameters" element="tns:GetirSatisNoktalariResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetirSatisNoktalariKDAuthenticationHeader">
+    <wsdl:part name="KDAuthenticationHeader" element="tns:KDAuthenticationHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetirSatisNoktalariImageListSoapIn">
+    <wsdl:part name="parameters" element="tns:GetirSatisNoktalariImageList" />
+  </wsdl:message>
+  <wsdl:message name="GetirSatisNoktalariImageListSoapOut">
+    <wsdl:part name="parameters" element="tns:GetirSatisNoktalariImageListResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetirSatisNoktalariImageListKDAuthenticationHeader">
+    <wsdl:part name="KDAuthenticationHeader" element="tns:KDAuthenticationHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetirReferansTurleriSoapIn">
+    <wsdl:part name="parameters" element="tns:GetirReferansTurleri" />
+  </wsdl:message>
+  <wsdl:message name="GetirReferansTurleriSoapOut">
+    <wsdl:part name="parameters" element="tns:GetirReferansTurleriResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetirReferansTurleriKDAuthenticationHeader">
+    <wsdl:part name="KDAuthenticationHeader" element="tns:KDAuthenticationHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetirReferanslarSoapIn">
+    <wsdl:part name="parameters" element="tns:GetirReferanslar" />
+  </wsdl:message>
+  <wsdl:message name="GetirReferanslarSoapOut">
+    <wsdl:part name="parameters" element="tns:GetirReferanslarResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetirReferanslarKDAuthenticationHeader">
+    <wsdl:part name="KDAuthenticationHeader" element="tns:KDAuthenticationHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetirKampanyalarSoapIn">
+    <wsdl:part name="parameters" element="tns:GetirKampanyalar" />
+  </wsdl:message>
+  <wsdl:message name="GetirKampanyalarSoapOut">
+    <wsdl:part name="parameters" element="tns:GetirKampanyalarResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetirKampanyalarKDAuthenticationHeader">
+    <wsdl:part name="KDAuthenticationHeader" element="tns:KDAuthenticationHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetirEtkinliklerSoapIn">
+    <wsdl:part name="parameters" element="tns:GetirEtkinlikler" />
+  </wsdl:message>
+  <wsdl:message name="GetirEtkinliklerSoapOut">
+    <wsdl:part name="parameters" element="tns:GetirEtkinliklerResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetirEtkinliklerKDAuthenticationHeader">
+    <wsdl:part name="KDAuthenticationHeader" element="tns:KDAuthenticationHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetirKampanyaDetaySoapIn">
+    <wsdl:part name="parameters" element="tns:GetirKampanyaDetay" />
+  </wsdl:message>
+  <wsdl:message name="GetirKampanyaDetaySoapOut">
+    <wsdl:part name="parameters" element="tns:GetirKampanyaDetayResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetirKampanyaDetayKDAuthenticationHeader">
+    <wsdl:part name="KDAuthenticationHeader" element="tns:KDAuthenticationHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetirEtkinlikDetaySoapIn">
+    <wsdl:part name="parameters" element="tns:GetirEtkinlikDetay" />
+  </wsdl:message>
+  <wsdl:message name="GetirEtkinlikDetaySoapOut">
+    <wsdl:part name="parameters" element="tns:GetirEtkinlikDetayResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetirEtkinlikDetayKDAuthenticationHeader">
+    <wsdl:part name="KDAuthenticationHeader" element="tns:KDAuthenticationHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetirReferansDetaySoapIn">
+    <wsdl:part name="parameters" element="tns:GetirReferansDetay" />
+  </wsdl:message>
+  <wsdl:message name="GetirReferansDetaySoapOut">
+    <wsdl:part name="parameters" element="tns:GetirReferansDetayResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetirReferansDetayKDAuthenticationHeader">
+    <wsdl:part name="KDAuthenticationHeader" element="tns:KDAuthenticationHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetirSehirlerSoapIn">
+    <wsdl:part name="parameters" element="tns:GetirSehirler" />
+  </wsdl:message>
+  <wsdl:message name="GetirSehirlerSoapOut">
+    <wsdl:part name="parameters" element="tns:GetirSehirlerResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetirSehirlerKDAuthenticationHeader">
+    <wsdl:part name="KDAuthenticationHeader" element="tns:KDAuthenticationHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetirIlcelerSoapIn">
+    <wsdl:part name="parameters" element="tns:GetirIlceler" />
+  </wsdl:message>
+  <wsdl:message name="GetirIlcelerSoapOut">
+    <wsdl:part name="parameters" element="tns:GetirIlcelerResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetirIlcelerKDAuthenticationHeader">
+    <wsdl:part name="KDAuthenticationHeader" element="tns:KDAuthenticationHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetirUlkelerSoapIn">
+    <wsdl:part name="parameters" element="tns:GetirUlkeler" />
+  </wsdl:message>
+  <wsdl:message name="GetirUlkelerSoapOut">
+    <wsdl:part name="parameters" element="tns:GetirUlkelerResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetirUlkelerKDAuthenticationHeader">
+    <wsdl:part name="KDAuthenticationHeader" element="tns:KDAuthenticationHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetirSeriUrunleriSoapIn">
+    <wsdl:part name="parameters" element="tns:GetirSeriUrunleri" />
+  </wsdl:message>
+  <wsdl:message name="GetirSeriUrunleriSoapOut">
+    <wsdl:part name="parameters" element="tns:GetirSeriUrunleriResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetirSeriUrunleriKDAuthenticationHeader">
+    <wsdl:part name="KDAuthenticationHeader" element="tns:KDAuthenticationHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetirIlgiliUrunlerUruneGoreSoapIn">
+    <wsdl:part name="parameters" element="tns:GetirIlgiliUrunlerUruneGore" />
+  </wsdl:message>
+  <wsdl:message name="GetirIlgiliUrunlerUruneGoreSoapOut">
+    <wsdl:part name="parameters" element="tns:GetirIlgiliUrunlerUruneGoreResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetirIlgiliUrunlerUruneGoreKDAuthenticationHeader">
+    <wsdl:part name="KDAuthenticationHeader" element="tns:KDAuthenticationHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetirIlgiliUrunlerSeriyeGoreSoapIn">
+    <wsdl:part name="parameters" element="tns:GetirIlgiliUrunlerSeriyeGore" />
+  </wsdl:message>
+  <wsdl:message name="GetirIlgiliUrunlerSeriyeGoreSoapOut">
+    <wsdl:part name="parameters" element="tns:GetirIlgiliUrunlerSeriyeGoreResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetirIlgiliUrunlerSeriyeGoreKDAuthenticationHeader">
+    <wsdl:part name="KDAuthenticationHeader" element="tns:KDAuthenticationHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetirUrunlerSoapIn">
+    <wsdl:part name="parameters" element="tns:GetirUrunler" />
+  </wsdl:message>
+  <wsdl:message name="GetirUrunlerSoapOut">
+    <wsdl:part name="parameters" element="tns:GetirUrunlerResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetirUrunlerKDAuthenticationHeader">
+    <wsdl:part name="KDAuthenticationHeader" element="tns:KDAuthenticationHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetirSeoSeriDetaySoapIn">
+    <wsdl:part name="parameters" element="tns:GetirSeoSeriDetay" />
+  </wsdl:message>
+  <wsdl:message name="GetirSeoSeriDetaySoapOut">
+    <wsdl:part name="parameters" element="tns:GetirSeoSeriDetayResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetirSeoSeriDetayKDAuthenticationHeader">
+    <wsdl:part name="KDAuthenticationHeader" element="tns:KDAuthenticationHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetirSeriDetaySoapIn">
+    <wsdl:part name="parameters" element="tns:GetirSeriDetay" />
+  </wsdl:message>
+  <wsdl:message name="GetirSeriDetaySoapOut">
+    <wsdl:part name="parameters" element="tns:GetirSeriDetayResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetirSeriDetayKDAuthenticationHeader">
+    <wsdl:part name="KDAuthenticationHeader" element="tns:KDAuthenticationHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetirUrunDetaySoapIn">
+    <wsdl:part name="parameters" element="tns:GetirUrunDetay" />
+  </wsdl:message>
+  <wsdl:message name="GetirUrunDetaySoapOut">
+    <wsdl:part name="parameters" element="tns:GetirUrunDetayResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetirUrunDetayKDAuthenticationHeader">
+    <wsdl:part name="KDAuthenticationHeader" element="tns:KDAuthenticationHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetirSeoUrunDetaySoapIn">
+    <wsdl:part name="parameters" element="tns:GetirSeoUrunDetay" />
+  </wsdl:message>
+  <wsdl:message name="GetirSeoUrunDetaySoapOut">
+    <wsdl:part name="parameters" element="tns:GetirSeoUrunDetayResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetirSeoUrunDetayKDAuthenticationHeader">
+    <wsdl:part name="KDAuthenticationHeader" element="tns:KDAuthenticationHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetirFiltrelerSoapIn">
+    <wsdl:part name="parameters" element="tns:GetirFiltreler" />
+  </wsdl:message>
+  <wsdl:message name="GetirFiltrelerSoapOut">
+    <wsdl:part name="parameters" element="tns:GetirFiltrelerResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetirFiltrelerKDAuthenticationHeader">
+    <wsdl:part name="KDAuthenticationHeader" element="tns:KDAuthenticationHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetirUrunAramaSonucSoapIn">
+    <wsdl:part name="parameters" element="tns:GetirUrunAramaSonuc" />
+  </wsdl:message>
+  <wsdl:message name="GetirUrunAramaSonucSoapOut">
+    <wsdl:part name="parameters" element="tns:GetirUrunAramaSonucResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetirUrunAramaSonucKDAuthenticationHeader">
+    <wsdl:part name="KDAuthenticationHeader" element="tns:KDAuthenticationHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetirSeriAramaSonucSoapIn">
+    <wsdl:part name="parameters" element="tns:GetirSeriAramaSonuc" />
+  </wsdl:message>
+  <wsdl:message name="GetirSeriAramaSonucSoapOut">
+    <wsdl:part name="parameters" element="tns:GetirSeriAramaSonucResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetirSeriAramaSonucKDAuthenticationHeader">
+    <wsdl:part name="KDAuthenticationHeader" element="tns:KDAuthenticationHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetirCinslerSoapIn">
+    <wsdl:part name="parameters" element="tns:GetirCinsler" />
+  </wsdl:message>
+  <wsdl:message name="GetirCinslerSoapOut">
+    <wsdl:part name="parameters" element="tns:GetirCinslerResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetirCinslerKDAuthenticationHeader">
+    <wsdl:part name="KDAuthenticationHeader" element="tns:KDAuthenticationHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetirYeniSerilerSoapIn">
+    <wsdl:part name="parameters" element="tns:GetirYeniSeriler" />
+  </wsdl:message>
+  <wsdl:message name="GetirYeniSerilerSoapOut">
+    <wsdl:part name="parameters" element="tns:GetirYeniSerilerResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetirYeniSerilerKDAuthenticationHeader">
+    <wsdl:part name="KDAuthenticationHeader" element="tns:KDAuthenticationHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetirUrunlerTumuSoapIn">
+    <wsdl:part name="parameters" element="tns:GetirUrunlerTumu" />
+  </wsdl:message>
+  <wsdl:message name="GetirUrunlerTumuSoapOut">
+    <wsdl:part name="parameters" element="tns:GetirUrunlerTumuResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetirUrunlerTumuGenelAuthenticationHeader">
+    <wsdl:part name="GenelAuthenticationHeader" element="tns:GenelAuthenticationHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetirSeriTitleSoapIn">
+    <wsdl:part name="parameters" element="tns:GetirSeriTitle" />
+  </wsdl:message>
+  <wsdl:message name="GetirSeriTitleSoapOut">
+    <wsdl:part name="parameters" element="tns:GetirSeriTitleResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetirSeriTitleKDAuthenticationHeader">
+    <wsdl:part name="KDAuthenticationHeader" element="tns:KDAuthenticationHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetirUrunTitleSoapIn">
+    <wsdl:part name="parameters" element="tns:GetirUrunTitle" />
+  </wsdl:message>
+  <wsdl:message name="GetirUrunTitleSoapOut">
+    <wsdl:part name="parameters" element="tns:GetirUrunTitleResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetirUrunTitleKDAuthenticationHeader">
+    <wsdl:part name="KDAuthenticationHeader" element="tns:KDAuthenticationHeader" />
+  </wsdl:message>
+  <wsdl:portType name="KSWebContentSoap">
+    <wsdl:operation name="GetirUrunTipleri">
+      <wsdl:input message="tns:GetirUrunTipleriSoapIn" />
+      <wsdl:output message="tns:GetirUrunTipleriSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetirEbatlarUrunTipineGore">
+      <wsdl:input message="tns:GetirEbatlarUrunTipineGoreSoapIn" />
+      <wsdl:output message="tns:GetirEbatlarUrunTipineGoreSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetirRenklerUrunTipineGore">
+      <wsdl:input message="tns:GetirRenklerUrunTipineGoreSoapIn" />
+      <wsdl:output message="tns:GetirRenklerUrunTipineGoreSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetirMarkalar">
+      <wsdl:input message="tns:GetirMarkalarSoapIn" />
+      <wsdl:output message="tns:GetirMarkalarSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetirYetkiliServisler">
+      <wsdl:input message="tns:GetirYetkiliServislerSoapIn" />
+      <wsdl:output message="tns:GetirYetkiliServislerSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetirSatisNoktalari">
+      <wsdl:input message="tns:GetirSatisNoktalariSoapIn" />
+      <wsdl:output message="tns:GetirSatisNoktalariSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetirSatisNoktalariImageList">
+      <wsdl:input message="tns:GetirSatisNoktalariImageListSoapIn" />
+      <wsdl:output message="tns:GetirSatisNoktalariImageListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetirReferansTurleri">
+      <wsdl:input message="tns:GetirReferansTurleriSoapIn" />
+      <wsdl:output message="tns:GetirReferansTurleriSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetirReferanslar">
+      <wsdl:input message="tns:GetirReferanslarSoapIn" />
+      <wsdl:output message="tns:GetirReferanslarSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetirKampanyalar">
+      <wsdl:input message="tns:GetirKampanyalarSoapIn" />
+      <wsdl:output message="tns:GetirKampanyalarSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetirEtkinlikler">
+      <wsdl:input message="tns:GetirEtkinliklerSoapIn" />
+      <wsdl:output message="tns:GetirEtkinliklerSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetirKampanyaDetay">
+      <wsdl:input message="tns:GetirKampanyaDetaySoapIn" />
+      <wsdl:output message="tns:GetirKampanyaDetaySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetirEtkinlikDetay">
+      <wsdl:input message="tns:GetirEtkinlikDetaySoapIn" />
+      <wsdl:output message="tns:GetirEtkinlikDetaySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetirReferansDetay">
+      <wsdl:input message="tns:GetirReferansDetaySoapIn" />
+      <wsdl:output message="tns:GetirReferansDetaySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetirSehirler">
+      <wsdl:input message="tns:GetirSehirlerSoapIn" />
+      <wsdl:output message="tns:GetirSehirlerSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetirIlceler">
+      <wsdl:input message="tns:GetirIlcelerSoapIn" />
+      <wsdl:output message="tns:GetirIlcelerSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetirUlkeler">
+      <wsdl:input message="tns:GetirUlkelerSoapIn" />
+      <wsdl:output message="tns:GetirUlkelerSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetirSeriUrunleri">
+      <wsdl:input message="tns:GetirSeriUrunleriSoapIn" />
+      <wsdl:output message="tns:GetirSeriUrunleriSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetirIlgiliUrunlerUruneGore">
+      <wsdl:input message="tns:GetirIlgiliUrunlerUruneGoreSoapIn" />
+      <wsdl:output message="tns:GetirIlgiliUrunlerUruneGoreSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetirIlgiliUrunlerSeriyeGore">
+      <wsdl:input message="tns:GetirIlgiliUrunlerSeriyeGoreSoapIn" />
+      <wsdl:output message="tns:GetirIlgiliUrunlerSeriyeGoreSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetirUrunler">
+      <wsdl:input message="tns:GetirUrunlerSoapIn" />
+      <wsdl:output message="tns:GetirUrunlerSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetirSeoSeriDetay">
+      <wsdl:input message="tns:GetirSeoSeriDetaySoapIn" />
+      <wsdl:output message="tns:GetirSeoSeriDetaySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetirSeriDetay">
+      <wsdl:input message="tns:GetirSeriDetaySoapIn" />
+      <wsdl:output message="tns:GetirSeriDetaySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetirUrunDetay">
+      <wsdl:input message="tns:GetirUrunDetaySoapIn" />
+      <wsdl:output message="tns:GetirUrunDetaySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetirSeoUrunDetay">
+      <wsdl:input message="tns:GetirSeoUrunDetaySoapIn" />
+      <wsdl:output message="tns:GetirSeoUrunDetaySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetirFiltreler">
+      <wsdl:input message="tns:GetirFiltrelerSoapIn" />
+      <wsdl:output message="tns:GetirFiltrelerSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetirUrunAramaSonuc">
+      <wsdl:input message="tns:GetirUrunAramaSonucSoapIn" />
+      <wsdl:output message="tns:GetirUrunAramaSonucSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetirSeriAramaSonuc">
+      <wsdl:input message="tns:GetirSeriAramaSonucSoapIn" />
+      <wsdl:output message="tns:GetirSeriAramaSonucSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetirCinsler">
+      <wsdl:input message="tns:GetirCinslerSoapIn" />
+      <wsdl:output message="tns:GetirCinslerSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetirYeniSeriler">
+      <wsdl:input message="tns:GetirYeniSerilerSoapIn" />
+      <wsdl:output message="tns:GetirYeniSerilerSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetirUrunlerTumu">
+      <wsdl:input message="tns:GetirUrunlerTumuSoapIn" />
+      <wsdl:output message="tns:GetirUrunlerTumuSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetirSeriTitle">
+      <wsdl:input message="tns:GetirSeriTitleSoapIn" />
+      <wsdl:output message="tns:GetirSeriTitleSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetirUrunTitle">
+      <wsdl:input message="tns:GetirUrunTitleSoapIn" />
+      <wsdl:output message="tns:GetirUrunTitleSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="KSWebContentSoap" type="tns:KSWebContentSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetirUrunTipleri">
+      <soap:operation soapAction="http://tempuri.org/GetirUrunTipleri" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetirUrunTipleriKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirEbatlarUrunTipineGore">
+      <soap:operation soapAction="http://tempuri.org/GetirEbatlarUrunTipineGore" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetirEbatlarUrunTipineGoreKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirRenklerUrunTipineGore">
+      <soap:operation soapAction="http://tempuri.org/GetirRenklerUrunTipineGore" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetirRenklerUrunTipineGoreKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirMarkalar">
+      <soap:operation soapAction="http://tempuri.org/GetirMarkalar" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetirMarkalarKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirYetkiliServisler">
+      <soap:operation soapAction="http://tempuri.org/GetirYetkiliServisler" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetirYetkiliServislerKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirSatisNoktalari">
+      <soap:operation soapAction="http://tempuri.org/GetirSatisNoktalari" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetirSatisNoktalariKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirSatisNoktalariImageList">
+      <soap:operation soapAction="http://tempuri.org/GetirSatisNoktalariImageList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetirSatisNoktalariImageListKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirReferansTurleri">
+      <soap:operation soapAction="http://tempuri.org/GetirReferansTurleri" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetirReferansTurleriKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirReferanslar">
+      <soap:operation soapAction="http://tempuri.org/GetirReferanslar" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetirReferanslarKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirKampanyalar">
+      <soap:operation soapAction="http://tempuri.org/GetirKampanyalar" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetirKampanyalarKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirEtkinlikler">
+      <soap:operation soapAction="http://tempuri.org/GetirEtkinlikler" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetirEtkinliklerKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirKampanyaDetay">
+      <soap:operation soapAction="http://tempuri.org/GetirKampanyaDetay" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetirKampanyaDetayKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirEtkinlikDetay">
+      <soap:operation soapAction="http://tempuri.org/GetirEtkinlikDetay" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetirEtkinlikDetayKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirReferansDetay">
+      <soap:operation soapAction="http://tempuri.org/GetirReferansDetay" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetirReferansDetayKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirSehirler">
+      <soap:operation soapAction="http://tempuri.org/GetirSehirler" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetirSehirlerKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirIlceler">
+      <soap:operation soapAction="http://tempuri.org/GetirIlceler" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetirIlcelerKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirUlkeler">
+      <soap:operation soapAction="http://tempuri.org/GetirUlkeler" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetirUlkelerKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirSeriUrunleri">
+      <soap:operation soapAction="http://tempuri.org/GetirSeriUrunleri" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetirSeriUrunleriKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirIlgiliUrunlerUruneGore">
+      <soap:operation soapAction="http://tempuri.org/GetirIlgiliUrunlerUruneGore" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetirIlgiliUrunlerUruneGoreKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirIlgiliUrunlerSeriyeGore">
+      <soap:operation soapAction="http://tempuri.org/GetirIlgiliUrunlerSeriyeGore" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetirIlgiliUrunlerSeriyeGoreKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirUrunler">
+      <soap:operation soapAction="http://tempuri.org/GetirUrunler" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetirUrunlerKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirSeoSeriDetay">
+      <soap:operation soapAction="http://tempuri.org/GetirSeoSeriDetay" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetirSeoSeriDetayKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirSeriDetay">
+      <soap:operation soapAction="http://tempuri.org/GetirSeriDetay" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetirSeriDetayKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirUrunDetay">
+      <soap:operation soapAction="http://tempuri.org/GetirUrunDetay" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetirUrunDetayKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirSeoUrunDetay">
+      <soap:operation soapAction="http://tempuri.org/GetirSeoUrunDetay" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetirSeoUrunDetayKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirFiltreler">
+      <soap:operation soapAction="http://tempuri.org/GetirFiltreler" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetirFiltrelerKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirUrunAramaSonuc">
+      <soap:operation soapAction="http://tempuri.org/GetirUrunAramaSonuc" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetirUrunAramaSonucKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirSeriAramaSonuc">
+      <soap:operation soapAction="http://tempuri.org/GetirSeriAramaSonuc" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetirSeriAramaSonucKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirCinsler">
+      <soap:operation soapAction="http://tempuri.org/GetirCinsler" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetirCinslerKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirYeniSeriler">
+      <soap:operation soapAction="http://tempuri.org/GetirYeniSeriler" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetirYeniSerilerKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirUrunlerTumu">
+      <soap:operation soapAction="http://tempuri.org/GetirUrunlerTumu" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetirUrunlerTumuGenelAuthenticationHeader" part="GenelAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirSeriTitle">
+      <soap:operation soapAction="http://tempuri.org/GetirSeriTitle" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetirSeriTitleKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirUrunTitle">
+      <soap:operation soapAction="http://tempuri.org/GetirUrunTitle" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetirUrunTitleKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="KSWebContentSoap12" type="tns:KSWebContentSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetirUrunTipleri">
+      <soap12:operation soapAction="http://tempuri.org/GetirUrunTipleri" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetirUrunTipleriKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirEbatlarUrunTipineGore">
+      <soap12:operation soapAction="http://tempuri.org/GetirEbatlarUrunTipineGore" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetirEbatlarUrunTipineGoreKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirRenklerUrunTipineGore">
+      <soap12:operation soapAction="http://tempuri.org/GetirRenklerUrunTipineGore" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetirRenklerUrunTipineGoreKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirMarkalar">
+      <soap12:operation soapAction="http://tempuri.org/GetirMarkalar" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetirMarkalarKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirYetkiliServisler">
+      <soap12:operation soapAction="http://tempuri.org/GetirYetkiliServisler" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetirYetkiliServislerKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirSatisNoktalari">
+      <soap12:operation soapAction="http://tempuri.org/GetirSatisNoktalari" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetirSatisNoktalariKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirSatisNoktalariImageList">
+      <soap12:operation soapAction="http://tempuri.org/GetirSatisNoktalariImageList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetirSatisNoktalariImageListKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirReferansTurleri">
+      <soap12:operation soapAction="http://tempuri.org/GetirReferansTurleri" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetirReferansTurleriKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirReferanslar">
+      <soap12:operation soapAction="http://tempuri.org/GetirReferanslar" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetirReferanslarKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirKampanyalar">
+      <soap12:operation soapAction="http://tempuri.org/GetirKampanyalar" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetirKampanyalarKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirEtkinlikler">
+      <soap12:operation soapAction="http://tempuri.org/GetirEtkinlikler" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetirEtkinliklerKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirKampanyaDetay">
+      <soap12:operation soapAction="http://tempuri.org/GetirKampanyaDetay" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetirKampanyaDetayKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirEtkinlikDetay">
+      <soap12:operation soapAction="http://tempuri.org/GetirEtkinlikDetay" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetirEtkinlikDetayKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirReferansDetay">
+      <soap12:operation soapAction="http://tempuri.org/GetirReferansDetay" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetirReferansDetayKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirSehirler">
+      <soap12:operation soapAction="http://tempuri.org/GetirSehirler" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetirSehirlerKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirIlceler">
+      <soap12:operation soapAction="http://tempuri.org/GetirIlceler" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetirIlcelerKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirUlkeler">
+      <soap12:operation soapAction="http://tempuri.org/GetirUlkeler" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetirUlkelerKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirSeriUrunleri">
+      <soap12:operation soapAction="http://tempuri.org/GetirSeriUrunleri" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetirSeriUrunleriKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirIlgiliUrunlerUruneGore">
+      <soap12:operation soapAction="http://tempuri.org/GetirIlgiliUrunlerUruneGore" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetirIlgiliUrunlerUruneGoreKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirIlgiliUrunlerSeriyeGore">
+      <soap12:operation soapAction="http://tempuri.org/GetirIlgiliUrunlerSeriyeGore" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetirIlgiliUrunlerSeriyeGoreKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirUrunler">
+      <soap12:operation soapAction="http://tempuri.org/GetirUrunler" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetirUrunlerKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirSeoSeriDetay">
+      <soap12:operation soapAction="http://tempuri.org/GetirSeoSeriDetay" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetirSeoSeriDetayKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirSeriDetay">
+      <soap12:operation soapAction="http://tempuri.org/GetirSeriDetay" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetirSeriDetayKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirUrunDetay">
+      <soap12:operation soapAction="http://tempuri.org/GetirUrunDetay" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetirUrunDetayKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirSeoUrunDetay">
+      <soap12:operation soapAction="http://tempuri.org/GetirSeoUrunDetay" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetirSeoUrunDetayKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirFiltreler">
+      <soap12:operation soapAction="http://tempuri.org/GetirFiltreler" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetirFiltrelerKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirUrunAramaSonuc">
+      <soap12:operation soapAction="http://tempuri.org/GetirUrunAramaSonuc" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetirUrunAramaSonucKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirSeriAramaSonuc">
+      <soap12:operation soapAction="http://tempuri.org/GetirSeriAramaSonuc" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetirSeriAramaSonucKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirCinsler">
+      <soap12:operation soapAction="http://tempuri.org/GetirCinsler" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetirCinslerKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirYeniSeriler">
+      <soap12:operation soapAction="http://tempuri.org/GetirYeniSeriler" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetirYeniSerilerKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirUrunlerTumu">
+      <soap12:operation soapAction="http://tempuri.org/GetirUrunlerTumu" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetirUrunlerTumuGenelAuthenticationHeader" part="GenelAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirSeriTitle">
+      <soap12:operation soapAction="http://tempuri.org/GetirSeriTitle" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetirSeriTitleKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetirUrunTitle">
+      <soap12:operation soapAction="http://tempuri.org/GetirUrunTitle" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetirUrunTitleKDAuthenticationHeader" part="KDAuthenticationHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="KSWebContent">
+    <wsdl:port name="KSWebContentSoap" binding="tns:KSWebContentSoap">
+      <soap:address location="https://digitalkatalogws.kale.com.tr/kswebcontent.asmx" />
+    </wsdl:port>
+    <wsdl:port name="KSWebContentSoap12" binding="tns:KSWebContentSoap12">
+      <soap12:address location="https://digitalkatalogws.kale.com.tr/kswebcontent.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

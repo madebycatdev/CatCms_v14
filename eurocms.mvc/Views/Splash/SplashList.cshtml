@@ -1,0 +1,20 @@
+﻿@model List<EuroCMS.Model.Splash>
+@{ Layout = null; }
+@if (Model.Count > 0)
+{
+    int i = 1;
+    <ul>
+        @foreach (var splash in Model)
+        {
+            <li>
+                <a onclick="return iS(@splash.ID,'@splash.Name'),false;" href='javascript:void(0);'><img src='@Url.Content("~/Content/img/icon_article.gif")' />@splash.Name</a>
+            </li>
+            i++;
+        }
+    </ul>
+}
+else
+{
+    <p>No Splash Found!</p>
+}
+

@@ -1,0 +1,31 @@
+﻿@{
+    ViewBag.Title = "Autorization Error!";
+    Layout = "~/Views/Shared/Login.cshtml";
+}
+
+<h2>Forbidden Access!</h2>
+
+<p>
+    You don't have permission to this operation
+</p>
+
+<p>
+    @if (User.Identity.IsAuthenticated)
+    { 
+        @:You are logged in as <b>@User.Identity.Name</b>
+        using (Html.BeginForm("Logout", "Account"))
+        { 
+            @Html.AntiForgeryToken()
+            <button type="submit"><i class="icon-key"></i>Log Out</button> 
+        }
+    }
+    else
+    {
+        @:You are not logged in!
+        @:Please click <a href="@Url.Action("Login", "Account", new { ReturnUrl = HttpUtility.HtmlEncode(Request["ReturnUrl"]) })">here</a> to login!
+    }
+</p>
+
+<p>
+    <a href="javascript:history.back()">Click</a> to Back.
+</p>

@@ -1,0 +1,120 @@
+﻿@model System.Web.Configuration.TraceSection
+
+<script type="text/ecmascript">
+    $(document).ready(function () {
+        $("#form-tracing input[name=Enabled]").click(function () {
+            if ($(this).is(":checked")) {
+                $(".traceGroup").show();
+            } else {
+                $(".traceGroup").hide();
+            }
+        });
+    });
+</script>
+
+
+<div class="tabbable tabbable-custom">
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#tab_1_1">Configure Debugging and Tracing</a></li>
+        <li class=""><a data-toggle="tab" href="#tab_1_2">Configure Healt Monitoring</a></li>
+    </ul>
+    <div class="tab-content">
+        <div id="tab_1_1" class="tab-pane active">
+            @using (Html.BeginForm("SaveTracing", "Setting", FormMethod.Post, new { @class="form-horizontal", @id="form-tracing" }))
+            { 
+                @Html.AntiForgeryToken()
+                <div class="control-group">
+                    <p>
+                        Configure the settings for debugging and tracing your site.
+                    </p>
+                    <p>
+                        <label class="smallWrap" for="Debug">
+                            @Html.CheckBox("Debug", ((System.Web.Configuration.CompilationSection)Model.CurrentConfiguration.GetSection("system.web/compilation")).Debug)
+                            Enable debugging
+                        </label>
+                    </p>
+              
+                    <label class="smallWrap" for="displayTracing">
+                        @Html.CheckBoxFor(t => t.Enabled, new { id="displayTracing" })
+                        Display tracing information on individual pages:
+                    </label>
+                </div>
+
+                <div class="traceGroup @(Model.Enabled ?"show":"hide")">
+                    <div class="control-group">
+                        <label class="control-label">Display trace output for:</label>
+                        <div class="controls">
+                            <label class="smallWrap" for="LocalOnly">
+                                @Html.RadioButtonFor(t => t.LocalOnly, "true")Local Only
+                            </label>
+                            <label class="smallWrap" for="AllRequests">
+                                @Html.RadioButtonFor(t => t.LocalOnly, "false", new { id = "AllRequests" })All requests
+                            </label>
+                        </div>
+                    </div>
+            
+                    <div class="control-group">
+                        <label class="control-label">Select the sort order <br /> for trace results:</label>
+                        <div class="controls">
+                            <label class="smallWrap" for="TraceMode">
+                                @Html.RadioButtonFor(t => t.TraceMode, "SortByTime")By time
+                            </label>
+                            <label class="smallWrap" for="SortByCategory">
+                                @Html.RadioButtonFor(t => t.TraceMode, "SortByCategory", new { id = "SortByCategory" })By category
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label" for="requestLimit">Number of trace requests <br /> to cache:</label>
+                        <div class="controls">
+                            @Html.DropDownList("RequestLimit",
+                                new List<SelectListItem> 
+                                    {  new SelectListItem() { Value = "25", Text = "25" },
+                                        new SelectListItem() { Value = "50", Text = "50" },
+                                        new SelectListItem() { Value = "100", Text = "100" },
+                                        new SelectListItem() { Value = "200", Text = "200" },
+                                    }, Model.RequestLimit.ToString()
+                            )
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">Select which trace results <br /> to cache:</label>
+                        <div class="controls">
+                            <label class="smallWrap" for="MostRecent">
+                                @Html.RadioButtonFor(t => t.MostRecent, "true", new { id = "MostRecent" })
+                                Most recent trace results
+                            </label>
+                            <label class="smallWrap" for="OldestTrace">
+                                @Html.RadioButtonFor(t => t.MostRecent, "false", new { id = "OldestTrace" })
+                                Oldest trace results
+                            </label>
+                        </div>
+                    </div>
+             
+                    <div class="control-group">
+                        <label class="control-label">Addinational</label>
+                        <div class="controls">
+                            <label class="smallWrap" for="WriteToDiagnosticsTrace">
+                                @Html.CheckBoxFor(t => t.WriteToDiagnosticsTrace)
+                                Write to Diognatics Trace
+                            </label> 
+                            <label class="smallWrap" for="PageOutput">
+                                @Html.CheckBoxFor(t => t.PageOutput)
+                                Page Output
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-actions">
+                   <button class="btn green" type="submit" value="Save"><i class="icon-save"></i> Save</button>
+                </div>
+            }
+        </div>
+        <div id="tab_1_2" class="tab-pane">
+            @Html.Partial("HealtMonitoring", ViewData["HealtMonitoring"] as System.Web.Configuration.HealthMonitoringSection)
+        </div>
+    </div>
+</div>
+ 

@@ -1,0 +1,161 @@
+﻿@{
+    ViewBag.Title = "signin";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section RooterClass
+{
+    <router class="signin"></router>
+}
+<div class="col-12 px-0 row mx-0 mobil left flex-md-row-reverse d-none d-lg-flex"
+     style="background-image: url('assets/img/signin-lalekart-pattern.jpg');">
+    <div class="col-8 col-md-4 pl-0 pr-2 pr-lg-4 d-flex">
+        <h4 class="font-mono boxed multi-line align-self-center p-2 pr-2 m-0 large-text my-4">
+            Lale Kart Üyesiyim
+        </h4>
+    </div>
+</div>
+<section class="py-0" id="signin">
+    <div class="row mx-0">
+        <div class="col-12 d-flex d-lg-none px-0">
+            <img class="w-100" src="@Url.Content("~/assets/img/login-image-mobil.png")">
+        </div>
+        <div class="d-none d-lg-flex px-0 left">
+            <img class="w-100" src="@Url.Content("~/assets/img/login-image.png")">
+        </div>
+        <div class="col d-flex flex-row-reverse align-items-lg-center justify-content-center justify-content-lg-start right">
+            <form id="signin-form" class="form-container my-4 my-lg-3" action="@Url.Content("~/uye-girisi")" method="post">
+
+                @if (ViewBag.ResultMessage != null || TempData["ResultMessage"] != null)
+                {
+                    <div class="form-error alert alert-danger w-100" role="alert">
+                        @Html.Raw(ViewBag.ResultMessage)
+                        @TempData["ResultMessage"]
+                    </div>
+                }
+                <div class="header col-12 py-3 pl-4 text-left mb-lg-4">
+                    <h5 class="text-30 mb-0">
+                        Üye Girişi ve Üyelik Yenileme
+                    </h5>
+                </div>
+                <div class="form-group col-12 px-0">
+                    <label class="text-25" for="card-number">Lale Kart Numaranız</label>
+                    <input type="text" class="form-control text-25 text-center" id="card-number" name="cardNo"
+                           data-required="true">
+                    <small class="text-danger">Bu alanı doldurmanız gerekmektedir.*</small>
+                </div>
+                <div class="form-group col-12 px-0">
+                    <label class="text-25" for="password">Şifreniz</label>
+                    <input type="password" class="form-control text-25" id="password" name="pin"
+                           data-required="true">
+                    <small class="text-danger">Bu alanı doldurmanız gerekmektedir.*</small>
+                </div>
+                <div class="form-group col-12 mb-3 mb-lg-0 mb-xl-3 row mx-0 justify-content-end">
+                    <div id="formCaptcha"></div>
+                    <small class="text-danger text-right col-12">
+                        Bu alan
+                        zorunludur.
+                    </small>
+                </div>
+                <div class="custom-control custom-checkbox px-0 mb-3 d-flex justify-content-end col-12">
+                    <input type="checkbox" class="custom-control-input" name="remember-me" id="remember-me">
+                    <label class="custom-control-label text-25" for="remember-me">Beni Hatırla</label>
+                </div>
+                <input type="hidden" class="captchaResponse form-control" name="captchaResponse">
+                <div class="col-12 d-flex justify-content-lg-end justify-content-end px-0">
+                    <button type="button" class="btn orange" data-toggle="modal" data-target="#forgetPassword">
+                        ŞİFREMİ UNUTTUM
+                    </button>
+                    <input type="submit" class="btn blue ml-3" value="GİRİŞ YAP" />
+
+                </div>
+            </form>
+            <!-- Modal -->
+            <div class="modal fade password-modal" id="forgetPassword" tabindex="-1"
+                 aria-labelledby="forgetPassword" aria-hidden="true" data-backdrop="false">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content text-white border-0 py-3">
+                        <form id="forgetPasswordForm" class="p-0 m-0" action="@Url.Content("~/sifremi-unuttum")" method="post">
+
+                            <button type="button" class="close close-span" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <span class="col-12 mt-3 px-md-4 d-flex justify-content-center">
+                                <h5 class="text-25 mx-auto py-3 w-100 text-center boxed inverted">
+                                    Şifre Hatırlatma
+                                </h5>
+                            </span>
+                            <span class="col-12 mt-2 px-md-4 justify-content-center error-message">
+                                <p class="text-danger bg-white w-100 p-2 font-weight-bold text-center"></p>
+                            </span>
+                            <div class="modal-body col-12 px-md-4">
+                                <div class="form-group col-12 px-0">
+                                    <label class="text-25" for="forget-card-number">Lale Kart Numaranız</label>
+                                    <input type="text" class="form-control text-25 text-center"
+                                           id="forget-card-number" name="cardNumber" data-required="true">
+                                    <small class="text-danger">Bu alanı doldurmanız gerekmektedir.*</small>
+                                </div>
+                                <div class="form-group col-12 px-0">
+                                    <label for="forget-cellphone">Cep Telefonunuz</label>
+                                    <input type="text" class="form-control" id="forget-cellphone"
+                                           name="mobilePhone" data-required="true">
+                                    <small class="text-danger">Bu alanı doldurmanız gerekmektedir.*</small>
+                                </div>
+                                <div class="form-group col-12 px-0">
+                                    <label for="forget-email">E-Posta Adresiniz</label>
+                                    <input type="text" class="form-control" id="forget-email" name="email"
+                                           placeholder="E-Posta Adresiniz" data-required="true">
+                                    <small class="text-danger">Bu alanı doldurmanız gerekmektedir.*</small>
+                                </div>
+                            </div>
+                            <input type="hidden" class="captchaResponse form-control" name="forgetFormCaptcha">
+                            <div class="form-group col-12 mb-3 row mx-0 justify-content-end">
+                                <div id="forgetFormCaptcha"></div>
+                                <small class="text-danger text-right col-12">
+                                    Bu alan
+                                    zorunludur.
+                                </small>
+                            </div>
+
+                            <div class="col-12 px-md-4 mb-3 d-inline-flex justify-content-end footer">
+                                <button type="submit" class="btn btn-primary border-0 px-5">Gönder</button>
+                            </div>
+                            <div class="col-12 px-md-4">
+                                <p class="text-left">
+                                    Şifreniz üyelik bilgilerinizde yer alan cep telefonu numaranıza ve e-posta
+                                    adresinize gönderilecektir.
+                                </p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade password-modal" id="forgetPasswordSuccess" tabindex="-1"
+                 aria-labelledby="forgetPasswordSuccess" aria-hidden="true" data-backdrop="false">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content text-white border-0 py-3">
+                        <button type="button" class="close close-span" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <span class="col-12 my-4 px-md-4 d-flex justify-content-center">
+                            <img src="@Url.Content("~/assets/img/icon-big-check.svg")">
+                        </span>
+                        <div class="modal-body  col-lg-10 col-12 offset-lg-1 px-md-5 mb-lg-5 mb-4 text-center">
+                            <p class="text-20">
+                                PIN kodunuz üyeliğinizde kayıtlı cep telefonunuza ve e-mail adresinize
+                                gönderilmiştir.
+                            </p>
+                            <button type="button" class="btn border-0 mb-2 w-100" data-dismiss="modal"
+                                    aria-label="Close">
+                                GİRİŞ YAP
+                            </button>
+                            @*<button type="button" class="btn transparent text-white px-5 mb-2 w-100">
+                                    KODU TEKRAR
+                                    YOLLA
+                                </button>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,120 @@
+﻿<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+<head>
+    <meta charset="utf-8" />
+    <title>EuroCMS.NET - @Html.MvcSiteMap().SiteMapTitle("SitemapTitle") </title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    
+ 
+    <!-- GLOBAL VARIABLES -->
+    <script type="text/javascript">
+        var cmsPath = "/@System.Configuration.ConfigurationManager.AppSettings["EuroCMS.AreaName"]";
+        var approveArticleFilesRevision_var = "@Url.Action("ApproveArticleFilesRevision", "ArticleFile")"
+        var discardArticleFilesRevision_var = "@Url.Action("discardArticleFilesRevision","ArticleFile")"
+        var deleteFile_var = "@Url.Action("Delete","ArticleFile")"
+        var getSiteList_var = "@Url.Action("ListByGroupID","Site")"
+        var getZoneGroupList_var = "@Url.Action("ListBySiteID","ZoneGroup")"
+        var getZoneList_var = "@Url.Action("ListByZoneGroupID","Zone")"
+        var getArticleList_var = "@Url.Action("ListByZoneID","Article")"
+        var getSiteAndZoneGroups_var = "@Url.Action("SiteAndZoneGroups","RssFeed")"
+        var reloadCache_var = "@Url.Action("ReloadCache","Home")"
+        var portletList_var = "@Url.Action("PortletList","Portlet")"
+        var pluginList_var = "@Url.Action("PluginList","Plugin")"
+        var breadcrumbList_var = "@Url.Action("BreadCrumbList","BreadCrumb")"
+    </script>
+    <!-- GLOBAL VARIABLES -->
+
+    <link href="@Url.Content("~/Content/plugins/bootstrap/css/bootstrap.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/plugins/bootstrap/css/bootstrap-responsive.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/plugins/font-awesome/font/font-awesome.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/css/style-metro.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/css/style.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/css/style-responsive.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/css/themes/default.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/plugins/uniform/css/uniform.default.css")" rel="stylesheet" type="text/css" />
+
+    <!-- END GLOBAL MANDATORY STYLES -->
+
+    <!-- BEGIN PAGE LEVEL STYLES -->
+
+    <link href="@Url.Content("~/Content/plugins/bootstrap-modal/css/bootstrap-modal.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/plugins/datetimepicker/css/jquery-ui.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/plugins/jhtml-area/style/jHtmlArea.css")" rel="stylesheet" type="text/css" />
+
+    <!-- END PAGE LEVEL STYLES -->
+
+    <!-- BEGIN CORE PLUGINS -->
+
+    <script src="@Url.Content("~/Content/scripts/jquery-2.0.3.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/scripts/jquery-migrate-1.2.1.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/plugins/jquery-ui/jquery-ui-1.10.1.custom.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/plugins/bootstrap/js/bootstrap.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/scripts/jquery.cookie.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/scripts/chosen.jquery.min.js")" type="text/javascript"></script>
+
+    <!-- END CORE PLUGINS -->
+
+    <script src="@Url.Content("~/Content/plugins/bootstrap-modal/js/bootstrap-modal.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/plugins/bootstrap-modal/js/bootstrap-modalmanager.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/scripts/twitter-bootstrap-hover-dropdown.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/plugins/jhtml-area/scripts/jHtmlArea-0.8.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/scripts/functions.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/scripts/global.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/plugins/ckfinder/ckfinder.js")" type="text/javascript"></script>
+
+    <!-- BEGIN PAGE LEVEL SCRIPTS -->
+
+    <script src="@Url.Content("~/Content/scripts/app.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/plugins/bootstrap-modal/js/ui-modals.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/plugins/datetimepicker/js/jquery-ui-timepicker-addon.js")" type="text/javascript"></script>
+
+    <!-- END PAGE LEVEL SCRIPTS -->
+ 
+    <style>
+        .page-content{ min-height:inherit !important; margin:0 !important; padding:40px 0; }
+        .tabbable-custom{ margin:0 !important; }
+    </style>
+</head>
+<!-- END HEAD -->
+<!-- BEGIN BODY -->
+<body class="page-header-fixed @(Request.Cookies["menuVisible"] !=null && Request.Cookies["menuVisible"].Value == "true" ? "page-sidebar-closed" : "") ">
+
+   
+    <!-- BEGIN CONTAINER -->
+    <div class="page-container">
+        
+        <!-- BEGIN PAGE -->
+        <div class="page-content">
+
+            <!-- BEGIN PAGE CONTAINER-->
+            <div class="container-fluid">
+                <div id="dashboard">
+                  
+                    @RenderBody()
+
+                </div>
+
+            </div>
+            <!-- END PAGE CONTAINER-->
+        </div>
+        <!-- END PAGE -->
+    </div>
+    <!-- END CONTAINER -->
+   
+    <script>
+        $(document).ready(function () {
+            App.init(); // initlayout and core plugins
+            UIModals.init();
+        });
+    </script>
+    <!-- END JAVASCRIPTS -->
+
+</body>
+<!-- END BODY -->
+</html>

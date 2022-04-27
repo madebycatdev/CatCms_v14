@@ -1,0 +1,49 @@
+﻿@model EuroCMS.Admin.entity.cms_asp_select_rss_channels_Result
+ 
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("button#insertLink").click(function () {
+            var rssBaseUrl = "@string.Format("{0}://{1}{2}/rss", Request.Url.Scheme, Request.Url.Host, Request.Url.Port !=null? ":"+ Request.Url.Port: string.Empty)";
+            var rss_channel = $("#rss_channels").val();
+            var rss_target = $('#rss_target').val();
+            var rss_version = $('#rss_version').val();
+
+            if (rss_channels == "") {
+                alert('Please select channel to continue');
+            }
+            else {
+                var rss_url = rssBaseUrl + "/"+ rss_version + '/' + rss_channel + '/';
+                insertLink(rss_url, rss_channel, rss_target);
+            }
+        });
+    });
+
+    function insertLink(url, title, target)
+    {
+        // html editor'un içine append edicek.
+    }
+
+</script>
+
+<label for="rss_channels">Channel List: </label>
+@Html.GroupDropList("rss_channels", ViewBag.RssChannels as IEnumerable<GroupDropListItem>, "", new { @class ="large m-wrap"}, "Please select a Rss Channel")
+<br />
+
+<label for="rss_version">Rss Version: </label>
+<select name="rss_version" id="rss_version">
+	<option value="20">Rss 2.0</option>
+	<option value="atom">Atom</option>
+</select>
+<br />
+
+<label for="rss_target">Target: </label>
+<select name="rss_target" id="rss_target">
+	<option value="_self">_self</option>
+	<option value="_blank">_blank</option>
+</select>
+<br />
+
+<div class="modal-footer">
+    <button type="button" data-dismiss="modal" class="btn">Cancel</button>
+    <button type="button" class="btn blue" id="insertLink">Ok</button>
+</div>

@@ -1,0 +1,65 @@
+﻿@model IList<EuroCMS.Admin.entity.cms_asp_admin_select_zone_revision_list_Result>
+
+<div class="row-fluid hide" title="Revision History">
+    <div class="portlet box grey">
+        <div class="portlet-title">
+            <div class="caption"><i class="icon-reorder"></i>Revision List</div>
+            <div class="tools">
+                <a href="javascript:;" class="collapse"></a>
+            </div>
+        </div>
+        <div class="portlet-body">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th></th>
+                        <th>Revision Name</th>
+                        <th>Created By</th>
+                        <th>Approved By</th>
+                        <th>Type</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null) { 
+                        if(Model.Count > 0){
+                            int i = 1;
+                            foreach (var revision in Model)
+                            {
+                            <tr>
+                                <td>@i.</td>
+                                <td>  
+                                    @if (revision.zone_status == "A")
+                                    { 
+                                            <img src="~/Content/img/icon_flaggreen.gif">
+                                    }else {
+                                            <img title="Live" src="~/Content/img/icon_flagred.gif"> 
+                                    }           
+                                </td>
+                                <td>@revision.rev_date @revision.rev_name</td>
+                                <td>@revision.revised_name</td>
+                                <td>@revision.approval_name</td>
+                                <td>@revision.revision_status</td>
+                                <td>
+                                    <a class="btn mini black" target="_blank" href="/web/-1,-2,@revision.rev_id" title="Preview This Revision"><i class="icon-eye-open"></i> Preview </a>
+                                    <a class="btn mini black" href="@Url.Action("Edit", new { id= ViewBag.ZoneID, RevisionID = revision.rev_id })" title="Edit This Revision"><i class="icon-edit"></i> Edit </a>
+                                    <a class="btn mini black" href="@Url.Action("Approve", new { id= @revision.rev_id })" title="Approve This Revision"><i class="icon-flag"></i> Approve</a>
+                                    <a class="btn mini black" href="@Url.Action("Discard", new { id= @revision.rev_id })" onclick="deleteObject(this); return false;" data-message="Are you sure want to delete this zone?" title="Discard This Revision"><i class="icon-remove"></i> Discard</a>
+                            
+                                </td>
+                            </tr>
+                                i++;
+                            }
+                        }else
+                        {
+                        <tr>
+                            <td colspan="8">No Revision Found!</td>
+                        </tr>
+                        }
+                    } 
+                    </tbody>
+        </table>
+        </div>
+    </div>
+</div>

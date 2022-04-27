@@ -1,0 +1,199 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\EntityFramework.6.3.0\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.3.0\build\EntityFramework.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{867AD28F-DE69-45BB-B159-83DD68C36081}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EuroCMS</RootNamespace>
+    <AssemblyName>EuroCMS</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.3.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.3.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common, Version=2.0.0.0, Culture=neutral, PublicKeyToken=d894a1a650768ced, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\3rdParty\Microsoft.Practices.EnterpriseLibrary.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Data, Version=2.0.0.0, Culture=neutral, PublicKeyToken=d894a1a650768ced, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\3rdParty\Microsoft.Practices.EnterpriseLibrary.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ObjectBuilder, Version=1.0.51205.0, Culture=neutral, PublicKeyToken=d894a1a650768ced, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\3rdParty\Microsoft.Practices.ObjectBuilder.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.ConnectionInfo, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Extra DLL\Microsoft.SqlServer.ConnectionInfo.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Captcha\GoogleReCaptchaV2.cs" />
+    <Compile Include="Configuration\ConfigManager.cs" />
+    <Compile Include="Data\DalA.cs" />
+    <Compile Include="Data\DalR.cs" />
+    <Compile Include="Data\DbHelper.cs" />
+    <Compile Include="Hangfire\IHangfireJob.cs" />
+    <Compile Include="Helper\AssembylResourceFile.cs" />
+    <Compile Include="Helper\AssembylResourceProvider.cs" />
+    <Compile Include="Helper\UrlHelper.cs" />
+    <Compile Include="WebControl\EditableDateControl.cs" />
+    <Compile Include="WebControl\EditableBooleanControl.cs" />
+    <Compile Include="WebControl\EditableDatetimeControl.cs" />
+    <Compile Include="WebControl\EditableFileControl.cs" />
+    <Compile Include="WebControl\EditableHtmlControl.cs" />
+    <Compile Include="WebControl\EditableLanguageControl.cs" />
+    <Compile Include="WebControl\EditableTextControl.cs" />
+    <Compile Include="WebControl\SearchPlugin.cs" />
+    <Compile Include="Web\AntiXssModule.cs" />
+    <Compile Include="Web\BehavioralModule.cs" />
+    <Compile Include="Web\CmsApplication.cs" />
+    <Compile Include="Web\CmsTemplateFile.cs" />
+    <Compile Include="Provider\CmsTemplatePathProvider.cs" />
+    <Compile Include="Web\ErrorModule.cs" />
+    <Compile Include="Web\ICmsHttpModule.cs" />
+    <Compile Include="WebControl\BreadCrumbControl.cs" />
+    <Compile Include="WebControl\CachedControl.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebControl\EditorLink.cs" />
+    <Compile Include="WebControl\ICmsControl.cs" />
+    <Compile Include="WebControl\MenuControl.cs" />
+    <Compile Include="WebControl\PortletControl.cs" />
+    <Compile Include="WebControl\SitemapControl.cs" />
+    <Compile Include="WebPart\BaseUserControl.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebPart\CmsContentPart.cs" />
+    <Compile Include="WebPart\CmsEditorPart.cs" />
+    <Compile Include="Web\CmsPage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Provider\CmsPersonalizationProvider.cs" />
+    <Compile Include="Provider\CmsSitemapProvider.cs" />
+    <Compile Include="Management\CmsWebEvent.cs" />
+    <Compile Include="Configuration\AccessRuleSectionCollection.cs" />
+    <Compile Include="Configuration\AccessRuleSection.cs" />
+    <Compile Include="Configuration\CmsContentType.cs" />
+    <Compile Include="Configuration\AccessRuleElement.cs" />
+    <Compile Include="Configuration\SecurityAction.cs" />
+    <Compile Include="Core\EnumerableToEnumerableTConverter.cs" />
+    <Compile Include="Core\JsonHelper.cs" />
+    <Compile Include="Core\MailSender.cs" />
+    <Compile Include="Provider\CmsProfileProvider.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Core\CmsHelper.cs" />
+    <Compile Include="Core\GlobalVars.cs" />
+    <Compile Include="Provider\CmsRoleProvider.cs" />
+    <Compile Include="Provider\CmsSessionStateProvider.cs" />
+    <Compile Include="Core\RequestHelper.cs" />
+    <Compile Include="Core\Pager.cs" />
+    <Compile Include="Core\Constants.cs" />
+    <Compile Include="Core\RC4Encrypt.cs" />
+    <Compile Include="Provider\CmsMembershipProvider.cs" />
+    <Compile Include="Web\PageHandler.cs" />
+    <Compile Include="Web\PageHandlerDev.cs" />
+    <Compile Include="Web\SitemapHandler.cs" />
+    <Compile Include="Web\XmlHandler.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="bin\Debug\CKFinder.dll" />
+    <Content Include="bin\Debug\EuroCMS.Model.dll" />
+    <Content Include="bin\Debug\EuroCMS.Model.pdb" />
+    <Content Include="bin\Debug\EuroCMS.pdb" />
+    <Content Include="bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll" />
+    <Content Include="bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll" />
+    <Content Include="bin\Debug\Microsoft.Practices.ObjectBuilder.dll" />
+    <Content Include="bin\Debug\Newtonsoft.Json.dll" />
+    <Content Include="bin\Release\CKFinder.dll" />
+    <Content Include="bin\Release\EntityFramework.SqlServer.xml" />
+    <Content Include="bin\Release\EuroCMS.dll" />
+    <Content Include="bin\Release\EuroCMS.Model.dll" />
+    <Content Include="bin\Release\EuroCMS.Model.pdb" />
+    <Content Include="bin\Release\EuroCMS.pdb" />
+    <Content Include="bin\Release\Microsoft.Practices.EnterpriseLibrary.Common.dll" />
+    <Content Include="bin\Release\Microsoft.Practices.EnterpriseLibrary.Common.xml" />
+    <Content Include="bin\Release\Microsoft.Practices.EnterpriseLibrary.Data.dll" />
+    <Content Include="bin\Release\Microsoft.Practices.EnterpriseLibrary.Data.xml" />
+    <Content Include="bin\Release\Microsoft.Practices.ObjectBuilder.dll" />
+    <Content Include="bin\Release\Microsoft.Practices.ObjectBuilder.pdb" />
+    <Content Include="bin\Release\Microsoft.Practices.ObjectBuilder.xml" />
+    <Content Include="bin\Release\Newtonsoft.Json.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EuroCMS.Model\EuroCMS.Model.csproj">
+      <Project>{8631beca-42f7-4b03-ae38-7b73cb758f29}</Project>
+      <Name>EuroCMS.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\EntityFramework.6.3.0\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.3.0\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.3.0\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.3.0\build\EntityFramework.targets'))" />
+  </Target>
+  <Import Project="..\packages\EntityFramework.6.3.0\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.3.0\build\EntityFramework.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

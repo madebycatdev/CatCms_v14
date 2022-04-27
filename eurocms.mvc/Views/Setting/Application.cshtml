@@ -1,0 +1,145 @@
+﻿@model System.Configuration.KeyValueConfigurationCollection
+ 
+<p>
+    <a class="btn blue openModal" href="@Url.Action("CreateAppSetting", "Setting")">Create New <i class="icon-circle-arrow-right"></i></a>
+</p>  
+
+<div class="tabbable tabbable-custom">
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#tab_1_1">Application Settings</a></li>
+        <li class=""><a data-toggle="tab" href="#tab_1_2">Connection String</a></li>
+        <li class=""><a data-toggle="tab" href="#tab_1_3">Server Variables</a></li>
+    </ul>
+    <div class="tab-content">
+        <div id="tab_1_1" class="tab-pane active">
+            <p>
+                Use this page to edit, override, or delete application settings that you do not want to hard-code into your pages. Settings can be local to your application or can be inherited from a default site-wide or computer-wide configuration. If a setting is inherited, you can override it to specify a new value for your application.
+            </p>
+    
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <td>
+                            <b>Setting Name</b>
+                        </td>
+                        <td>
+                            <b>Setting Value</b>
+                        </td>
+                        <td>
+                            <b>Actions</b>
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.AllKeys)
+                    {
+                        var key = Model[item].Key;
+                        var value = Model[item].Value;
+                        var valueLength = value.Length > 50 ? 50 : value.Length;
+                        <tr>
+                            <td>
+                                @Model[item].Key
+                            </td>
+                            <td>
+                                @value.Substring(0, valueLength).PadRight(valueLength + 3, '.')
+                            </td>
+                            <td>
+                                <a href="@Url.Action("CreateAppSetting", "Setting", new { id=key })" class="btn icn-only openModal"><i class="icon-pencil"></i></a> 
+                                @if (!key.StartsWith("EuroCMS"))
+                                {
+                                    using (Html.BeginForm("DeleteAppSetting", "Setting", FormMethod.Post))
+                                    { 
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" value="@key" name="id" />
+                                        <button type="submit"  class="btn icn-only red" data-message="Are you sure want to delete this setting?"><i class="icon-trash"></i></button>
+                                    }
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div id="tab_1_2" class="tab-pane">
+           @*<fieldset>
+                <legend>Connection String</legend>*@
+
+                @{
+                    var connection = ViewData["ConnectionString"] as System.Data.SqlClient.SqlConnectionStringBuilder;
+                }
+
+                @using (Html.BeginForm("SaveConnectionString", "Setting"))
+                { 
+                    @Html.AntiForgeryToken()
+
+                    <p>
+                        Warning! 
+                        Contact your System Administrator for changing the Connection String.
+                    </p>
+                    <p>
+                        <label for="ServerAddress">Database Server:</label>
+                        @Html.TextBox("ServerAddress", connection.DataSource)
+                    </p>
+                    <p>
+                        <label for="DatabaseName">Database Name:</label>
+                        @Html.TextBox("DatabaseName", connection.InitialCatalog)
+                    </p>
+                    <p>
+                        <label for="DbUserName">User Name:</label>
+                        @Html.TextBox("DbUserName", connection.UserID)
+                    </p>
+                    <p>
+                        <label for="DbPassword">Password:</label>
+                        @Html.Password("DbPassword", connection.Password)
+                    </p>
+                    @*<p>
+                       <button class="btn green" type="submit">
+                           <i class="icon-save"></i> Save
+                       </button>
+                    </p>*@
+					<div class="form-actions">
+						<button class="btn green" type="submit"><i class="icon-save"></i> Save</button>
+					</div>
+                }
+            @*</fieldset>*@
+        </div>
+        <div id="tab_1_3" class="tab-pane">
+            
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <td>
+                            <b>Variable Name</b>
+                        </td>
+                        <td>
+                            <b>Variable Value</b>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Request.ServerVariables)
+                    {
+                      
+                        <tr>
+                            <td>
+                                @item
+                            </td>
+                            <td>
+                                @Request[item.ToString()]
+                            </td>
+                            <td>
+                               
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+           
+        </div>
+
+    </div>
+</div>
+

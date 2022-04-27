@@ -1,0 +1,32 @@
+﻿@{
+    Layout = null;
+}
+ 
+@using (Html.BeginForm("Create", "Configuration", FormMethod.Post, new { @class = "form-horizontal", @id = "configurationCreate"}))
+{
+    @Html.AntiForgeryToken()
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+        <h3>Create New Configuration Value:</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row-fluid">
+            <div class="control-group">
+                <label class="control-label" for="config_name">Parameter Name: <span class="red">*</span></label>
+                <div class="controls">
+                    <input class="span11 m-wrap" type="text" id="config_name" name="config_name" required>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="config_value">Parameter Value:</label>
+                <div class="controls">
+                    <textarea rows="6" class="span11 m-wrap" id="config_value" name="config_value" required></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" data-dismiss="modal" class="btn"><i class="icon-remove"></i> Close</button>
+        <button type="submit" class="btn green"><i class="icon-save"></i> Save & Close</button>
+    </div>
+}

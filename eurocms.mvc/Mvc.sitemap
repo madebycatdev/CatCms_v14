@@ -1,0 +1,162 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<mvcSiteMap xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xmlns="http://mvcsitemap.codeplex.com/schemas/MvcSiteMap-File-4.0"
+            xsi:schemaLocation="http://mvcsitemap.codeplex.com/schemas/MvcSiteMap-File-4.0 MvcSiteMapSchema.xsd">
+
+  <mvcSiteMapNode title="Home" controller="Home" action="Dashboard">
+    <mvcSiteMapNode title="Dashboard" controller="Home" action="Dashboard" imageUrl="icon-home" visibilityProvider="EuroCMS.Admin.Common.AuthorVisibilityProvider, EuroCMS.Admin" />
+      <mvcSiteMapNode title="Content" key="content" clickable="false" visibilityProvider="EuroCMS.Admin.Common.AuthorContentEntryVisibilityProvider, EuroCMS.Admin" imageUrl="icon-folder-close">
+        <mvcSiteMapNode quickAdd="true" title="Sites" controller="Site" action="Index" visibilityProvider="EuroCMS.Admin.Common.PowerUserContentEntryVisibilityProvider, EuroCMS.Admin">
+          <mvcSiteMapNode  visibility="hidden" title="Create / Edit Site"  controller="Site" action="Create" visibilityProvider="EuroCMS.Admin.Common.DefaultVisibilityProvider, EuroCMS.Admin" />
+          <mvcSiteMapNode visibility="hidden" title="Create Site" controller="Site" action="Create"/>
+          <mvcSiteMapNode visibility="hidden" title="All Sites" controller="Site" action="Index">
+            <mvcSiteMapNode title="Edit Site" controller="Site" action="Edit" preservedRouteParameters="id" visibilityProvider="EuroCMS.Admin.Common.DefaultVisibilityProvider, EuroCMS.Admin"/>
+          </mvcSiteMapNode>
+        </mvcSiteMapNode>
+        
+        <mvcSiteMapNode quickAdd="true" title="Templates" controller="Template" action="Index" visibilityProvider="EuroCMS.Admin.Common.PowerUserContentEntryVisibilityProvider, EuroCMS.Admin">
+          <mvcSiteMapNode visibility="hidden" title="Create Template" controller="Template" action="Create" visibilityProvider="EuroCMS.Admin.Common.DefaultVisibilityProvider, EuroCMS.Admin" />
+          <mvcSiteMapNode visibility="hidden" title="All Templates" controller="Template" action="Index">
+            <mvcSiteMapNode  title="Templates Revisions" controller="Template" action="Revisions" preservedRouteParameters="id" visibilityProvider="EuroCMS.Admin.Common.DefaultVisibilityProvider, EuroCMS.Admin" />
+            <mvcSiteMapNode title="Edit Templates" controller="Template" action="Edit" preservedRouteParameters="id" visibilityProvider="EuroCMS.Admin.Common.DefaultVisibilityProvider, EuroCMS.Admin"/>
+          </mvcSiteMapNode>
+        </mvcSiteMapNode>
+
+        <mvcSiteMapNode title="Zone Groups" quickAdd="true" controller="ZoneGroup" action="Index">
+          <mvcSiteMapNode visibility="hidden"  title="Create Zone Group" controller="ZoneGroup" action="Create" />
+          <mvcSiteMapNode visibility="hidden" title="All Zone Groups" controller="ZoneGroup" action="Index">
+            <mvcSiteMapNode title="Edit Zone Group" controller="ZoneGroup" action="Edit" preservedRouteParameters="id" visibilityProvider="EuroCMS.Admin.Common.DefaultVisibilityProvider, EuroCMS.Admin" />
+          </mvcSiteMapNode>
+        </mvcSiteMapNode>
+
+        <mvcSiteMapNode title="Zones" quickAdd="true" controller="Zone" action="Index">
+          <mvcSiteMapNode visibility="hidden" title="Create Zone" controller="Zone" action="Create" />
+          <mvcSiteMapNode visibility="hidden" title="All Zones" controller="Zone" action="Index">
+            <mvcSiteMapNode title="Edit Zone" controller="Zone" action="Edit" preservedRouteParameters="id" visibilityProvider="EuroCMS.Admin.Common.DefaultVisibilityProvider, EuroCMS.Admin" />
+          </mvcSiteMapNode>
+        </mvcSiteMapNode>
+
+        <mvcSiteMapNode key="article" title="Articles" quickAdd="true" controller="Article" action="Index">
+          <mvcSiteMapNode visibility="hidden" title="Create Article"   controller="Article" action="Create" inheritedRouteParameters="ClsfId" />
+          <mvcSiteMapNode visibility="hidden" title="Compare" controller="Article" action="Compare" inheritedRouteParameters="Id"/>
+          <mvcSiteMapNode visibility="hidden" title="Search" controller="Article" action="Index" inheritedRouteParameters="ClsfId">
+          <mvcSiteMapNode title="Create / Edit Article" controller="Article" action="Edit" preservedRouteParameters="id" inheritedRouteParameters="ClsfId" visibilityProvider="EuroCMS.Admin.Common.DefaultVisibilityProvider, EuroCMS.Admin" />
+          </mvcSiteMapNode>
+        </mvcSiteMapNode>
+
+        <mvcSiteMapNode title="Article Order" controller="ArticleOrder" action="Index" visibilityProvider="EuroCMS.Admin.Common.PowerUserVisibilityProvider, EuroCMS.Admin" />
+        <mvcSiteMapNode title="File Manager" imageUrl="icon-upload-alt" controller="Tool" action="FileManager" visibilityProvider="EuroCMS.Admin.Common.AuthorContentEntryVisibilityProvider, EuroCMS.Admin" />
+        
+      </mvcSiteMapNode>
+
+      <mvcSiteMapNode title="Extension" clickable="false" visibilityProvider="EuroCMS.Admin.Common.EditorContentEntryVisibilityProvider, EuroCMS.Admin" imageUrl="icon-th">
+        
+        <mvcSiteMapNode title="Portlets" quickAdd="true" controller="Portlet" action="Index" visibilityProvider="EuroCMS.Admin.Common.EditorContentEntryVisibilityProvider, EuroCMS.Admin">
+          <mvcSiteMapNode visibility="hidden" title="Create Portlet" controller="Portlet" action="Create" />
+          <mvcSiteMapNode visibility="hidden" title="All Portlets" controller="Portlet" action="Index">
+            <mvcSiteMapNode title="Edit Portlet" controller="Portlet" action="Edit" preservedRouteParameters="id" visibilityProvider="EuroCMS.Admin.Common.DefaultVisibilityProvider, EuroCMS.Admin" />
+          </mvcSiteMapNode>
+        </mvcSiteMapNode>
+
+        <mvcSiteMapNode title="File Types" quickAdd="true" controller="FileType" action="Index" visibilityProvider="EuroCMS.Admin.Common.EditorVisibilityProvider, EuroCMS.Admin">
+          <mvcSiteMapNode visibility="hidden" title="Create File Type" controller="FileType" action="Create" />
+          <mvcSiteMapNode visibility="hidden" title="All File Types" controller="FileType" action="Index">
+            <mvcSiteMapNode title="Edit File Type" controller="FileType" action="Edit" preservedRouteParameters="id" visibilityProvider="EuroCMS.Admin.Common.DefaultVisibilityProvider, EuroCMS.Admin" />
+          </mvcSiteMapNode>
+        </mvcSiteMapNode>
+
+        <mvcSiteMapNode title="Splashes" quickAdd="true" controller="Splash" action="Index" visibilityProvider="EuroCMS.Admin.Common.EditorVisibilityProvider, EuroCMS.Admin">
+          <mvcSiteMapNode visibility="hidden" title="All Splashes" controller="Splash" action="Index">
+            <mvcSiteMapNode title="Edit Splash" controller="Splash" action="Edit" preservedRouteParameters="id" visibilityProvider="EuroCMS.Admin.Common.DefaultVisibilityProvider, EuroCMS.Admin" />
+          </mvcSiteMapNode>
+        </mvcSiteMapNode>
+
+        <mvcSiteMapNode title="Classifications" quickAdd="true" controller="Classification" action="Index" visibilityProvider="EuroCMS.Admin.Common.EditorVisibilityProvider, EuroCMS.Admin">
+          <mvcSiteMapNode visibility="hidden" title="Create Classification" controller="Classification" action="Create" />
+          <mvcSiteMapNode visibility="hidden" title="All Classifications" controller="Classification" action="Index">
+            <mvcSiteMapNode title="Edit Classification" controller="Classification" action="Edit" preservedRouteParameters="id" visibilityProvider="EuroCMS.Admin.Common.DefaultVisibilityProvider, EuroCMS.Admin" />
+          </mvcSiteMapNode>
+        </mvcSiteMapNode>
+
+        <mvcSiteMapNode title="Breadcrumbs" quickAdd="true" controller="Breadcrumb" action="Index" visibilityProvider="EuroCMS.Admin.Common.EditorVisibilityProvider, EuroCMS.Admin">
+          <mvcSiteMapNode visibility="hidden" title="Create Breadcrumb" controller="Breadcrumb" action="Create"/>
+          <mvcSiteMapNode visibility="hidden" title="All Breadcrumbs" controller="Breadcrumb" action="Index">
+            <mvcSiteMapNode title="Edit Breadcrumb" controller="Breadcrumb" action="Edit" preservedRouteParameters="id" visibilityProvider="EuroCMS.Admin.Common.DefaultVisibilityProvider, EuroCMS.Admin" />
+          </mvcSiteMapNode>
+        </mvcSiteMapNode>
+        
+      </mvcSiteMapNode>
+
+    <mvcSiteMapNode title="Tools" clickable="false" visibilityProvider="EuroCMS.Admin.Common.AdministratorVisibilityProvider, EuroCMS.Admin" imageUrl="icon-wrench">
+      <mvcSiteMapNode title="XML Generator" quickAdd="true" controller="XmlGenerator" action="Index">
+        <mvcSiteMapNode visibility="hidden" title="Create XML" controller="XmlGenerator" action="Create"/>
+        <mvcSiteMapNode  visibility="hidden" title="XML Generator" quickAdd="true" controller="XmlGenerator" action="Index">
+          <mvcSiteMapNode visibility="hidden" title="Edit XML" controller="XmlGenerator" action="Edit"/>
+        </mvcSiteMapNode>
+      </mvcSiteMapNode>
+      <mvcSiteMapNode title="RSS Feed" quickAdd="true" controller="RssFeed" action="Index">
+        <mvcSiteMapNode visibility="hidden" title="Create RSS Feeds" controller="RssFeed" action="Create"/>
+        <mvcSiteMapNode  visibility="hidden" title="RSS Feeds" quickAdd="true" controller="RssFeed" action="Index">
+          <mvcSiteMapNode title="Edit RSS Feed" controller="RssFeed" action="Edit"/>
+        </mvcSiteMapNode>
+      </mvcSiteMapNode>
+    </mvcSiteMapNode>
+
+    <mvcSiteMapNode title="Configurations" clickable="false" visibilityProvider="EuroCMS.Admin.Common.PowerUserVisibilityProvider, EuroCMS.Admin" imageUrl="icon-cogs">
+
+      <mvcSiteMapNode title="Structure" controller="Home" action="Structure" />
+      
+      <mvcSiteMapNode title="Domains" controller="Domain" action="Index" />
+
+      <mvcSiteMapNode title="301 Redirects" controller="Redirection" action="Index" />
+
+      <mvcSiteMapNode title="Sitemaps" quickAdd="true" controller="Sitemap" action="Index">
+        <mvcSiteMapNode visibility="hidden" title="Create Sitemap" controller="Sitemap" action="Create" />
+        <mvcSiteMapNode visibility="hidden" title="All Sitemaps" controller="Sitemap" action="Index">
+          <mvcSiteMapNode title="Edit Sitemap" controller="Sitemap" action="Edit" preservedRouteParameters="id" />
+        </mvcSiteMapNode>
+      </mvcSiteMapNode>
+
+      <mvcSiteMapNode title="Languages" quickAdd="true" controller="Language" action="Index">
+        <mvcSiteMapNode visibility="hidden" title="Create Language" controller="Language" action="Create"/>
+        <mvcSiteMapNode visibility="hidden" title="All Languages" controller="Language" action="Index">
+          <mvcSiteMapNode visibility="hidden" title="Edit Language" controller="Language" action="Edit"/>
+        </mvcSiteMapNode>
+      </mvcSiteMapNode>
+
+      <mvcSiteMapNode title="Structure Groups" controller="StructureGroup" action="Index" />
+      <mvcSiteMapNode  title="Bulk Article Import" controller="Tool" action="BulkImport" />
+
+      <mvcSiteMapNode title="Setup" controller="Configuration" action="Index" />
+      
+      <mvcSiteMapNode quickAdd="true" title="Tags" controller="Tag" action="Index" visibilityProvider="EuroCMS.Admin.Common.AdministratorVisibilityProvider, EuroCMS.Admin" >
+        <mvcSiteMapNode visibility="hidden" title="Tags List" controller="Tag" action="Index" />
+        <mvcSiteMapNode visibility="hidden" title="Create Tag" controller="Tag" action="Create" />
+      </mvcSiteMapNode>
+      
+    </mvcSiteMapNode>
+
+    <mvcSiteMapNode title="Administration" imageUrl="icon-user" controller="Setting" action="Index" visibilityProvider="EuroCMS.Admin.Common.AdminUserCreatorVisibilityProvider, EuroCMS.Admin">
+
+      <mvcSiteMapNode title="Error Logs" controller="ErrorLog" action="Index" visibilityProvider="EuroCMS.Admin.Common.AdminUserCreatorVisibilityProvider, EuroCMS.Admin" />
+      <mvcSiteMapNode title="Event Logs" controller="WebEventLog" action="Index" visibilityProvider="EuroCMS.Admin.Common.AdminUserCreatorVisibilityProvider, EuroCMS.Admin" />
+      <mvcSiteMapNode title="General / SMTP" controller="Setting" action="General" visibilityProvider="EuroCMS.Admin.Common.AdministratorVisibilityProvider, EuroCMS.Admin" />
+      <mvcSiteMapNode title="URL Structure" controller="URLStructure" action="Index" visibilityProvider="EuroCMS.Admin.Common.AdministratorVisibilityProvider, EuroCMS.Admin" />
+      <mvcSiteMapNode  title="Article File Revisions" controller="Tool" action="ArticleFileRevision" visibilityProvider="EuroCMS.Admin.Common.EditorVisibilityProvider, EuroCMS.Admin" />
+      <mvcSiteMapNode title="Application" controller="Setting" action="Application" visibilityProvider="EuroCMS.Admin.Common.AdministratorVisibilityProvider, EuroCMS.Admin" />
+      <mvcSiteMapNode title="Profile" controller="Setting" action="ProfileSetting" visibilityProvider="EuroCMS.Admin.Common.EditorVisibilityProvider, EuroCMS.Admin" />
+      <mvcSiteMapNode title="Tracing" controller="Setting" action="Tracing" visibilityProvider="EuroCMS.Admin.Common.EditorVisibilityProvider, EuroCMS.Admin" />
+      <mvcSiteMapNode title="Caching" controller="Setting" action="Caching" visibilityProvider="EuroCMS.Admin.Common.EditorVisibilityProvider, EuroCMS.Admin" />
+      <mvcSiteMapNode title="Users" controller="Account" action="Index" visibilityProvider="EuroCMS.Admin.Common.AdminUserCreatorVisibilityProvider, EuroCMS.Admin">
+        <mvcSiteMapNode title="Create User" controller="Account" action="Create"></mvcSiteMapNode>
+        <mvcSiteMapNode title="Users List" controller="Account" action="Index">
+          <mvcSiteMapNode title="Details" controller="Account" action="Details" preservedRouteParameters="id" visibilityProvider="EuroCMS.Admin.Common.DefaultVisibilityProvider, EuroCMS.Admin" />
+        </mvcSiteMapNode>
+        <mvcSiteMapNode title="User Roles" controller="Account" action="ManageRoles"></mvcSiteMapNode>
+        <mvcSiteMapNode title="Access Rules" preservedRouteParameters="id" controller="Account" action="AccessRules" />
+      </mvcSiteMapNode>
+    </mvcSiteMapNode>
+    
+    
+  </mvcSiteMapNode>
+</mvcSiteMap>

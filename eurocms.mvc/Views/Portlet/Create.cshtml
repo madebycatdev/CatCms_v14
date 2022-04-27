@@ -1,0 +1,130 @@
+﻿<script type="text/javascript">
+    //$(document).ready(function () {
+    //    CKEDITOR.replace('editor_html', { height: "300px" });
+    //});
+</script>
+
+@using (Html.BeginForm("Create", "Portlet", FormMethod.Post, new { @class = "form-horizontal", @id = "portletCreate" }))
+{
+    <div class="tabbable tabbable-custom">
+		<div class="tab-content new-tab-content">
+			@Html.AntiForgeryToken()
+			<div class="row-fluid">
+				<div class="control-group">
+					<label class="control-label" for="portlet_status">Portlet Status:</label>
+					<div class="controls">
+						@*
+						<input type="hidden" value="" name="portlet_status" id="portletStatus_status" data-act="1" data-psf="0" class="switchBt" value="0" />	
+						*@
+						<div class="switch" data-on="success" data-off="danger">
+							@*
+							<input type="checkbox" class="toggle success-toggle-button" name="portletStatus_StatusSwitch" id="portletStatus_StatusSwitch" />
+							*@
+							<input 
+								name="portlet_status" 
+								data-act="1" 
+								data-psf="0" 
+								value="" 
+								type="checkbox" 
+								class="toggle success-toggle-button" 
+								id="portlet_status" 	
+							/>
+						</div>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="portlet_name">Portlet Name: <span class="red">*</span></label>
+					<div class="controls">
+						<input class="span12 m-wrap" type="text" id="portlet_name" name="portlet_name" required />
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="structure_description">Description:</label>
+					<div class="controls">
+						<textarea class="span12 m-wrap" id="structure_description" name="structure_description" rows="4"></textarea>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="group_id">Group:</label>  
+					<div class="controls">
+						@Html.DropDownList("group_id", ViewBag.Groups as IEnumerable<SelectListItem>, "Not Grouped", new { @class ="large m-wrap"})
+					</div>
+				</div>
+				@*<div class="control-group">
+					<label class="control-label" for="portlet_status1">Plugin Status</label>
+					<div class="controls">  
+						<label class="smallWrap">
+							<input type="radio" checked="checked" id="portlet_status1" name="portlet_status" value="1">Active
+						</label> 
+						<label class="smallWrap">      
+							<input type="radio" id="portlet_status0" name="portlet_status" value="0">Passive
+						</label>
+					</div>
+				</div>*@
+				<div class="control-group">
+					<label class="control-label" for="portlet_css">Portlet CSS:</label>
+					<div class="controls">
+						<textarea class="span12 m-wrap" rows="4" id="portlet_css" name="portlet_css"></textarea>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="portlet_header">Portlet Header:</label>
+					<div class="controls">
+						<textarea class="span12 m-wrap" rows="4" id="portlet_header" name="portlet_header"></textarea>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="portlet_footer">Portlet Footer:</label>
+					<div class="controls">
+						<textarea class="span12 m-wrap" rows="4" id="portlet_footer" name="portlet_footer"></textarea>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="enable_shortcut">Enabled Shortcut</label>
+					<div class="controls">
+						@*
+						<input type="hidden" value="" name="enable_shortcut" id="enableShortcut_status" data-act="Y" data-psf="N" class="switchBt" value="N" />
+						*@
+						<div class="switch" data-on="success" data-off="danger">
+							@*
+							<input type="checkbox" class="toggle success-toggle-button" name="enableShortcut_StatusSwitch" id="enableShortcut_StatusSwitch" />
+							*@
+							<input 
+								name="enable_shortcut" 
+								data-act="Y" 
+								data-psf="N" 
+								value="" 
+								type="checkbox" 
+								class="toggle success-toggle-button" 
+								id="enable_shortcut" 
+							/>
+						</div>
+					</div>
+				</div>
+				<div class="control-group hide">
+					<label class="control-label" for="editor_type">Editor Type</label>
+					<div class="controls">
+						<label class="smallWrap">
+							<input type="radio" name="editor_type" value="H" checked="checked" id="editor_type1" />
+							HTML Editor
+						</label>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="portlet_html">Portlet HTML</label>
+					<div class="controls">
+						<div id="type_H">
+							<textarea class="span12 htmlEditor" name="editor_html"></textarea>
+						</div>
+					</div>
+				</div>
+			</div> 
+			<div class="form-actions">
+				<button type="button" class="btn" title="Cancel Changes" onclick="discardChanges('@Url.Action("Index")'),false;"><i class="icon-remove"></i> Cancel</button>
+				<button type="submit" class="btn green" title="Save Portlet Details"><i class="icon-save"></i> Save</button>
+			</div>
+		</div>
+	</div>
+}
+
+@section ModalSelectArticle { @Html.Partial("ModalSelectArticle") }

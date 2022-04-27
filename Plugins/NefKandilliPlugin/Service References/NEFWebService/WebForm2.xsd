@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/NEF.WebServices.WebForm" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/NEF.WebServices.WebForm" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://fenix.nef.com.tr:9093/WebForm.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:complexType name="Webform">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ChannelOfAwareness" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ClientId" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ContactPreferences" nillable="true" type="tns:ContactPreferences" />
+      <xs:element minOccurs="0" name="CustomerEmail" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CustomerInvestmentRange" nillable="true" type="tns:InvestmentRange" />
+      <xs:element minOccurs="0" name="CustomerMobilePhone" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CustomerName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CustomerSurname" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="FlatTypeChoose" nillable="true" type="tns:FlatType" />
+      <xs:element minOccurs="0" name="InterestOfProjectCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Location" nillable="true" type="tns:Location" />
+      <xs:element minOccurs="0" name="Message" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="NefInformation" type="xs:boolean" />
+      <xs:element minOccurs="0" name="PersonalDataSecurity" type="xs:boolean" />
+      <xs:element minOccurs="0" name="ProcessType" nillable="true" type="tns:ProcessType" />
+      <xs:element minOccurs="0" name="SubParticipationSource" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UTM_Campaign" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UTM_Medium" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="utmAdWords" nillable="true" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Webform" nillable="true" type="tns:Webform" />
+  <xs:simpleType name="ContactPreferences">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Phone" />
+      <xs:enumeration value="EMail" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="ContactPreferences" nillable="true" type="tns:ContactPreferences" />
+  <xs:simpleType name="InvestmentRange">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="optionOne">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">100000000</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="optionTwo">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">100000001</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="optionThree">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">100000002</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="optionFour">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">100000003</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="optionFive">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">100000004</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="optionSix">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">100000005</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="optionSeven">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">100000006</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="optionEight">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">100000007</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="optionNine">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">100000008</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="optionTen">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">100000009</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="optionEleven">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">1000000010</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="InvestmentRange" nillable="true" type="tns:InvestmentRange" />
+  <xs:simpleType name="FlatType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="optionOne" />
+      <xs:enumeration value="optionTwo" />
+      <xs:enumeration value="optionThree" />
+      <xs:enumeration value="optionFour" />
+      <xs:enumeration value="optionFive" />
+      <xs:enumeration value="optionSix" />
+      <xs:enumeration value="optionSeven" />
+      <xs:enumeration value="optionEight" />
+      <xs:enumeration value="optionNine" />
+      <xs:enumeration value="optionTen" />
+      <xs:enumeration value="optionEleven" />
+      <xs:enumeration value="optionTwelve" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="FlatType" nillable="true" type="tns:FlatType" />
+  <xs:simpleType name="Location">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Merter">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">1</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Kağıthane">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">2</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="Location" nillable="true" type="tns:Location" />
+  <xs:simpleType name="ProcessType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="ForSale">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">1</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ForRent">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">2</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="ProcessType" nillable="true" type="tns:ProcessType" />
+  <xs:complexType name="MsCrmResult">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Message" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Success" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="MsCrmResult" nillable="true" type="tns:MsCrmResult" />
+</xs:schema>

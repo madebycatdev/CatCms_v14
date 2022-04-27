@@ -1,0 +1,463 @@
+﻿ @model EuroCMS.Admin.entity.cms_asp_admin_select_file_type_details_Result
+    <div class="tabbable tabbable-custom">
+		<div class="tab-content new-tab-content">
+		<div class="row-fluid">
+			@using (Html.BeginForm("Edit", "FileType", FormMethod.Post, new { @class = "form-horizontal", @id = "fileTypeEdit" }))
+			{
+				@Html.ValidationSummary(true)
+				@Html.AntiForgeryToken()
+				<div class="control-group">
+					<label class="control-label" for="type_name">File Type Name:<span class="red">*</span></label>
+					<div class="controls">
+						<input type="text" name="type_name" id="type_name" class="m-wrap span12" value="@Model.type_name" required>
+					</div>
+				</div>        
+				<div class="control-group">
+					<label class="control-label" for="structure_description">Description:</label>
+					<div class="controls">
+						<textarea name="structure_description" id="structure_description" rows="3" class="m-wrap span12">@Model.structure_description</textarea>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="group_id">Group:</label>
+					<div class="controls">
+						@Html.DropDownListFor(d => d.group_id, ViewBag.Groups as IEnumerable<SelectListItem>, "Not Grouped", new { @class ="span12 m-wrap"})
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="type_alias">File Type Alias:<span class="red">*</span></label>
+					<div class="controls">
+						<input type="text" name="type_alias" id="type_alias" class="m-wrap span12" value="@Model.type_alias" required>
+					</div>
+				</div> 
+				<div class="control-group">
+					<label class="control-label">File Type Items:</label>
+				</div>
+				<div class="fileWrap">
+					@{ var buttonVisible = true; }
+					@for (var i = 1; i <= 10; i++)
+					{
+					  
+						string caption = Model.GetType().GetProperty("file" + i + "_name").GetValue(Model, null).ToString();
+						string extension = Model.GetType().GetProperty("file" + i + "_extension").GetValue(Model, null).ToString();
+						string size = Model.GetType().GetProperty("file" + i + "_size").GetValue(Model, null).ToString();
+						string wh = Model.GetType().GetProperty("file" + i + "_wh").GetValue(Model, null).ToString();
+
+						if (i != 10)
+						{
+							buttonVisible = false;
+						}
+						else {
+							buttonVisible = true;
+						}
+
+						if (!string.IsNullOrEmpty(caption)) { 
+							<!-- File Type @i begin -->
+						
+							<div class="fileTypeItem">
+								<div class="control-group">
+									<label class="control-label"><b class="dataFileName">File Type @i:</b></label>
+								</div>
+								<div class="control-group">
+									<div class="row-fluid margin-bottom-10">
+										<label class="control-label dataName" for="filename_@(i)">File <span class="count">@i</span> Caption:<span class="red">*</span></label>
+										<div class="controls">
+											<input type="text" name="filename_@i" id="filename_@i" class="dataNameInput m-wrap span5" value="@caption" maxlength="250" required>
+										</div>
+									</div>
+									<div class="row-fluid margin-bottom-10">
+										<label class="control-label dataExtension" for="fileextension_@i">File <span class="count">@i</span> Extensions:<span class="red">*</span></label>
+										<div class="controls">
+											<input type="text" name="fileextension_@i" id="fileextension_@i" class="dataExtensionInput m-wrap span4" value="@extension"  maxlength="100" required>
+											<small class="smallCustom">Valid file extensions seperated with commas (,)</small>
+										</div>
+									</div>
+									<div class="row-fluid margin-bottom-10">
+										<label class="control-label dataSize" for="filesize_@i">File <span class="count">@i</span> Size:</label>
+										<div class="controls">
+											<input type="text" name="filesize_@i" id="filesize_@i" class="dataSizeInput m-wrap span4" value="@size" maxlength="10">
+											<small class="smallCustom">max. file size in kb.(0 : default size)</small>
+										</div>
+									</div>   
+									<div class="row-fluid margin-bottom-10">
+										<label class="control-label dataFileWh" for="filewh_@i">File <span class="count">@i</span> Width&Height:</label>
+										<div class="controls">
+											<input type="text" name="file-wh_@i" id="filewh_@i" class="dataFileWhInput m-wrap span4" value="@wh"  maxlength="22">
+											<small class="smallCustom">max. size (width x height)</small>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- File Type @i complete -->  
+						}
+						
+					}
+				</div>
+				
+				if(buttonVisible == true){
+					<div class="control-group">
+						<div class="controls">
+							<button type="button" class="btn blue" title="Add File Type" onclick="return addFileType(this),false;"><i class="icon-plus"></i> Add New File Type</button>
+						</div>
+					</div>
+				}
+				
+			  
+				@*<div class="control-group">
+					<label class="control-label">File 1 <span class="btn mini blue" onclick="vsElement('fileOne')"><i class=" icon-arrow-right"></i></span></label>
+					<!-- File Type 1 -->
+					<div class="controls hide" id="fileOne">
+						<div class="control-group">
+							<label class="control-label" for="file1_name">File 1 Caption</label>
+							<div class="controls">
+								<input type="text" name="file1_name" id="file1_name" class="m-wrap large" value="@Model.file1_name" maxlength="250">
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="file1_extension">File 1 Extensions</label>
+							<div class="controls">
+								<input type="text" name="file1_extension" id="file1_extension" class="m-wrap large" value="@Model.file1_extension" maxlength="100">
+								<small>Valid file extensions seperated with commas (,)</small>
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="file1_size">File 1 Size</label>
+							<div class="controls">
+								<input type="text" name="file1_size" id="file1_size" class="m-wrap large" value="@Model.file1_size" maxlength="10">
+								<small>max. file size in kb.(0 : default size)</small>
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="file1_wh">File 1 Width&Height</label>
+							<div class="controls">
+								<input type="text" name="file1_wh" id="file1_wh" class="m-wrap large" value="@Model.file1_wh" maxlength="22">
+								<small>max. size (width x height)</small>
+							</div>
+						</div>
+					</div>
+					<!--// File Type 1 -->
+				</div>
+				
+				<div class="control-group">
+					<label class="control-label">File 2 <span class="btn mini blue" onclick="vsElement('fileTwo')"><i class=" icon-arrow-right"></i></span></label>
+					<!-- File Type 2 -->
+					<div class="controls hide" id="fileTwo">
+						<div class="control-group">
+							<label class="control-label" for="file2_name">File 2 Caption</label>
+							<div class="controls">
+								<input type="text" name="file2_name" id="file2_name" class="m-wrap large" value="@Model.file2_name" maxlength="250">
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="file2_extension">File 2 Extensions</label>
+							<div class="controls">
+								<input type="text" name="file2_extension" id="file2_extension" class="m-wrap large" value="@Model.file2_extension" maxlength="100">
+								<small>Valid file extensions seperated with commas (,)</small>
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="file2_size">File 2 Size</label>
+							<div class="controls">
+								<input type="text" name="file2_size" id="file2_size" class="m-wrap large" value="@Model.file2_size" maxlength="10">
+								<small>max. file size in kb.(0 : default size)</small>
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="file2_wh">File 2 Width&Height</label>
+							<div class="controls">
+								<input type="text" name="file2_wh" id="file2_wh" class="m-wrap large" value="@Model.file2_wh" maxlength="22">
+								<small>max. size (width x height)</small>
+							</div>
+						</div>
+					</div>
+					<!--// File Type 2 -->
+				</div>
+				
+				<div class="control-group">
+					<label class="control-label">File 3 <span class="btn mini blue" onclick="vsElement('fileThree')"><i class=" icon-arrow-right"></i></span></label>
+					<!-- File Type 3 -->
+					<div class="controls hide" id="fileThree">
+						<div class="control-group">
+							<label class="control-label" for="file3_name">File 3 Caption</label>
+							<div class="controls">
+								<input type="text" name="file3_name" id="file3_name" class="m-wrap large" value="@Model.file3_name" maxlength="250">
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="file3_extension">File 3 Extensions</label>
+							<div class="controls">
+								<input type="text" name="file3_extension" id="file3_extension" class="m-wrap large" value="@Model.file3_extension" maxlength="100">
+								<small>Valid file extensions seperated with commas (,)</small>
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="file3_size">File 3 Size</label>
+							<div class="controls">
+								<input type="text" name="file3_size" id="file3_size" class="m-wrap large" value="@Model.file3_size" maxlength="10">
+								<small>max. file size in kb.(0 : default size)</small>
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="file3_wh">File 3 Width&Height</label>
+							<div class="controls">
+								<input type="text" name="file3_wh" id="file3_wh" class="m-wrap large" value="@Model.file3_wh" maxlength="22">
+								<small>max. size (width x height)</small>
+							</div>
+						</div> 
+					</div>
+					<!--// File Type 3 -->
+				</div>
+				
+				<div class="control-group">
+					<label class="control-label">File 4 <span class="btn mini blue" onclick="vsElement('fileFour')"><i class=" icon-arrow-right"></i></span></label>
+					<!-- File Type 4 -->
+					<div class="controls hide" id="fileFour">
+						<div class="control-group">
+							<label class="control-label" for="file4_name">File 4 Caption</label>
+							<div class="controls">
+								<input type="text" name="file4_name" id="file4_name" class="m-wrap large" value="@Model.file4_name" maxlength="250">
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="file4_extension">File 4 Extensions</label>
+							<div class="controls">
+								<input type="text" name="file4_extension" id="file4_extension" class="m-wrap large" value="@Model.file4_extension" maxlength="100">
+								<small>Valid file extensions seperated with commas (,)</small>
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="file4_size">File 4 Size</label>
+							<div class="controls">
+								<input type="text" name="file4_size" id="file4_size" class="m-wrap large" value="@Model.file4_size" maxlength="10">
+								<small>max. file size in kb.(0 : default size)</small>
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="file4_wh">File 4 Width&Height</label>
+							<div class="controls">
+								<input type="text" name="file4_wh" id="file4_wh" class="m-wrap large" value="@Model.file4_wh" maxlength="22">
+								<small>max. size (width x height)</small>
+							</div>
+						</div>
+					</div>
+					<!--// File Type 4 -->
+				</div>
+				
+				<div class="control-group">
+					<label class="control-label">File 5 <span class="btn mini blue" onclick="vsElement('fileFive')"><i class=" icon-arrow-right"></i></span></label>
+					<!-- File Type 5 -->
+					<div class="controls hide" id="fileFive">
+						<div class="control-group">
+							<label class="control-label" for="file5_name">File 5 Caption</label>
+							<div class="controls">
+								<input type="text" name="file5_name" id="file5_name" class="m-wrap large" value="@Model.file5_name" maxlength="250">
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="file5_extension">File 5 Extensions</label>
+							<div class="controls">
+								<input type="text" name="file5_extension" id="file5_extension" class="m-wrap large" value="@Model.file5_extension" maxlength="100">
+								<small>Valid file extensions seperated with commas (,)</small>
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="file5_size">File 5 Size</label>
+							<div class="controls">
+								<input type="text" name="file5_size" id="file5_size" class="m-wrap large" value="@Model.file5_size" maxlength="10">
+								<small>max. file size in kb.(0 : default size)</small>
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="file5_wh">File 5 Width&Height</label>
+							<div class="controls">
+								<input type="text" name="file5_wh" id="file5_wh" class="m-wrap large" value="@Model.file5_wh" maxlength="22">
+								<small>max. size (width x height)</small>
+							</div>
+						</div>
+					</div>
+					<!--// File Type 5 -->
+				</div>
+				
+				<div class="control-group">
+					<label class="control-label">File 6 <span class="btn mini blue" onclick="vsElement('fileSix')"><i class=" icon-arrow-right"></i></span></label>
+					<!-- File Type 6 -->
+					<div class="controls hide" id="fileSix">
+						<div class="control-group">
+							<label class="control-label" for="file6_name">File 6 Caption</label>
+							<div class="controls">
+								<input type="text" name="file6_name" id="file6_name" class="m-wrap large" value="@Model.file6_name"  maxlength="250">
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="file6_extension">File 6 Extensions</label>
+							<div class="controls">
+								<input type="text" name="file6_extension" id="file6_extension" class="m-wrap large" value="@Model.file6_extension"  maxlength="100">
+								<small>Valid file extensions seperated with commas (,)</small>
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="file6_size">File 6 Size</label>
+							<div class="controls">
+								<input type="text" name="file6_size" id="file6_size" class="m-wrap large"  value="@Model.file6_size"  maxlength="10">
+								<small>max. file size in kb.(0 : default size)</small>
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="file6_wh">File 6 Width&Height</label>
+							<div class="controls">
+								<input type="text" name="file6_wh" id="file6_wh" class="m-wrap large" value="@Model.file6_wh"  maxlength="22">
+								<small>max. size (width x height)</small>
+							</div>
+						</div>
+					</div>
+					<!--// File Type 6 -->
+				</div>
+				
+				<div class="control-group">
+					<label class="control-label">File 7 <span class="btn mini blue" onclick="vsElement('fileSeven')"><i class=" icon-arrow-right"></i></span></label>
+					<!-- File Type 7 -->
+					<div class="controls hide" id="fileSeven">
+						<div class="control-group">
+							<label class="control-label" for="file7_name">File 7 Caption</label>
+							<div class="controls">
+								<input type="text" name="file7_name" id="file7_name" class="m-wrap large" value="@Model.file7_name"  maxlength="250">
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="file7_extension">File 7 Extensions</label>
+							<div class="controls">
+								<input type="text" name="file7_extension" id="file7_extension" class="m-wrap large" value="@Model.file7_extension"  maxlength="100">
+								<small>Valid file extensions seperated with commas (,)</small>
+							</div>
+						</div>
+						<div class="control-group">
+							 <label class="control-label" for="file7_size">File 7 Size</label>
+							 <div class="controls">
+								<input type="text" name="file7_size" id="file7_size" class="m-wrap large" value="@Model.file7_size"  maxlength="10">
+								<small>max. file size in kb.(0 : default size)</small>
+							 </div>   
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="file7_wh">File 7 Width&Height</label>
+							<div class="controls">
+								<input type="text" name="file7_wh" id="file7_wh" class="m-wrap large" value="@Model.file7_wh"  maxlength="22">
+								<small>max. size (width x height)</small>
+							</div>
+						</div>
+					</div>
+					<!--// File Type 7 -->
+				</div>
+				
+				<div class="control-group">
+					<label class="control-label">File 8 <span class="btn mini blue" onclick="vsElement('fileEight')"><i class=" icon-arrow-right"></i></span></label>
+					<!-- File Type 8 -->
+					<div class="controls hide" id="fileEight">
+						<div class="control-group">
+							<label class="control-label" for="file8_name">File 8 Caption</label>
+							<div class="controls">
+								<input type="text" name="file8_name" id="file8_name" class="m-wrap large" value="@Model.file8_name"  maxlength="250">
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="file8_extension">File 8 Extensions</label>
+							<div class="controls">
+								<input type="text" name="file8_extension" id="file8_extension" class="m-wrap large" value="@Model.file8_extension"  maxlength="100">
+								<small>Valid file extensions seperated with commas (,)</small>
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="file8_size">File 8 Size</label>
+							<div class="controls">
+								<input type="text" name="file8_size" id="file8_size" class="m-wrap large" value="@Model.file8_size"  maxlength="10">
+								<small>max. file size in kb.(0 : default size)</small>
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="file8_wh">File 8 Width&Height</label>
+							<div class="controls">
+								<input type="text" name="file8_wh" id="file8_wh" class="m-wrap large" value="@Model.file8_wh"  maxlength="22">
+								<small>max. size (width x height)</small>
+							</div>
+						</div>
+					</div>
+					<!--// File Type 8 -->
+				</div>
+				
+				<div class="control-group">
+					<label class="control-label">File 9 <span class="btn mini blue" onclick="vsElement('fileNine')"><i class=" icon-arrow-right"></i></span></label>
+					<!-- File Type 9 -->
+					<div class="controls hide" id="fileNine">
+						<div class="control-group">
+							<label class="control-label" for="file9_name">File 9 Caption</label>
+							<div class="controls">
+								<input type="text" name="file9_name" id="file9_name" class="m-wrap large"  value="@Model.file9_name" maxlength="250">
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="file9_extension">File 9 Extensions</label>
+							<div class="controls">
+								<input type="text" name="file9_extension" id="file9_extension" class="m-wrap large" value="@Model.file9_extension"  maxlength="100">
+								<small>Valid file extensions seperated with commas (,)</small>
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="file9_size">File 9 Size</label>
+							<div class="controls">
+								<input type="text" name="file9_size" id="file9_size" class="m-wrap large" value="@Model.file9_size"  maxlength="10">
+								<small>max. file size in kb.(0 : default size)</small>
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="file9_wh">File 9 Width&Height</label>
+							<div class="controls">
+								<input type="text" name="file9_wh" id="file9_wh" class="m-wrap large" value="@Model.file9_wh"  maxlength="22">
+								<small>max. size (width x height)</small>
+							</div>
+						</div>
+					</div>
+					<!--// File Type 9 -->
+				</div>
+		  
+				<div class="control-group">
+					<label class="control-label">File 10 <span class="btn mini blue" onclick="vsElement('fileTen')"><i class=" icon-arrow-right"></i></span></label>
+					<!-- File Type 10 -->
+					<div class="controls hide" id="fileTen">
+						<div class="control-group">
+							<label class="control-label" for="file10_name">File 10 Caption</label>
+							<div class="controls">
+								<input type="text" name="file10_name" id="file10_name" class="m-wrap large" value="@Model.file10_name"  maxlength="250">
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="file10_extension">File 10 Extensions</label>
+							<div class="controls">
+								<input type="text" name="file10_extension" id="file10_extension" class="m-wrap large" value="@Model.file10_extension"  maxlength="100">
+								<small>Valid file extensions seperated with commas (,)</small>
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="file10_size">File 10 Size</label>
+							<div class="controls">
+								<input type="text" name="file10_size" id="file10_size" class="m-wrap large" value="@Model.file10_size"  maxlength="10">
+								<small>max. file size in kb.(0 : default size)</small>
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="file10_wh">File 10 Width&Height</label>
+							<div class="controls">
+								<input type="text" name="file10_wh" id="file10_wh" class="m-wrap large" value="@Model.file10_wh"  maxlength="22">
+								<small>max. size (width x height)</small>
+							</div>
+						</div>
+					</div>
+					<!--// File Type 10 -->
+				</div>*@
+				<div class="form-actions">
+					<button type="button" class="btn" title="Cancel Changes" onclick="discardChanges('@Url.Action("Index")'),false;"><i class="icon-remove"></i> Cancel</button>
+					<button type="submit" class="btn green" title="Save This File Type"><i class="icon-save"></i> Save</button>
+				</div>  
+			}
+		</div>
+	</div>
+</div>
+ 

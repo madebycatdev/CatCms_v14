@@ -1,0 +1,224 @@
+﻿@model EuroCMS.Model.Splash
+
+@using (Html.BeginForm("Edit", "Splash", FormMethod.Post, new { @class = "form-horizontal", @id = "splashCreate" }))
+{
+	<div class="tabbable tabbable-custom">
+		<div class="tab-content new-tab-content">
+			@Html.ValidationSummary(true)
+			@Html.AntiForgeryToken()
+			<div class="row-fluid">
+				<div class="control-group">
+					<label class="control-label" for="splashStatusSwitch">Splash Status:</label>
+					<div class="controls">
+						
+						@*
+						<input type="hidden" value="@(Model != null ? Model.Status : 0)" name="splash_status" id="splash_status" data-act="1" data-psf="0" class="switchBt" />
+						*@
+						<div class="switch" data-on="success" data-off="danger">
+							<input 
+								name="splash_status" 
+								data-act="1" 
+								data-psf="0" 
+								value="@(Model != null ? Model.Status : 0)" 
+								type="checkbox" 
+								class="toggle success-toggle-button" 
+								id="splash_status" 
+								@(Model.Status == 1 || Model.Status == null ? "checked" : "") 
+							/>
+						</div>
+					
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="splash_name">Splash Name:<span class="red">*</span></label>
+					<div class="controls">
+						<input class="span12 m-wrap" type="text" id="splash_name" name="splash_name" value="@Model.Name" required>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="content_article">
+						Content Article:<span class="red">*</span>
+					</label>
+					<div class="controls">
+						<select class="chosen-select" data-placeholder="Select Sub Zone" name="content_article" id="content_article" tabindex="1" required onchange="setArticleType()" @*onchange="addSelectedSubZone()"*@>
+
+							@*<option></option>*@
+							<option value="0">No Article</option>
+							@if (ViewBag.ZoneList != null)
+							{
+								EuroCMS.Model.CmsDbContext dbContext = new EuroCMS.Model.CmsDbContext();
+								//List<int> listSelectedZones = new List<int>();
+								//listSelectedZones = (List<int>)ViewBag.SelectedZoneList;
+								List<EuroCMS.Model.vArticlesZonesFull> listArticles = new List<EuroCMS.Model.vArticlesZonesFull>();
+								List<int> listZoneIds = new List<int>();
+								listArticles = dbContext.vArticlesZonesFulls.Where(x => x.Status.ToString() == "1").ToList();
+								List<EuroCMS.Model.Zone> listZones = new List<EuroCMS.Model.Zone>();
+								listZones = (List<EuroCMS.Model.Zone>)ViewBag.ZoneList;
+								listZoneIds = listArticles.Select(s => s.ZoneID).Distinct().ToList();
+								//listZoneGroup = listZones.Select(s => s.ZoneGroupId).Distinct().ToList();
+								for (int i = 0; i < listZoneIds.Count; i++)
+								{
+									List<EuroCMS.Model.vArticlesZonesFull> listArticlesByZone = new List<EuroCMS.Model.vArticlesZonesFull>();
+									listArticlesByZone = listArticles.Where(v => v.ZoneID == listZoneIds[i]).ToList();
+									<optgroup label="@HttpUtility.HtmlDecode(listArticlesByZone.FirstOrDefault().ZoneGroupName) - @HttpUtility.HtmlDecode(listArticlesByZone.FirstOrDefault().ZoneName)">
+										@foreach (EuroCMS.Model.vArticlesZonesFull a in listArticlesByZone)
+										{
+											if (Model.ArticleID == a.ArticleID)
+											{
+												<option value="@a.ZoneID-@a.ArticleID" selected="selected">@HttpUtility.HtmlDecode(a.Headline) - @a.ArticleID</option>
+											}
+											else
+											{
+												<option value="@a.ZoneID-@a.ArticleID">@HttpUtility.HtmlDecode(a.Headline) - @a.ArticleID</option>
+											}
+										}
+									</optgroup>
+								}
+							}
+							else
+							{
+								<option>Boş</option>
+							}
+						</select>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="splash_width">Width (px):<span class="red">*</span></label>
+					<div class="controls">
+						<input class="m-wrap" type="text" id="splash_width" name="splash_width" value="@Model.Width" required>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="splash_height">Height (px):<span class="red">*</span></label>
+					<div class="controls">
+						<input class="m-wrap" type="text" id="splash_height" name="splash_height" value="@Model.Height" required>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="splash_open_time">Open Delay Time (sn):<span class="red">*</span></label>
+					<div class="controls">
+						<input class="m-wrap" type="text" id="splash_open_time" name="splash_open_time" value="@Model.OpenTime" required>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="splash_close_time">Close Delay Time (sn):<span class="red">*</span></label>
+					<div class="controls">
+						<input class="m-wrap" type="text" id="splash_close_time" name="splash_close_time" value="@Model.CloseTime" required>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="splashCloseButtonSwitch">Close Button:</label>
+					<div class="controls">
+						@*
+						<input type="hidden" value="@(Model.CloseButton ? 1 : 0)" name="splash_close_button" id="splashCloseButton_status" data-act="1" data-psf="0" class="switchBt" />
+						*@
+						<div class="switch" data-on="success" data-off="default">
+							<input 
+								name="splash_close_button" 
+								data-act="1" 
+								data-psf="0" 
+								value="@(Model.CloseButton ? 1 : 0)" 
+								type="checkbox" 
+								class="toggle success-toggle-button" 
+								id="splash_close_button" 
+								@(Model.CloseButton ? "checked" : "") 
+							/>
+						</div>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="splashModalSwitch">Modal:</label>
+					<div class="controls">
+						@*
+						<input type="hidden" value="@(Model != null ? Model.IsModal : false)" name="splash_modal" id="splashModal_status" data-act="1" data-psf="0" class="switchBt" />
+						*@
+						<div class="switch" data-on="success" data-off="default">
+							<input 
+								name="splash_modal" 
+								data-act="1" 
+								data-psf="0" 
+								value="@(Model != null ? Model.IsModal : false)" 
+								type="checkbox" 
+								class="toggle success-toggle-button" 
+								id="splash_modal" 
+								@(Model.IsModal ? "checked" : "") 
+							/>
+						</div>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="splashCookieSwitch">Cookie:</label>
+					<div class="controls">
+						@*
+						<input type="hidden" value="@(Model.Cookie ? 1 : 0)" name="splash_cookie" id="splashCookie_status" data-act="1" data-psf="0" class="switchBt" />
+						*@
+						<div class="switch" data-on="success" data-off="default">
+							<input 
+								name="splash_cookie" 
+								data-act="1" 
+								data-psf="0"  
+								value="@(Model.Cookie ? 1 : 0)" 
+								type="checkbox" 
+								class="toggle success-toggle-button" 
+								id="splash_cookie" 
+								@(Model.Cookie ? "checked" : "") 
+							/>
+						</div>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="splash_cookie_expire">Cookie Expire (day):<span class="red">*</span></label>
+					<div class="controls">
+						<input class="m-wrap" type="text" id="splash_cookie_expire" name="splash_cookie_expire" value="@Model.CookieExpire" required />
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="splash_startdate">Start Date:</label>
+					<div class="controls">
+						@*
+						<div class="input-append date form_datetime" data-date-format="dd/mm/yyyy" data-date-viewmode="years">
+							<input class="m-wrap m-ctrl-medium date-picker" readonly type="text" id="splash_startdate" name="splash_startdate" value="@Model.StartDate" />
+							<span class="add-on"><i class="icon-calendar"></i></span>
+						</div>
+						*@
+					    <div class="input-append date"  data-date-format="dd/mm/yyyy" data-date-viewmode="years" data-date-minviewmode="months">
+						    <input id="splash_startdate" name="splash_startdate" size="16" type="text" value="@Model.StartDate" class="m-wrap form_datetime">
+						    <span class="add-on"><i class="icon-calendar"></i></span>
+					    </div>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="splash_enddate">End Date:</label>
+					<div class="controls">
+						@*
+						<div class="input-append date date-picker" data-date-format="dd/mm/yyyy" data-date-viewmode="years">
+							<input class="m-wrap m-ctrl-medium date-picker" readonly type="text" id="splash_enddate" name="splash_enddate" value="@Model.EndDate">
+							<span class="add-on form_datetime"><i class="icon-calendar"></i></span>
+						</div>
+						*@
+						 <div class="input-append date"  data-date-format="dd/mm/yyyy" data-date-viewmode="years" data-date-minviewmode="months">
+						    <input id="splash_enddate" name="splash_enddate" size="16" type="text" value="@Model.EndDate" class="m-wrap form_datetime">
+						    <span class="add-on"><i class="icon-calendar"></i></span>
+					    </div>
+					</div>
+				</div>
+			</div>
+			<div class="form-actions">
+				<button type="button" class="btn" title="Cancel Changes" onclick="discardChanges('@Url.Action("Index")'),false;"><i class="icon-remove"></i> Cancel</button>
+				<button type="submit" class="btn green" title="Save Splash Details"><i class="icon-save"></i> Save</button>
+			</div>
+		</div>
+	</div>
+}
+
+@*@section ModalSelectArticle { @Html.Partial("ModalSelectArticle") }*@
+<script>
+	//$(document).ready(function () {
+	//	$(".chosen-select").chosen({
+	//		width: "100%",
+	//		allow_single_deselect: true
+	//	}).change(function (event) {
+	//		openZoneDetails();
+	//	})
+	//});
+</script>

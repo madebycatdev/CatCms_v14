@@ -1,0 +1,315 @@
+﻿@model EuroCMS.Admin.ViewModels.ArticleCompareViewModel
+@{
+    ViewBag.Title = "Compare";
+    var compare = new EuroCMS.Admin.Models.ArticleCompareRepository();
+
+}
+
+<style>
+    .margin-bottom-10:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+</style>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var $divs = $('#container1 #leftPane .diffPane, #container1 #rightPane .diffPane, #container2 #leftPane .diffPane, #container2 #rightPane .diffPane, #container3 #leftPane .diffPane, #container3 #rightPane .diffPane, #container4 #leftPane .diffPane, #container4 #rightPane .diffPane, #container5 #leftPane .diffPane, #container5 #rightPane .diffPane');
+        var sync = function (e) {
+            var me = $(this);
+            var $other = $divs.not(me).off('scroll');
+            $divs.not(me).each(function (index) {
+                $(this).scrollLeft(me.scrollLeft());
+            });
+            setTimeout(function () {
+                $other.on('scroll', sync);
+            }, 10);
+        }
+        $divs.on('scroll', sync);
+
+
+        $("#revision1").chosen().change(function () {
+            window.location = window.location.pathname + "?RevisionId=" + $(this).val();
+        });
+    })
+</script>
+<div class="row-fluid">
+    <div class="span12">
+        <div class="portlet box grey">
+            <div class="portlet-title">
+                <div class="caption"><i class="icon-reorder"></i>Compare Revisions</div>
+            </div>
+            <div class="portlet-body">
+                <div class="no-more-tables">
+                    <div class="row-fluid margin-bottom-10">
+                        <div class="span1">
+                            <strong>
+                                Description
+                            </strong>
+                        </div>
+                        <div class="span6">
+                            <form name="rev2">
+                                <select disabled id="revision2" name="revision2" class="chosen-select m-wrap margin-bottom-12">
+                                    <option selected="selected" value="72535"> @Html.Raw("#" + Model.live.RevisionId + " - " + Model.live.RevisionDate + " - " + Membership.GetUser(Model.live.RevisedBy).UserName)</option>
+                                </select>
+                            </form>
+                        </div>
+                        <div class="span5">
+                            <form name="rev1">
+                                <select id="revision1" name="revision1" class="chosen-select m-wrap margin-bottom-12">
+                                    @foreach (var rev in Model.revisionList)
+                                    {
+                                        <option @(rev.RevisionId == Model.revision.RevisionId ? "selected" : "") value="@rev.RevisionId">@Html.Raw("#" + rev.RevisionId + " - " + rev.RevisionDate + " - " + Membership.GetUser(rev.RevisedBy).UserName)</option>
+                                    }
+
+                                </select>
+                            </form>
+
+                            @*@Html.DropDownListFor(m => m.RoleId, new SelectList(ViewBag.Roles, "Id", "Name"), new { @class = "form-control" })*@
+                        </div>
+                    </div>
+                    <div class="row-fluid margin-bottom-10">
+                        <div class="span1"><strong>Status</strong></div>
+                        <div class="span6"><span class="label label-@(Model.live.Status == 1 ? "success" : Model.live.Status == 0 ? "danger" : "important")">@(Model.live.Status == 1 ? "Active" : Model.live.Status == 0 ? "Passive" : "Deleted")</span></div>
+                        <div class="span5"><span class="label label-@(Model.live.Status == 1 ? "success" : Model.live.Status == 0 ? "danger" : "important")">@(Model.live.Status == 1 ? "Active" : Model.live.Status == 0 ? "Passive" : "Deleted")</span></div>
+                    </div>
+                    <div class="row-fluid margin-bottom-10">
+                        <div class="span1"><strong>Classification</strong></div>
+                        <div class="span6">@Model.live.Classification</div>
+                        <div class="span5">@Model.revision.Classification</div>
+                    </div>
+                    <div class="row-fluid margin-bottom-10">
+                        <div class="span1"><strong>Language</strong></div>
+                        <div class="span6">@Model.live.Language</div>
+                        <div class="span5">@Model.revision.Language</div>
+                    </div>
+
+                    <div class="row-fluid margin-bottom-10">
+                        <div class="span1"><strong>Zones</strong></div>
+                        <div class="span6">
+                            @foreach (var zone in Model.live.Zones)
+                            {
+                                @Html.Raw(zone.Zone + " - " + zone.Alias)
+                            }
+                        </div>
+                        <div class="span5">
+                            @foreach (var zone in Model.revision.Zones)
+                            {
+                                @Html.Raw(zone.Zone + " - " + zone.Alias)
+                            }
+                    </div>
+                </div>
+
+                @*<div class="control-group margin-left-10 padding10" style="border:1px solid #333">
+                        <div class="row-fluid margin-bottom-10">
+                            <div class="span1"><strong>Zones</strong></div>
+                            <div class="span6">123-İlişkili Zone</div>
+                            <div class="span5">123-İlişkili Zone</div>
+                        </div>
+                        <div class="row-fluid margin-bottom-10">
+                            <div class="span1"><strong>Order</strong></div>
+                            <div class="span6">100</div>
+                            <div class="span5">100</div>
+                        </div>
+                        <div class="row-fluid margin-bottom-10">
+                            <div class="span1"><strong>URL</strong></div>
+                            <div class="span6">/uiealiea</div>
+                            <div class="span5">/uiealiea</div>
+                        </div>
+                        <div class="row-fluid margin-bottom-10">
+                            <div class="span1"><strong>IsPage</strong></div>
+                            <div class="span6"><span class="label label-success">True</span></div>
+                            <div class="span5"><span class="label label-important">False</span></div>
+                        </div>
+                        <div class="row-fluid margin-bottom-10">
+                            <div class="span1"><strong>Language Relations</strong></div>
+                            <div class="span6">123-İlişkili Sayfa</div>
+                            <div class="span5">123-İlişkili Sayfa</div>
+                        </div>
+                    </div>*@
+
+                <div class="row-fluid margin-bottom-10">
+                    <div class="span1"><strong>Start Date</strong></div>
+                    <div class="span6">@Model.live.StartDt</div>
+                    <div class="span5">@Model.revision.StartDt</div>
+                </div>
+                <div class="row-fluid margin-bottom-10">
+                    <div class="span1"><strong>End Date</strong></div>
+                    <div class="span6">@Model.live.EndDt</div>
+                    <div class="span5">@Model.revision.EndDt</div>
+                </div>
+                <div class="row-fluid margin-bottom-10">
+                    <div class="span1"><strong>Article Type</strong></div>
+                    <div class="span6">@Model.live.ArticleType</div>
+                    <div class="span5">@Model.revision.ArticleType</div>
+                </div>
+                <div class="row-fluid margin-bottom-10">
+                    <div class="span1"><strong>Navigation Display</strong></div>
+                    <div class="span6">@Model.live.NavigationDisplay</div>
+                    <div class="span5">@Model.revision.NavigationDisplay</div>
+                </div>
+                <div class="row-fluid margin-bottom-10">
+                    <div class="span1"><strong>Sub-zone</strong></div>
+                    <div class="span6">@Model.live.SubZone</div>
+                    <div class="span5">@Model.revision.SubZone</div>
+                </div>
+                <div class="row-fluid margin-bottom-10">
+                    <div class="span1"><strong>Menu Text</strong></div>
+                    <div class="span6">@Model.live.MenuText</div>
+                    <div class="span5">@Model.revision.MenuText</div>
+                </div>
+                <div class="row-fluid margin-bottom-10">
+                    <div class="span1"><strong>Headline</strong></div>
+                    <div class="span6">@Model.live.Headline</div>
+                    <div class="span5">@Model.revision.Headline</div>
+                </div>
+                <div class="row-fluid margin-bottom-10">
+                    <div class="span1"><strong>Summary</strong></div>
+                    <div class="span6">@Model.live.Summary</div>
+                    <div class="span5">@Model.revision.Summary</div>
+                </div>
+                <div class="row-fluid margin-bottom-10">
+                    <div class="span1"><strong>Before \head</strong></div>
+                    <div class="span6">@Model.live.BeforeHead</div>
+                    <div class="span5">@Model.revision.BeforeHead</div>
+                </div>
+                <div class="row-fluid margin-bottom-10">
+                    <div class="span1"><strong>Before \body</strong></div>
+                    @*<div class="span6">@Model.live.BeforeBody</div>
+                        <div class="span5">@Model.revision.BeforeBody</div>*@
+                    @Html.Partial("_DiffPartial", compare.Compare(Model.live.BeforeBody, Model.revision.BeforeBody))
+                </div>
+                <div class="row-fluid margin-bottom-10">
+                    <div class="span1"><strong>Custom Body</strong></div>
+                    <div class="span6">@Model.live.CustomBody</div>
+                    <div class="span5">@Model.revision.CustomBody</div>
+                </div>
+                <div class="row-fluid margin-bottom-10">
+                    <div class="span1"><strong>Custom Html</strong></div>
+                    <div class="span6">@Model.live.CustomHtml</div>
+                    <div class="span5">@Model.revision.CustomHtml</div>
+                </div>
+                <div class="row-fluid margin-bottom-10 padding10">
+                    <div class="span1"><strong>Tags</strong></div>
+                    <div class="span6">@Model.live.Tags</div>
+                    <div class="span5">@Model.revision.Tags</div>
+                </div>
+                <div class="row-fluid margin-bottom-10">
+                    <div class="span1"><strong>Related Articles</strong></div>
+                    <div class="span6">
+                        @foreach (var item in Model.live.RelatedArticles)
+                        {
+                            @item
+                            @Html.Raw("<br>")
+                        }
+                    </div>
+                    <div class="span5">
+                        @foreach (var item in Model.revision.RelatedArticles)
+                        {
+                            @item
+                            @Html.Raw("<br>")
+                        }
+                    </div>
+                </div>
+                <div class="row-fluid margin-bottom-10">
+                    <div class="span1"><strong>No Index, No Follow</strong></div>
+                    <div class="span6"><span class="label label-@(Model.live.NoIndexFollow  ? "success" :  "important")">@(Model.live.NoIndexFollow ? "True" : "False")</span></div>
+                    <div class="span5"><span class="label label-@(Model.revision.NoIndexFollow  ? "success" :  "important")">@(Model.revision.NoIndexFollow ? "True" : "False")</span></div>
+                </div>
+                <div class="row-fluid margin-bottom-10">
+                    <div class="span1"><strong>Meta Description</strong></div>
+                    <div class="span6">@Model.live.MetaDescription</div>
+                    <div class="span5">@Model.revision.MetaDescription</div>
+                </div>
+                <div class="row-fluid margin-bottom-10">
+                    <div class="span1"><strong>Canonical URL</strong></div>
+                    <div class="span6">@Model.live.Canonical</div>
+                    <div class="span5">@Model.revision.Canonical</div>
+                </div>
+                <div class="row-fluid margin-bottom-10">
+                    <div class="span1"><strong>Meta Title</strong></div>
+                    <div class="span6">@Model.live.MetaTitle</div>
+                    <div class="span5">@Model.revision.MetaTitle</div>
+                </div>
+
+                <div class="row-fluid margin-bottom-10" id="container1">
+                    <div class="span1"><strong>Container #1</strong></div>
+                    @*<div class="span6">
+                            Container Type: Zone<br />
+                            Title
+                        </div>
+                        <div class="span5">
+                            Container Type: Zone<br />
+                            Title
+                        </div>*@
+                    @Html.Partial("_DiffPartial", compare.Compare(Model.live.Container1, Model.revision.Container1))
+                    @Html.Raw(compare.CompareHtml(Model.live.Container1, Model.revision.Container1))
+                </div>
+
+                <div class="row-fluid margin-bottom-10" id="container2">
+                    <div class="span1"><strong>Container #2</strong></div>
+                    @Html.Partial("_DiffPartial", compare.Compare(Model.live.Container2, Model.revision.Container2))
+                    @Html.Raw(compare.CompareHtml(Model.live.Container2, Model.revision.Container2))
+                </div>
+
+                <div class="row-fluid margin-bottom-10" id="container3">
+                    <div class="span1"><strong>Container #3</strong></div>
+                    @Html.Partial("_DiffPartial", compare.Compare(Model.live.Container3, Model.revision.Container3))
+                    @Html.Raw(compare.CompareHtml(Model.live.Container3, Model.revision.Container3))
+                </div>
+
+                <div class="row-fluid margin-bottom-10" id="container4">
+                    <div class="span1"><strong>Container #4</strong></div>
+                    @Html.Partial("_DiffPartial", compare.Compare(Model.live.Container4, Model.revision.Container4))
+                    @Html.Raw(compare.CompareHtml(Model.live.Container4, Model.revision.Container4))
+                </div>
+
+                <div class="row-fluid margin-bottom-10" id="container5">
+                    <div class="span1"><strong>Container #5</strong></div>
+                    @Html.Partial("_DiffPartial", compare.Compare(Model.live.Container5, Model.revision.Container5))
+                    @Html.Raw(compare.CompareHtml(Model.live.Container5, Model.revision.Container5))
+                </div>
+
+
+                @foreach (var item in Model.live.Customs)
+                {
+                    <div class="row-fluid margin-bottom-10">
+                        <div class="span1"><strong>@item.Key</strong></div>
+                        <div class="span6">@item.Value</div>
+                        <div class="span5">@Model.revision.Customs.FirstOrDefault(w => w.Key == item.Key).Value</div>
+
+
+                    </div>
+                }
+                <div class="row-fluid margin-bottom-10">
+                    <div class="span1">
+                        <strong>
+                            Action
+                        </strong>
+                    </div>
+                    <div class="span6">
+                        <a class="btn" target="_blank" href="@Url.Action("Edit", new { id = Model.live.ArticleId, ClsfId = Model.live.ClassificationId.ToString() })" title="Edit This Article"><i class="icon-edit"></i> Edit </a>
+                        <a target="_blank" href="@Url.Action("PreviewRevision", new { id = Model.live.RevisionId })" class="btn" title="Preview This Revision"><i class="icon-eye-open"></i> Preview </a>
+                    </div>
+                    <div class="span5">
+                        <a class="btn" target="_blank" href="@Url.Action("Edit", new { id = Model.revision.ArticleId, RevisionId = Model.revision.RevisionId, ClsfId = Model.revision.ClassificationId.ToString() })" title="Edit This Article"><i class="icon-edit"></i> Edit </a>
+                        <a target="_blank" href="@Url.Action("PreviewRevision", new { id = Model.revision.RevisionId})" class="btn" title="Preview This Revision"><i class="icon-eye-open"></i> Preview </a>
+                        @if (Model.revision.RevisionId > 0 && Model.revision.RevisionStatus.Equals("N"))
+                        {
+                            using (Html.BeginForm("Approve", "Article", new { id = Model.revision.ArticleId, RevisionId = Model.revision.RevisionId, ClsfId = Model.revision.ClassificationId.ToString() }, FormMethod.Post, new { @class = "inline" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn green" title="Approve This Revision"><i class="icon-ok"></i> Approve</button>
+                            }
+
+                            using (Html.BeginForm("Discard", "Article", new { id = Model.revision.ArticleId, RevisionId = Model.revision.RevisionId, ClsfId = Model.revision.ClassificationId.ToString() }, FormMethod.Post, new { @class = "inline margin-left-10" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn red" title="Discard This Revision"><i class="icon-remove"></i> Discard </button>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

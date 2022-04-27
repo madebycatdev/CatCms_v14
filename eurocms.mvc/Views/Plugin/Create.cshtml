@@ -1,0 +1,58 @@
+﻿@{
+    Layout = null;
+}
+
+@using (Html.BeginForm("Create", "Plugin", FormMethod.Post, new { @class = "form-horizontal", @id = "pluginCreate" }))
+{
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+        <h3>Create a New Plugin:</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row-fluid">
+            <div class="control-group">
+                <label class="control-label" for="plugin_name">Plugin Name: <span class="red">*</span></label>
+                <div class="controls">
+                    <input class="span11 m-wrap" type="text" id="plugin_name" name="plugin_name">
+                </div>
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="control-group">
+                <label class="control-label" for="structure_description">Description:</label>
+                <div class="controls">
+                    <textarea rows="4" class="span11 m-wrap" id="structure_description" name="structure_description"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="control-group">
+                <label class="control-label" for="group_id">Group:</label> 
+                <div class="controls">
+                    @Html.DropDownList("group_id", ViewBag.Groups as IEnumerable<SelectListItem>, "Not Grouped", new { @class ="span11 m-wrap"})
+                </div>
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="control-group">
+                <label class="control-label" for="plugin_status1">Plugin Status</label>
+                <div class="controls">
+                    <input class="fl" type="radio" checked="checked" id="plugin_status1" name="plugin_status"> <span class="smallElement">Active</span>
+                    <input class="fl" type="radio" id="plugin_status0" name="plugin_status"> <span class="smallElement">Passive</span>
+                </div>
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="control-group">
+                <label class="control-label" for="plugin_code">Plugin Code:</label>
+                <div class="controls">
+                    <textarea class="span11 m-wrap" rows="20" id="plugin_code" name="plugin_code"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" data-dismiss="modal" class="btn"><i class="icon-remove"></i> Close</button>
+        <button type="submit" class="btn blue"><i class="icon-save"></i> Save & Close</button>
+    </div>
+}

@@ -1,0 +1,285 @@
+﻿@model EuroCMS.Admin.entity.cms_asp_admin_select_sitemaps_Result
+
+@using (Html.BeginForm("Edit", "Sitemap", FormMethod.Post, new { @class = "form-horizontal", @id = "sitemapEdit" }))
+{
+	@Html.AntiForgeryToken()
+	<div class="tabbable tabbable-custom">
+		<div class="tab-content new-tab-content"> 
+			<div class="row-fluid">
+				<div class="control-group">
+					<label class="control-label" for="enabled">Sitemap Enabled:</label>
+					<div class="controls">
+						@*
+						<input type="hidden" value="@Model.enabled" name="enabled" id="enabled_status" data-act="Y" data-psf="N" class="switchBt" />
+						*@
+						<div class="switch" data-on="success" data-off="danger">
+							@*
+							<input type="checkbox" class="toggle success-toggle-button" name="enabled_StatusSwitch" id="enabled_StatusSwitch" @(HttpUtility.HtmlDecode(Model.enabled.ToString()) == "Y" ? "checked" : "N") />
+							*@
+							<input 
+								name="enabled" 
+								data-act="Y" 
+								data-psf="N" 
+								value="@Model.enabled" 
+								type="checkbox" 
+								class="toggle success-toggle-button" 
+								id="enabled" 
+								@(HttpUtility.HtmlDecode(Model.enabled.ToString()) == "Y" ? "checked" : "N") 
+							/>
+						</div>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="domain_alias">Domain:</label>
+					<div class="controls">
+						<select class="large m-wrap" id="domain_alias" name="domain_alias">
+							@foreach (SelectListItem item in ViewBag.ParticularDomains)
+							{
+								if (item.Selected)
+								{
+									<option value="@item.Value" selected="selected">@item.Text</option>
+								}
+								else
+								{
+									<option value="@item.Value">@item.Text</option>
+								}
+							}
+						</select>
+						<!-- @Html.DropDownList("domain_alias", new List<SelectListItem>(ViewBag.ParticularDomains), new { @class = "large m-wrap"}) -->
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="sm_name">Sitemap Name</label>
+					<div class="controls">
+						<input class="large m-wrap span1" type="text" value="@Model.yahoo_id" maxlength="50" id="sm_name" name="sm_name" required>
+					</div>
+				</div>
+				@*<div class="control-group">
+					<label class="control-label" for="not_included_sites">Include Site</label>
+					<div class="controls">
+						<div class="span4 m-wrap">
+							@Html.ListBox("not_included_sites", ((IEnumerable<SelectListItem>)ViewData["ExcludedSites"]), new { Multiple = "multiple", @class = "span m-wrap", @ondblclick = "return moveSelectedOptions('not_included_sites','a_included_sites'), false;" })
+						</div>
+						<div class="fl centerButton">
+							<a class="btn mini icn-only" onclick="return moveSelectedOptions('not_included_sites','a_included_sites'), false;" href="#"><i class="icon-forward icon-white"></i></a><br /><br />
+							<a class="btn mini icn-only" onclick="return moveSelectedOptions('a_included_sites','not_included_sites'), false;" href="#"><i class="icon-backward icon-white"></i></a>
+						</div>
+						<div class="span4 m-wrap no-margin">
+							@Html.ListBox("a_included_sites", ((IEnumerable<SelectListItem>)ViewData["NotExcludedSites"]), new { Multiple = "multiple", @class = "span m-wrap", @ondblclick = "return moveSelectedOptions('a_included_sites','not_included_sites'), false;" })
+						</div>
+					</div>
+				</div>*@
+				<div class="control-group">
+					<label class="control-label" for="a_included_sites">Include Site : </label>
+					<div class="controls">
+						<!--Choosen buraya-->
+						<select class="chosen-select" data-placeholder="Select a Site" name="a_included_sites" multiple required>
+							@{
+	if (ViewBag.Sites != null)
+	{
+		List<EuroCMS.Model.Site> listSite = new List<EuroCMS.Model.Site>();
+		listSite = (List<EuroCMS.Model.Site>)ViewBag.Sites;
+		foreach (EuroCMS.Model.Site s in listSite)
+		{
+			if (!string.IsNullOrEmpty(s.Name))
+			{
+				if (Model.included_sites.Split(',').Contains(s.Id.ToString()))
+				{
+					<option value="@s.Id" selected="selected">@s.Id - @HttpUtility.HtmlDecode(s.Name)</option>
+				}
+				else
+				{
+					<option value="@s.Id">@s.Id - @HttpUtility.HtmlDecode(s.Name)</option>
+				}
+
+			}
+		}
+	}
+							}
+						</select>
+					</div>
+				</div>
+
+				<div class="control-group">
+					<label class="control-label" for="sm_interval">Time to Rebuild (In Hours)</label>
+					<div class="controls">
+						<input class="span1" type="text" value="@Model.interval" maxlength="2" size="5" id="sm_interval" name="sm_interval" required>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="afiles">Include Files Link:</label>
+					<div class="controls">
+						@*
+						<input type="hidden" value="@Model.afiles" name="afiles" id="afiles_status" data-act="Y" data-psf="N" class="switchBt" />
+						*@
+						<div class="switch" data-on="success" data-off="danger">
+							@*
+							<input type="checkbox" class="toggle success-toggle-button" name="afiles_StatusSwitch" id="afiles_StatusSwitch" @(HttpUtility.HtmlDecode(Model.afiles.ToString()) == "Y" ? "checked" : "N") />
+							*@
+							<input 
+								name="afiles" 
+								data-act="Y" 
+								data-psf="N" 
+								value="@Model.afiles" 
+								type="checkbox" 
+								class="toggle success-toggle-button" 
+								id="afiles" 
+								@(HttpUtility.HtmlDecode(Model.afiles) == "Y" ? "checked" : "N") 
+							/>
+						</div>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="gzip_enabled">GZip Sitemap Enabled:</label>
+					<div class="controls">
+						@*
+						<input type="hidden" value="@Model.gzip_enabled" name="gzip_enabled" id="gzip_status" data-act="Y" data-psf="N" class="switchBt" />
+						*@
+						<div class="switch" data-on="success" data-off="danger">
+							@*
+							<input type="checkbox" class="toggle success-toggle-button" name="gzip_StatusSwitch" id="gzip_StatusSwitch" @(HttpUtility.HtmlDecode(Model.gzip_enabled.ToString()) == "Y" ? "checked" : "N") />
+							*@
+							<input 
+								name="gzip_enabled" 
+								data-act="Y" 
+								data-psf="N" 
+								value="@Model.gzip_enabled" 
+								type="checkbox" 
+								class="toggle success-toggle-button" 
+								id="gzip_enabled" 
+								@(HttpUtility.HtmlDecode(Model.gzip_enabled.ToString()) == "Y" ? "checked" : "N") 
+							/>
+						</div>
+					</div>
+				</div>
+				@* Excludes *@
+				<div class="control-group">
+					<label class="control-label" for="excludezg">Excluded Zone Groups : </label>
+					<div class="controls">
+						<!--Choosen buraya-->
+						<select class="chosen-select" data-placeholder="Select a Zone Group" name="excluded_zonegroups" multiple>
+							@{
+								if (ViewBag.ZoneGroups != null)
+								{
+									List<EuroCMS.Model.ZoneGroup> listZg = new List<EuroCMS.Model.ZoneGroup>();
+									listZg = (List<EuroCMS.Model.ZoneGroup>)ViewBag.ZoneGroups;
+									foreach (EuroCMS.Model.ZoneGroup zg in listZg)
+									{
+										if (!string.IsNullOrEmpty(zg.Name))
+										{
+											if (Model.excluded_zonegroups.Split(',').Contains(zg.Id.ToString()))
+											{
+												 <option value="@zg.Id" selected="selected">@zg.Id - @HttpUtility.HtmlDecode(zg.Name)</option>
+											}
+											else
+											{
+												 <option value="@zg.Id">@zg.Id - @HttpUtility.HtmlDecode(zg.Name)</option>
+											}
+			   
+										}
+									}
+								}
+							}
+						</select>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="excludezone">Excluded Zones : </label>
+					<div class="controls">
+						<!--Choosen buraya-->
+						<select class="chosen-select"  data-placeholder="Select a Zone" name="excluded_zones" multiple>
+							@{
+	if (ViewBag.Zones != null)
+	{
+		List<EuroCMS.Model.Zone> listZone = new List<EuroCMS.Model.Zone>();
+		listZone = (List<EuroCMS.Model.Zone>)ViewBag.Zones;
+		foreach (EuroCMS.Model.Zone z in listZone)
+		{
+			if (!string.IsNullOrEmpty(z.Name))
+			{
+				if (Model.excluded_zones.Split(',').Contains(z.Id.ToString()))
+				{
+					 <option value="@z.Id" selected="selected">@z.Id - @HttpUtility.HtmlDecode(z.Name)</option>
+				}
+				else
+				{
+					<option value="@z.Id">@z.Id - @HttpUtility.HtmlDecode(z.Name)</option>
+				}
+			}
+		}
+	}
+							}
+						</select>
+
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="excludearticle">Excluded Articles : </label>
+					<div class="controls">
+						<!--Choosen buraya-->
+						<select class="chosen-select" data-placeholder="Select an Article" name="excluded_articles" multiple>
+							@{
+	if (ViewBag.Articles != null)
+	{
+		List<EuroCMS.Model.vArticlesZonesFull> listArticle = new List<EuroCMS.Model.vArticlesZonesFull>();
+		listArticle = (List<EuroCMS.Model.vArticlesZonesFull>)ViewBag.Articles;
+		foreach (EuroCMS.Model.vArticlesZonesFull a in listArticle)
+		{
+			if (!string.IsNullOrEmpty(a.Headline))
+			{
+				if (Model.excluded_articles.Split(',').Contains(a.ZoneID + "-" + a.ArticleID))
+				{
+					<option value="@a.ZoneID-@a.ArticleID" selected="selected">@a.ArticleID - @HttpUtility.HtmlDecode(a.Headline)</option>
+				}
+				else
+				{
+					<option value="@a.ZoneID-@a.ArticleID">@a.ArticleID - @HttpUtility.HtmlDecode(a.Headline)</option>
+				}
+			}
+		}
+	}
+							}
+						</select>
+
+					</div>
+				</div>
+			</div>
+			<div class="form-actions"> 
+				<button type="button" class="btn" title="Cancel Changes" onclick="discardChanges('@Url.Action("Index")'),false;"><i class="icon-remove"></i> Cancel</button>
+				<button type="submit" class="btn green " title="Save This Sitemap" onclick="selectionObj();"><i class="icon-save"></i> Save</button>
+			</div>
+		</div>
+	</div>
+
+	
+ 
+
+}
+
+<script>
+	$(document).ready(function () {
+		$(".chosen-select").chosen({
+			width: "100%",
+			allow_single_deselect: true
+		}).change(function (event) {
+			openZoneDetails();
+		})
+	});
+
+	function openZoneDetails() {
+		$('.chosen-container li').each(function () {
+			$('span', this).live('click', function () {
+				$('.chosen-container').addClass('chosen-with-drop-disable');
+				var selectedIndex = $(this).next('a').attr('data-option-array-index');
+				//console.log($('.chosen-select').find('*:eq(' + selectedIndex + ')').val());
+				var selectedZone = $('.chosen-select').find('*:eq(' + selectedIndex + ')');
+				onZoneChanged(selectedZone);
+
+				$('.chosen-container li').removeClass('active');
+				$(this).parent().addClass('active');
+				$('.notuniform').parent().parent('.checker').removeClass();
+			});
+		})
+	} 
+
+</script>

@@ -1,0 +1,227 @@
+﻿<script type="text/javascript">
+    var siteID = @( Session["CurrentSiteID"] ?? -1)
+    $(document).ready(function () {
+        //getSiteAndZoneGroups("#search_zone");
+    });
+</script>
+
+@using (Html.BeginForm("Create", "RssFeed", FormMethod.Post, new { @class = "form-horizontal", @id = "rssCreate" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="tabbable tabbable-custom">
+		<div class="tab-content new-tab-content">
+
+			<div class="row-fluid">
+				<div class="control-group">
+					<label class="control-label" for="channel_name">Channel Name:<span class="red">*</span></label>
+					<div class="controls">
+						<input class="span12 m-wrap" type="text" id="channel_name" name="channel_name" required/>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="structure_description">Description:</label>
+					<div class="controls">
+						<textarea class="span12 m-wrap" id="structure_description" name="structure_description"></textarea>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="group_id">Group:</label>
+					<div class="controls">
+						@Html.DropDownList("group_id", ViewBag.Groups as IEnumerable<SelectListItem>, "Not Grouped", new { @class ="span12 m-wrap"})
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="channel_status_A">Channel Status:</label>
+					<div class="controls">
+                        @*
+                        <input type="hidden" value="@(Model != null ? Model.channel_status : "P")" name="channel_status" id="channelStatus_status" data-act="A" data-psf="P" class="switchBt" />
+                        *@
+                        <div class="switch" data-on="success" data-off="default">
+                        	@*
+                        	<input type="checkbox" class="toggle success-toggle-button" name="channelStatus_StatusSwitch" id="channelStatus_StatusSwitch" />
+                        	*@
+                        	<input 
+								name="channel_status" 
+								data-act="A" 
+								data-psf="P" 
+								value="P"  
+								type="checkbox" 
+								class="toggle success-toggle-button" 
+								id="channel_status"
+							/>
+                        </div>
+                    </div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="url">Channel URL:<span class="red">*</span></label>
+					<div class="controls">
+						<input class="span12 m-wrap" type="text" id="url" name="url" required>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="description">Channel Description:<span class="red">*</span></label>
+					<div class="controls">
+						<textarea class="span12 m-wrap" rows="3" id="description" name="description" required></textarea>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="managing_editor">Managing Editor:</label>
+					<div class="controls">
+						<input class="span12 m-wrap" type="text" id="managing_editor" name="managing_editor" />
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="copyright">Copyright:</label>
+					<div class="controls">
+						<input class="span12 m-wrap" type="text" id="copyright" name="copyright" />
+					</div>
+				</div>
+				<div class="control-group">
+					 <label class="control-label" for="lang_id">Channel Language:</label>
+					 <div class="controls">
+						  @Html.DropDownList("lang_id", ViewBag.Languages as List<SelectListItem>, "Please Select",new { @class = "span12 m-wrap" })
+					 </div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="zone_group_id">Zone Group:</label>
+					<div class="controls">
+						@Html.GroupDropList("zone_group_id", ViewBag.ZoneGroups as List<GroupDropListItem>,"", new { @class = "span12 m-wrap", @onchange="return getZoneListRSS('#search_zone',this.id),false" } , "Only Sites & Zone Groups")
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="search_zone">Zone List:</label>
+					<div class="controls">
+						<select class="span12 m-wrap" id="search_zone" name="search_zone" multiple="multiple" size="6">
+							<!-- seçim yoksa Zone Group listesi alıcancak: Ajax Request: /ZoneGroup/ListBySiteID (JSON döner) -->
+							<!-- yukarıdan zone group seçilince zone listesi alınacak. Ajax Request: /Zone/ListByZoneGroupID (JSON döner) -->
+						</select>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="">Actions</label>
+					<div class="controls">
+						<button type="button" class="btn" title="Adds selected zone to list" onclick="return addZone(),false;"><i class="icon-arrow-down"></i> Add</button>
+						<button type="button" class="btn" title="Adds selected zone to exclude list" onclick="return addExcludeZone(),false;"><i class="icon-arrow-down"></i> Add Exclude</button>
+						<button type="button" class="btn" title="Adds selected zone to display this rss channel" onclick="return addDisplay(),false;"><i class="icon-arrow-down"></i> Add Display Only</button>
+						<button type="button" class="btn" title="Removes selected zone from list" onclick="return removeAZL('channel_content'),false;"><i class="icon-arrow-up"></i> Remove</button>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="channel_content">Channel Content:</label>
+					<div class="controls">
+						<select class="span12" id="channel_content" name="channel_content" multiple="multiple" size="6">
+							<!-- yukarıdaki seçimlere göre burası güncellenicek. -->
+							<!-- yukarıdaki seçim yapıp add butonuna tıkayınca site ise S{site_id} şeklinde değer yazılacak -->
+							<!-- yukarıdaki seçim yapıp add butonuna tıkayınca zoneGroup ise G{zone_group_id} şeklinde değer yazılacak -->
+							<!-- yukarıdaki seçim yapıp add butonuna tıkayınca zone ise Z{zone_ise} şeklinde değer yazılacak -->
+
+							<!-- ayrıca seçim yapıp add exclude butonuna tıkayınca site ise XS{site_id} şeklinde değer yazılacak -->
+							<!-- ayrıca seçim yapıp add exclude butonuna tıkayınca zoneGroup ise XG{zone_group_id} şeklinde değer yazılacak -->
+							<!-- ayrıca seçim yapıp add exclude butonuna tıkayınca zone ise XZ{zone_ise} şeklinde değer yazılacak -->
+
+							<!-- ayrıca seçim yapıp add display only butonuna tıkayınca site ise DS{site_id} şeklinde değer yazılacak -->
+							<!-- ayrıca seçim yapıp add display only butonuna tıkayınca zoneGroup ise DG{zone_group_id} şeklinde değer yazılacak -->
+							<!-- ayrıca seçim yapıp add display only butonuna tıkayınca zone ise DZ{zone_ise} şeklinde değer yazılacak -->
+							<!-- başına D koyduklarının class'ını "optionD" ver, X koyduklarını ise "optionX" ver. Bunlar renkli görünecek o yüzden-->
+							<!-- form gönderilmeden önce tüm item'ler selected edilecek -->
+							<!-- ORNEK DEGERLER -->
+							@*<option class="perm_S" value="S1">KALE - TR</option>
+							<option class="perm_G" value="G5">KALE - TR / Firma</option>
+							<option class="perm_Z" value="Z21">KALE - TR / Firma / Firma</option>*@
+							<!-- // ORNEK DEGERLER -->
+						</select>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="singularize_articles">Singularize Articles:</label>
+					<div class="controls">
+						<label class="checkbox">
+							@*
+							<input type="hidden" value="N" name="singularize_articles" id="singularizeArticles_status" data-act="Y" data-psf="N" class="switchBt" />
+							*@
+							<div class="switch" data-on="success" data-off="default">
+								@*
+								<input type="checkbox" class="toggle success-toggle-button" name="singularizeArticles_StatusSwitch" id="singularizeArticles_StatusSwitch" />
+								*@
+								<input 
+									name="singularize_articles" 
+									data-act="Y" 
+									data-psf="N" 
+									value="N"  
+									type="checkbox" 
+									class="toggle success-toggle-button" 
+									id="singularize_articles"
+								/>
+							</div>
+
+						</label>
+						 
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="summary_content_field">Summary Content Field:</label>
+					<div class="controls">
+						<select class="span12 m-wrap" name="summary_content_field" id="summary_content_field">
+							<option>Please Select</option>
+							<option value="summary" selected>Summary</option>
+							<option value="article_1">Article 1</option>
+							<option value="article_2">Article 2</option>
+							<option value="article_3">Article 3</option>
+							<option value="article_4">Article 4</option>
+							<option value="article_5">Article 5</option>
+							<option value="custom_1">Custom 1</option>
+							<option value="custom_2">Custom 2</option>
+							<option value="custom_3">Custom 3</option>
+							<option value="custom_4">Custom 4</option>
+							<option value="custom_5">Custom 5</option>
+							<option value="custom_6">Custom 6</option>
+							<option value="custom_7">Custom 7</option>
+							<option value="custom_8">Custom 8</option>
+							<option value="custom_9">Custom 9</option>
+							<option value="custom_10">Custom 10</option>
+							<option value="custom_11">Custom 11</option>
+							<option value="custom_12">Custom 12</option>
+							<option value="custom_13">Custom 13</option>
+							<option value="custom_14">Custom 14</option>
+							<option value="custom_15">Custom 15</option>
+							<option value="custom_16">Custom 16</option>
+							<option value="custom_17">Custom 17</option>
+							<option value="custom_18">Custom 18</option>
+							<option value="custom_19">Custom 19</option>
+							<option value="custom_20">Custom 20</option>
+							<option value="none">-None-</option>
+							<option value="template">-Template-</option>
+						</select>
+					</div>
+				</div>
+				<div class="control-group hide">
+					<label class="control-label" for="content_template_editor_type">Editor Type:</label>
+					<div class="controls">
+						<label class="smallWrap">
+							<input name="content_template_editor_type" value="H" id="content_template_editor_type1" type="radio" onclick="showEditor('H')" checked="checked" /> 
+							HTML Editor
+						</label>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="content_template">Feed Content Template:<span class="red">*</span></label>
+					<div class="controls">
+						<div id="type_H">
+							<textarea class="htmlEditor span12" name="editor_html" required></textarea>
+						</div>
+					</div>
+				</div>
+				<div class="form-actions">
+					<button onclick="discardChanges('@Url.Action("Index")'),false;" title="Cancel Changes" class="btn" type="button"><i class="icon-remove"></i> Cancel</button>
+					<button onclick="selectionObj();" class="btn green" type="submit" title="Save RSS Channel"><i class="icon-save"></i> Save</button>
+				</div>
+			</div>
+		</div>
+	</div>
+}
+ <script>
+     $(document).ready(function () {
+         getZoneListRSS('#search_zone', "zone_group_id");
+     })
+
+ </script>

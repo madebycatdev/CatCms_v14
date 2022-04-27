@@ -1,0 +1,77 @@
+﻿@model  EuroCMS.CMSPlugin.StandardProfil.Models.InvestorUser
+@{
+    ViewBag.Title = "Add Investor Relations User";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<div class="portlet box grey">
+    <div class="portlet-title">
+        <div class="caption"><i class="icon-reorder"></i>Add Investor Relations User</div>
+    </div>
+    <div class="portlet-body">
+        @if (ViewBag.Status != null)
+        {
+            dynamic result = (dynamic)Newtonsoft.Json.JsonConvert.DeserializeObject(ViewBag.Status);
+            if (result.success == true)
+            {
+                <div class="alert alert-success">
+                    <button data-dismiss="alert" class="close"></button>
+                    @result.message
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-error">
+                    <button data-dismiss="alert" class="close"></button>
+                    @result.message
+                </div>
+            }
+        }
+
+
+        @using (Html.BeginForm("AddUser", "InvestorRelations", FormMethod.Post, new { @class = "form-horizontal formAddUser" }))
+        {
+            @Html.ValidationSummary(true)
+            @Html.AntiForgeryToken()
+
+            <div class="control-group">
+                <label class="control-label" for="redirectRequestUrl">Name:</label>
+                <div class="controls">
+                    <input class="m-wrap " type="text" name="Name" id="Name" value="@Model.Name" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="redirectRequestUrl">Surname:</label>
+                <div class="controls">
+                    <input class="m-wrap " type="text" name="Surname" id="Surname" value="@Model.Surname" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="redirectRequestUrl">Email:</label>
+                <div class="controls">
+                    <input class="m-wrap " type="text" name="Email" id="Email" value="@Model.Email" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="redirectRequestUrl">Company Name:</label>
+                <div class="controls">
+                    <input class="m-wrap " type="text" name="CompanyName" id="CompanyName" value="@Model.CompanyName" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="redirectRequestUrl">Status:</label>
+                <div class="controls">
+                    <select name="Status" id="Status" lass="m-wrap ">
+                        @*<option value="0" @(Model.Status == 0 ? "checked" : "")>Waiting</option>*@
+                        <option value="1" @(Model.Status == 1 ? "checked" : "")>Approved</option>
+                        <option value="-1" @(Model.Status == -1 ? "checked" : "")>Rejected</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn green" id="saveClose"><i class="icon-save"></i> Save & Close</button>
+            </div>
+        }
+    </div>
+</div>

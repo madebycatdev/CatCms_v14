@@ -1,0 +1,977 @@
+﻿@model EuroCMS.Admin.entity.cms_article_revision
+@using EuroCMS.Admin.Common
+
+<script type="text/javascript" charset="utf-8">
+
+	@*setTimeout(function () {
+		$(document).ready(function () {
+			var startDate = "@Model.startdate";
+			startDate = startDate.replace(".","/").replace(".","/");
+			$("#startdate_hour").datepicker("setDate", startDate);
+
+			$("#startdate_hour").datepicker("setDate", startDate);
+			$("#enddate_hour").datepicker("setDate", "@Model.enddate");
+		});
+	}, 1000);*@
+
+    var selectedzoneid = "";
+
+
+    // add selected zone id to hidden input check line 511
+    function addSelectedSubZone() {
+        $('#navigation_zone_id').val($('#navigation_zone_id2').val());
+        console.log($('#navigation_zone_id').val());
+    }
+
+    // remove selected zone id from hidden input and chosen select
+    function removeSubZone() {
+        $('#navigation_zone_id').val("0");
+        $('#navigation_zone_id2_chosen .chosen-single span').text("Select Sub Zone");
+        $('#navigation_zone_id2_chosen .chosen-drop .chosen-results li.result-selected').removeClass('result-selected');
+    }
+
+
+    $(document).ready(function () {
+        jHtmlAreaInit("article_1");
+        $('#tags').tagsInput({
+            width: "98%",
+            autocomplete_url: '../GetTags'
+        });
+        var tagler = $('#hiddenTags').val();
+        //console.log(tagler);
+        $('#tags').importTags(tagler);
+
+
+        $(".chosen-select").chosen({
+            width: "100%",
+            allow_single_deselect: true
+        }).change(function (event) {
+            openZoneDetails();
+        })
+
+        openZoneDetails();
+
+        $('.tabbable .nav li a').on('click', function () {
+            $(this).text() === 'Revision History' ?
+				$('.newFormActions').parent('.form-actions').addClass('hide') :
+				$('.newFormActions').parent('.form-actions').removeClass('hide');
+        })
+
+
+        $('#article_type_detail2').on('change', function () {
+            console.log('test2123');
+        });
+
+
+    });
+
+
+    function checkPermanentRedirection() {
+
+        var value = $("#permanent_redirection").val();
+
+        if (value == "Y") {
+            value = "";
+            $("#permanent_redirection").removeProp("checked");
+        }
+        else {
+            value = "Y";
+            $("#permanent_redirection").prop("checked", true);
+
+        }
+
+        $("#permanent_redirection").val(value);
+    }
+
+    function hideArticleTypes() {
+        for (var i = 0; i < 10; i++) {
+            $("#article_type" + i).hide();
+            $("#article_type" + i).find("input").attr("disabled", "disabled");
+            $("#article_type" + i).find("select").attr("disabled", "disabled");
+        }
+    }
+
+    function showArticleType(i) {
+        hideArticleTypes();
+        $("#article_type" + i).find("input").removeAttr("disabled");
+        $("#article_type" + i).find("select").removeAttr("disabled");
+        $(".hideGroup").show();
+        $("#article_type" + i).show();
+        $("#permanent").show();
+    }
+
+    function onZoneChanged(obj) {
+
+        selectedzoneid = $(obj).val();
+        id = selectedzoneid;
+        var text = $(obj).text();
+        //console.log(id);
+        if (id != "") {
+
+            if ($("#az_properties_" + id).length < 1) {
+
+                $("#az_properties_base").clone().appendTo("#az_properties").attr("id", "az_properties_" + id);
+
+                $("#az_properties_" + id + " #cache").attr("name", "cache_" + id);
+                $("#az_properties_" + id + " #order").attr("name", "order_" + id);
+                $("#az_properties_" + id + " #alias").attr("name", "alias_" + id);
+                $("#az_properties_" + id + " #is_protected").attr("name", "is_protected_" + id);
+                $("#az_properties_" + id + " #is_page").attr("name", "is_page_" + id);
+                $("#az_properties_" + id + " #relations").attr("name", "relations_" + id + "[]");
+
+                $("#az_names").append($("<input type='hidden' />").attr("name", "az_name_" + id).val(text));
+
+                $("#az_properties_" + id + " #cache").attr("id", "cache_" + id);
+                $("#az_properties_" + id + " #uniform-cache").attr("id", "uniform-cache_" + id);
+                $("#az_properties_" + id + " #order").attr("id", "order_" + id);
+                $("#az_properties_" + id + " #alias").attr("id", "alias_" + id);
+                $("#az_properties_" + id + " #is_protected").attr("id", "is_protected_" + id);
+                $("#az_properties_" + id + " #uniform-is_protected").attr("id", "uniform-is_protected_" + id);
+                $("#az_properties_" + id + " #is_page").attr("id", "is_page_" + id);
+                $("#az_properties_" + id + " #uniform-is_page").attr("id", "uniform-is_page_" + id);
+                $("#az_properties_" + id + " #relations").attr("id", "relations_" + id);
+
+
+                $("#az_properties_" + id + " .langAdd").attr("onclick", "openModalTwo('relations_" + id + "')");
+                $("#az_properties_" + id + " .langRemove").attr("onclick", "removeObj('relations_" + id + "'); return false;");
+            }
+            $("#az_properties > div").hide();
+            $("#az_properties_" + id).show();
+
+        }
+    }
+
+    function onNavigationDisplayChange(obj) {
+        switch ($(obj).val()) {
+            case "0":
+                $("#navigation_zone").hide();
+                break;
+            default:
+                $("#navigation_zone").show();
+                break;
+        }
+    }
+
+    function setArticleType(obj) {
+        //$('#article_type_detail').val($(obj).val());
+        //console.log('test');
+
+        var selectedTypeValue = $("#article_type").val();
+
+        if (selectedTypeValue != 0 && selectedTypeValue != "0" && selectedTypeValue != "" && selectedTypeValue != null) {
+            var articleTypeDetailValue = $("#article_type_detail" + selectedTypeValue).val();
+            $("#article_type_detail").val(articleTypeDetailValue);
+        }
+
+    }
+
+    function onArticleTypeChanged(obj) {
+        switch ($(obj).val()) {
+            case "0":
+                $("label#text").hide();
+                $(".hideGroup").hide();
+                hideArticleTypes();
+                break;
+            case "1":
+                $("label#text").show();
+                $("label#text").text("External URL");
+                showArticleType(1);
+                break;
+            case "2":
+                $("label#text").show();
+                $("label#text").text("Current Article");
+                showArticleType(2);
+                break;
+            case "3":
+                $("label#text").show();
+                $("label#text").text("Current Zone");
+                showArticleType(3);
+                break;
+            case "4":
+                $("label#text").show();
+                $("label#text").text("Current Zone");
+                showArticleType(4);
+                break;
+            case "5":
+                $("label#text").show();
+                $("label#text").text("IFRAME URL");
+                showArticleType(5);
+                break;
+            case "6":
+                $("label#text").show();
+                $("label#text").text("Free Form Link");
+                showArticleType(6);
+                break;
+            case "7":
+                $("label#text").show();
+                $("label#text").text("Current Zone");
+                showArticleType(7);
+                break;
+            case "8":
+                $("label#text").show();
+                $("label#text").text("Current Zone");
+                showArticleType(8);
+                break;
+            case "9":
+                $("label#text").show();
+                $("label#text").text("Mapped Article");
+                showArticleType(9);
+                break;
+            default:
+                $("span#text").hide();
+                hideArticleTypes();
+                $("#permanent").hide();
+                break;
+        }
+    }
+</script>
+
+<div class="form-horizontal">
+    <input type="hidden" id="hiddenTags" value="@Model.tag_contents" />
+    @{
+//RTE.Editor Editor1 = new RTE.Editor(System.Web.HttpContext.Current, "custom_17");
+//if (string.IsNullOrEmpty(Model.custom_17))
+//{
+//    Editor1.LoadFormData(HttpUtility.HtmlDecode(Model.article_1));
+//}
+//else
+//{
+//    Editor1.LoadFormData(HttpUtility.HtmlDecode(Model.custom_17));
+//}
+//Editor1.MvcInit();
+//ViewBag.Editor = Editor1.MvcGetString();
+    }
+    @if (User.IsInRole("Administrator") || User.IsInRole("PowerUser") || User.IsInRole("Editor"))
+    {
+
+        if (Model.rev_id > 0 && Model.revision_status.Equals("N"))
+        {
+            using (Html.BeginForm("Approve", "Article", new { id = Model.article_id, RevisionId = Model.rev_id, ClsfId = Request["ClsfId"] ?? Model.clsf_id.ToString(), isDuplicate = ViewBag.Duplicate }, FormMethod.Post, new { @class = "inline" }))
+            {
+                @Html.AntiForgeryToken()
+                <button type="submit" class="btn green" title="Approve This Revision"><i class="icon-ok"></i> Approve </button>}
+            using (Html.BeginForm("Discard", "Article", new { id = Model.article_id, RevisionId = Model.rev_id, ClsfId = Request["ClsfId"] ?? Model.clsf_id.ToString() }, FormMethod.Post, new { @class = "inline margin-left-10" }))
+            {
+                @Html.AntiForgeryToken()
+                <button type="submit" class="btn red" title="Discard This Revision"><i class="icon-remove"></i> Discard </button>}
+            <hr /> }
+    }
+    else
+    {
+        if (Model.rev_id > 0 && Model.revision_status.Equals("N"))
+        {
+			<!-- Send To Approve -->
+            EuroCMS.Model.CmsDbContext dbContextForInstantMessaging = new EuroCMS.Model.CmsDbContext();
+            EuroCMS.Model.InstantMessaging getInstantMessaging = new EuroCMS.Model.InstantMessaging();
+            Guid currentUserId = (Guid)Membership.GetUser().ProviderUserKey;
+            getInstantMessaging = dbContextForInstantMessaging.InstantMessagings.Where(im => im.From == currentUserId && im.Type == "AA" && im.RelatedId == Model.article_id && im.ReadDate == null).FirstOrDefault();
+            if (getInstantMessaging == null)
+            {
+                <a class="btn icn-only margin-bottom-10" href="#sendToApprove" data-toggle="modal">Send To Approve</a>}
+        }
+    }
+
+
+
+</div>
+
+<!-- SEND TO APPROVE START  -->
+@{
+    bool hasPermission = false;
+
+    EuroCMS.Model.BaseDbContext baseContext = new EuroCMS.Model.BaseDbContext();
+    EuroCMS.Model.CmsDbContext dbContext = new EuroCMS.Model.CmsDbContext();
+    List<EuroCMS.Model.vAspNetMembershipUser> listAllUser = new List<EuroCMS.Model.vAspNetMembershipUser>();
+    List<EuroCMS.Model.vAspNetMembershipUser> listHasPermissionUser = new List<EuroCMS.Model.vAspNetMembershipUser>();
+    listAllUser = dbContext.vAspNetMembershipUsers.Where(v => v.IsApproved == true && v.IsLockedOut == false).ToList();
+
+    foreach (EuroCMS.Model.vAspNetMembershipUser user in listAllUser)
+    {
+        hasPermission = false;
+        List<string> listUserRole = new List<string>();
+        listUserRole = System.Web.Security.Roles.GetRolesForUser(user.UserName).ToList();
+        for (int i = 0; i < listUserRole.Count(); i++)
+        {
+            if (listUserRole[i].ToLower() == "administrator")
+            {
+                hasPermission = true;
+            }
+        }
+
+        if (!hasPermission)
+        {
+            hasPermission = baseContext.HasPermission(String.Join(",", System.Web.Security.Roles.GetRolesForUser(user.UserName)), "approve", Model.article_id.ToString(), "article").Count() > 0;
+        }
+
+        if (hasPermission)
+        {
+            var userProfile = System.Web.Profile.ProfileBase.Create(user.UserName, false);
+            string userFullName = userProfile.GetPropertyValue("System.FullName").ToString().Trim();
+            user.UserName = userFullName;
+            if (!string.IsNullOrEmpty(user.UserName))
+            {
+                listHasPermissionUser.Add(user);
+            }
+        }
+
+    }
+
+}
+
+
+<div id="sendToApprove" class="modal hide" tabindex="-1" data-width="760">
+    @using (Html.BeginForm("SendToApprove", "Article", new { ArticleId = Model.article_id, RevisionId = Request["RevisionId"] ?? "-1", ClsfId = Request["ClsfId"] ?? Model.clsf_id.ToString(), UserId = Request["UserId"] ?? "-1", SendToApproveMessage = Request["sendToApproveMessage"] ?? "" }, FormMethod.Post, new { @class = "form", @id = "fromSendToApprove" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+            <h3>Select User:</h3>
+        </div>
+        <div class="modal-body">
+            <div class="row-fluid">
+                <div class="control-group">
+                    <label class="control-label" for="user">User:</label>
+                    <div class="controls">
+                        @Html.DropDownList("UserId", new SelectList(listHasPermissionUser, "UserId", "UserName"), new { @class = "user span12 m-wrap" })
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="message">Message:</label>
+                    <div class="controls">
+                        <textarea class="span12 m-wrap" id="SendToApproveMessage" name="SendToApproveMessage" rows="3"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" data-dismiss="modal" class="btn">Close</button>
+            <input type="submit" class="btn blue" value="Save & Close" />
+        </div>
+    }
+</div>
+
+<!-- SEND TO APPROVE END -->
+
+
+<div class="tabbable tabbable-custom">
+    <ul class="nav nav-tabs new-tabs">
+        <li class="active"><a href="#tab_1_1">Basic</a></li>
+        <li><a href="#tab_1_2">Advanced</a></li>
+        <li><a href="#tab_1_5">SEO</a></li>
+        <li><a href="#tab_1_3">Revision History</a></li>
+        @if (Model.clsf_id > 0)
+        {
+            <li><a href="#tab_1_4">Classification</a></li>}
+    </ul>
+
+
+    <div class="tab-content new-tab-content">
+
+        @using (Html.BeginForm("Edit", "Article", new { RevisionId = Request["RevisionId"] ?? "-1", ClsfId = Request["ClsfId"] ?? Model.clsf_id.ToString() }, FormMethod.Post, new { @class = "form-horizontal", @id = "aCreate" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.CmsValidationSummary(string.Empty)
+
+            <div id="tab_1_1" class="tab-pane active">
+                <div class="row-fluid">
+                    <input type="hidden" name="rev_id" value="@Model.rev_id" />
+                    <input type="hidden" name="revision_status" value="@Model.revision_status" />
+                    <input type="hidden" name="ClsfId" value="@Model.clsf_id" />
+                    <div class="control-group">
+                        <div class="span6">
+                            <label class="control-label" for="statusSwitch">Status:</label>
+                            <div class="controls">
+                                @*<label class="smallWrap">
+                                        <input type="radio" value="1" name="status" @(Model.status == 1 || Model.status == null ? "checked=checked" : "") id="status1"> Active
+                                    </label>
+                                    <label class="smallWrap">
+                                        <input type="radio" value="0" name="status" @(Model.status == 0 ? "checked=checked" : "") id="status0"> Passive
+                                    </label>*@
+                                <input type="hidden" value="@(Model.status ?? 1)" name="status" id="statusInput">
+                                <div class="newstatus clearfix">
+                                    <span data-val="1">ACTIVE</span>
+                                    <span data-val="0">PASSIVE</span>
+                                    @{
+                                        if (Model.rev_id > 0)
+                                        {
+                                            <span data-val="2">DELETED</span>
+                                        }
+                                    }
+                                </div>
+                                @*<div class="switch" data-on="success" data-off="danger">
+                                        <input type="checkbox" class="toggle success-toggle-button" name="statusSwitch" id="statusSwitch" @(Model.status == 1 || Model.status == null ? "checked" : "") />
+                                    </div>*@
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label" for="clsf_id">Classification</label>
+                        <div class="controls">
+                            @Html.GroupDropList("clsf_id", ViewBag.Clasifications as List<GroupDropListItem>, Model.clsf_id.ToString(), new { @class = "large m-wrap", @onchange = "changePost('" + Url.Action("Edit", "Article", new { id = Model.article_id, RevisionId = Model.rev_id }) + "', this.value)" }, "Not Classified")
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="lang_id">Language:</label>
+                        <div class="controls">
+                            @Html.DropDownListFor(a => a.lang_id, ViewBag.Languages as List<SelectListItem>, "Please Select", new { @class = "m-wrap medium" })
+                        </div>
+                    </div>
+                    <div class="control-group zone_bg">
+                        @Html.Partial("ArticleZones", ViewData["article_zones_revision"] as List<EuroCMS.Admin.entity.cms_asp_select_article_zones_by_revision_Result>)
+                    </div>
+                    <div class="control-group">
+                        <!-- // Article Type -->
+                        <label class="control-label" for="article_type">Article Type:</label>
+                        <div class="controls">
+                            <select class="m-wrap span12" onchange="onArticleTypeChanged(this);" id="article_type" name="article_type">
+                                <option value="0">Internal Article</option>
+                                <option value="1" @(Model.article_type == 1 ? "selected=selected" : "")>Redirect to External URL</option>
+                                <option value="2" @(Model.article_type == 2 ? "selected=selected" : "")>Redirect to Internal Article</option>
+                                <option value="7" @(Model.article_type == 7 ? "selected=selected" : "")>Redirect to Internal Zone [First Updated Article]</option>
+                                <option value="3" @(Model.article_type == 3 ? "selected=selected" : "")>Redirect to Internal Zone [Last Updated Article]</option>
+                                <option value="4" @(Model.article_type == 4 ? "selected=selected" : "")>Redirect to Internal Zone [First Ordered Article]</option>
+                                <option value="8" @(Model.article_type == 8 ? "selected=selected" : "")>Redirect to Internal Zone [Last Ordered Article]</option>
+                                <option value="5" @(Model.article_type == 5 ? "selected=selected" : "")>Inline IFRAME</option>
+                                <option value="6" @(Model.article_type == 6 ? "selected=selected" : "")>Free Form Link [&lt;a ....&gt;]</option>
+                                <option value="9" @(Model.article_type == 9 ? "selected=selected" : "")>Mapped Article</option>
+                            </select>
+                        </div>
+                        <!-- // Article Type -->
+                    </div>
+                    <div class="control-group hideGroup">
+                        <label id="text" class="@(Model.article_type == 0 ? "control-label hide" : "control-label")">
+                            @if (Model.article_type == 1)
+                            {
+                                @:External URL
+								}
+                            else if (Model.article_type == 2)
+                            {
+                                @:Current Article
+								}
+                            else if (Model.article_type == 3)
+                            {
+                                @:Current Zone
+								}
+                            else if (Model.article_type == 4)
+                            {
+                                @:Current Zone
+								}
+                            else if (Model.article_type == 5)
+                            {
+                                @:IFRAME URL
+								}
+                            else if (Model.article_type == 6)
+                            {
+                                @:Free Form Link
+								}
+                            else if (Model.article_type == 7)
+                            {
+                                @:Current Zone
+								}
+                            else if (Model.article_type == 8)
+                            {
+                                @:Current Zone
+								}
+                            else if (Model.article_type == 9)
+                            {
+                                @:Mapped Article
+								}
+                        </label>
+                        <div class="controls">
+                            <div id="article_type1" class="@(Model.article_type != 1 ? "hide" : "")">
+                                <input class="m-wrap span5 article_type" type="text" name="article_type_detail1" id="article_type_detail1" value="@(Model.article_type == 1 ? HttpUtility.HtmlDecode(Model.article_type_detail_text) : "")" />
+                            </div>
+                            <div id="article_type2" class="@(Model.article_type != 2 ? "hide" : "")">
+                                @*<select size="2" class="m-wrap span5 article_type" id="article_type_detail2" name="article_type_detail2">
+                                        <option value="@HttpUtility.HtmlDecode(Model.article_type_detail)">@(Model.article_type == 2 ? HttpUtility.HtmlDecode(Model.article_type_detail_text) : "")</option>
+                                    </select>
+                                    <a class="btn icn-only changeButton" href="#selectArticle" data-toggle="modal" onclick="openModalThree(this)"><i class="icon-tasks"></i> Change</a>
+                                    <a class="btn icn-only" href="#" onclick="removeTarget('#article_type_detail2'); return false;"><i class="icon-trash"></i> Remove</a>*@
+                                <!-- article seçtir. zone_id-article_id formatında -->
+                                <!--Redirect Choosen Başlangıç-->
+
+                                <select class="chosen-select" data-placeholder="Select Sub Zone" name="article_type_detail2" id="article_type_detail2" tabindex="1" onchange="setArticleType()" @*onchange="addSelectedSubZone()"*@>
+
+                                    @*<option></option>*@
+                                    <option value="0">No Article</option>
+                                    @if (ViewBag.ZoneList != null)
+                                    {
+
+                                        //List<int> listSelectedZones = new List<int>();
+                                        //listSelectedZones = (List<int>)ViewBag.SelectedZoneList;
+                                        List<EuroCMS.Model.vArticlesZonesFull> listArticles = new List<EuroCMS.Model.vArticlesZonesFull>();
+                                        List<int> listZoneIds = new List<int>();
+                                        listArticles = dbContext.vArticlesZonesFulls.Where(x => x.Status.ToString() == "1").ToList();
+                                        List<EuroCMS.Model.Zone> listZones = new List<EuroCMS.Model.Zone>();
+                                        listZones = (List<EuroCMS.Model.Zone>)ViewBag.ZoneList;
+                                        listZoneIds = listArticles.Select(s => s.ZoneID).Distinct().ToList();
+                                        //listZoneGroup = listZones.Select(s => s.ZoneGroupId).Distinct().ToList();
+                                        for (int i = 0; i < listZoneIds.Count; i++)
+                                        {
+                                            List<EuroCMS.Model.vArticlesZonesFull> listArticlesByZone = new List<EuroCMS.Model.vArticlesZonesFull>();
+                                            listArticlesByZone = listArticles.Where(v => v.ZoneID == listZoneIds[i]).ToList();
+                                            <optgroup label="@HttpUtility.HtmlDecode(listArticlesByZone.FirstOrDefault().ZoneGroupName) - @HttpUtility.HtmlDecode(listArticlesByZone.FirstOrDefault().ZoneName)">
+                                                @foreach (EuroCMS.Model.vArticlesZonesFull a in listArticlesByZone)
+                                                {
+                                                    if (a.ZoneID + "-" + a.ArticleID == Model.article_type_detail)
+                                                    {
+                                                        <option value="@a.ZoneID-@a.ArticleID" selected="selected">@HttpUtility.HtmlDecode(a.Headline) - @a.ArticleID</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value="@a.ZoneID-@a.ArticleID">@HttpUtility.HtmlDecode(a.Headline) - @a.ArticleID</option>
+                                                    }
+                                                }
+                                            </optgroup>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <option>Boş</option>
+                                    }
+                                </select>
+
+                                <!--Redirect Choosen Bitiş-->
+                            </div>
+                            <div id="article_type3" class="@(Model.article_type != 3 ? "hide" : "")">
+                                <select size="2" class="m-wrap span5 article_type" id="article_type_detail3" name="article_type_detail3">
+                                    <option value="@HttpUtility.HtmlDecode(Model.article_type_detail)">@(Model.article_type == 3 ? HttpUtility.HtmlDecode(Model.article_type_detail_text) : "")</option>
+                                </select>
+                                <a class="btn icn-only changeButton" href="#selectZone" data-toggle="modal" onclick="openModalThree(this)"><i class="icon-tasks"></i> Change</a>
+                                <a class="btn icn-only" href="#" onclick="removeTarget('#article_type_detail3'); return false;"><i class="icon-trash"></i> Remove</a>
+                                <!-- article_type3 zone seçtir value= zone_id olucak -->
+                            </div>
+                            <div id="article_type4" class="@(Model.article_type != 4 ? "hide" : "")">
+                                <select size="2" class="m-wrap span5 article_type" id="article_type_detail4" name="article_type_detail4">
+                                    <option value="@HttpUtility.HtmlDecode(Model.article_type_detail)">@(Model.article_type == 4 ? HttpUtility.HtmlDecode(Model.article_type_detail_text) : "")</option>
+                                </select>
+                                <a class="btn icn-only changeButton" href="#selectZone" data-toggle="modal" onclick="openModalThree(this)"><i class="icon-tasks"></i> Change</a>
+                                <a class="btn icn-only" href="#" onclick="removeTarget('#article_type_detail4'); return false;"><i class="icon-trash"></i> Remove</a>
+                                <!-- article_type4 zone seçtir value= zone_id olucak -->
+                            </div>
+                            <div id="article_type5" class="@(Model.article_type != 5 ? "hide" : "")">
+                                <input class="m-wrap span4 article_type" type="text" name="article_type_detail5" id="article_type_detail5" value="@(Model.article_type == 5 ? HttpUtility.HtmlDecode(Model.article_type_detail_text) : "")" />
+                            </div>
+                            <div id="article_type6" class="@(Model.article_type != 6 ? "hide" : "")">
+                                <input class="m-wrap span4 article_type" type="text" name="article_type_detail6" id="article_type_detail6" value="@(Model.article_type == 6 ? HttpUtility.HtmlDecode(Model.article_type_detail_text) : "")" />
+                            </div>
+                            <div id="article_type7" class="@(Model.article_type != 7 ? "hide" : "")">
+                                <select size="2" class="m-wrap span5 article_type" id="article_type_detail7" name="article_type_detail7">
+                                    <option value="@HttpUtility.HtmlDecode(Model.article_type_detail)">@(Model.article_type == 7 ? HttpUtility.HtmlDecode(Model.article_type_detail_text) : "")</option>
+                                </select>
+                                <a class="btn icn-only changeButton" href="#selectZone" data-toggle="modal" onclick="openModalThree(this)"><i class="icon-tasks"></i> Change</a>
+                                <a class="btn icn-only" href="#" onclick="removeTarget('#article_type_detail7'); return false;"><i class="icon-trash"></i> Remove</a>
+                                <!-- article_type7 zone seçtir. value= zone_id olucak -->
+                            </div>
+                            <div id="article_type8" class="@(Model.article_type != 8 ? "hide" : "")">
+                                <select size="2" class="m-wrap span5 article_type" id="article_type_detail8" name="article_type_detail8">
+                                    <option value="@HttpUtility.HtmlDecode(Model.article_type_detail)">@(Model.article_type == 8 ? HttpUtility.HtmlDecode(Model.article_type_detail_text) : "")</option>
+                                </select>
+                                <a class="btn icn-only changeButton" href="#selectZone" data-toggle="modal" onclick="openModalThree(this)"><i class="icon-tasks"></i> Change</a>
+                                <a class="btn icn-only" href="#" onclick="removeTarget('#article_type_detail8'); return false;"><i class="icon-trash"></i> Remove</a>
+                                <!-- article_type7 zone seçtir. value= zone_id olucak -->
+                            </div>
+                            <div id="article_type9" class="@(Model.article_type != 9 ? "hide" : "")">
+                                <select size="2" class="m-wrap span5 article_type" id="article_type_detail9" name="article_type_detail9">
+                                    <option value="@HttpUtility.HtmlDecode(Model.article_type_detail)">@(Model.article_type == 9 ? HttpUtility.HtmlDecode(Model.article_type_detail_text) : "")</option>
+                                </select>
+                                <a class="btn icn-only changeButton" href="#selectArticle" data-toggle="modal" onclick="openModalThree(this)"><i class="icon-tasks"></i> Change</a>
+                                <a class="btn icn-only" href="#" onclick="removeTarget('#article_type_detail9'); return false;"><i class="icon-trash"></i> Remove</a>
+                                <!-- article_type9 article seçtir. zone_id-article_id formatında -->
+                            </div>
+                            <div id="permanent" class="@(Model.article_type == 0 ? "hide" : "")">
+                                <input class="fl article_type" type="checkbox" name="permanent_redirection" onclick="checkPermanentRedirection()" id="permanent_redirection" @(HttpUtility.HtmlDecode(Model.custom_setting).Split(';')[0] == "Y" ? "checked=checked" : "") />
+                                <span class="smallElement">Permanent Redirection</span>
+                            </div>
+                            <input type="hidden" name="article_type_detail" id="article_type_detail" value="@(HttpUtility.HtmlDecode(Model.article_type_detail))" />
+                            <input type="hidden" name="article_type_detail_text" id="article_type_detail_text" value="@HttpUtility.HtmlDecode(Model.article_type_detail_text)" />
+                            <!-- Burdaki seçimleri article_type_detail hidden input'a yazdır. article seçimeri 1-1 seklinde  yazılacak -->
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="navigation_display">Navigation Display:</label>
+                        <div class="controls">
+                            <select class="m-wrap span12" onchange="onNavigationDisplayChange(this);" id="navigation_display" name="navigation_display">
+                                <option value="1" @(Model.navigation_display == 1 || Model.navigation_display == null ? "selected=selected" : "")>Display as Item</option>
+                                <option value="2" @(Model.navigation_display == 2 ? "selected=selected" : "")>Display as Folder [Open Folder Only]</option>
+                                <option value="3" @(Model.navigation_display == 3 ? "selected=selected" : "")>Display as Folder [Open Page on Click]</option>
+                                <option value="0" @(Model.navigation_display == 0 ? "selected=selected" : "")>Hide from Navigation Menu</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="control-group" id="navigation_zone">
+                        <!-- navigation_zone_id -->
+                        @*<input type="hidden" name="navigation_zone_id" id="navigation_zone_id" value="@Model.navigation_zone_id" />*@
+
+                        <label class="control-label" for="navigation_zone_id">Sub Zone:</label>
+                        <div class="controls">
+                            <select class="span5 hide" id="navigation_zone_id1" name="navigation_zone_id1" tabindex="1" size="2">
+                                <option value="@Model.navigation_zone_id">@HttpUtility.HtmlDecode(ViewBag.SubZone)</option>
+                            </select>
+                            <select class="chosen-select" data-placeholder="Select Sub Zone" name="navigation_zone_id" id="navigation_zone_id2" tabindex="1" @*onchange="addSelectedSubZone()"*@>
+
+                                @*<option></option>*@
+                                <option value="0">No Sub Zone</option>
+                                @if (ViewBag.ZoneList != null)
+                                {
+
+                                    //List<int> listSelectedZones = new List<int>();
+                                    //listSelectedZones = (List<int>)ViewBag.SelectedZoneList;
+                                    List<int> listZoneGroup = new List<int>();
+                                    List<EuroCMS.Model.Zone> listZones = new List<EuroCMS.Model.Zone>();
+                                    listZones = (List<EuroCMS.Model.Zone>)ViewBag.ZoneList;
+                                    listZoneGroup = listZones.Select(s => s.ZoneGroupId).Distinct().ToList();
+                                    for (int i = 0; i < listZoneGroup.Count; i++)
+                                    {
+                                        List<EuroCMS.Model.Zone> listZoneByZoneGroup = new List<EuroCMS.Model.Zone>();
+                                        listZoneByZoneGroup = listZones.Where(v => v.ZoneGroupId == listZoneGroup[i]).ToList();
+                                        <optgroup label="@listZoneByZoneGroup.FirstOrDefault().ZoneGroup.Site.Name  - @HttpUtility.HtmlDecode(listZoneByZoneGroup.FirstOrDefault().ZoneGroup.Name)">
+                                            @foreach (EuroCMS.Model.Zone zone in listZoneByZoneGroup)
+                                            {
+                                                if (zone.Id == Model.navigation_zone_id)
+                                                {
+                                                    <option selected="selected" value="@zone.Id">@HttpUtility.HtmlDecode(zone.Name) - @zone.Id</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@zone.Id">@HttpUtility.HtmlDecode(zone.Name) - @zone.Id</option>
+                                                }
+
+                                            }
+                                        </optgroup>
+                                    }
+
+
+                                }
+                                else
+                                {
+                                    <option>Boş</option>
+                                }
+                            </select>
+                            <a class="btn icn-only changeButton hide" href="#selectZone" data-toggle="modal" onclick="openModal('subZone','#aCreate',this)"><i class="icon-tasks"></i> Change</a>
+                            <a class="btn icn-only margin-top-10 hide" href="#" onclick="/*removeTarget('#navigation_zone_id');*/ removeSubZone(); return false;"><i class="icon-trash"></i> Remove</a>
+                        </div>
+                        <!-- // navigation_zone_id -->
+                    </div>
+                    <div class="control-group">
+                        <!-- menu_text -->
+                        <label class="control-label" for="menu_text">Menu Text:</label>
+                        <div class="controls">
+                            <input class="m-wrap span12" type="text" name="menu_text" id="menu_text" value="@HttpUtility.HtmlDecode(Model.menu_text)" />
+                        </div>
+                        <!-- //menu_text -->
+                    </div>
+                    <div class="control-group">
+                        <!-- headline -->
+                        <label class="control-label" for="headline">Headline:<span class="red">*</span></label>
+                        <div class="controls">
+                            <input class="m-wrap span12" type="text" name="headline" id="headline" value="@HttpUtility.HtmlDecode(Model.headline)" required />
+                        </div>
+                        <!-- //headline -->
+                    </div>
+
+                    <a id="modalProp" class="hide openModal" href="@Url.Action("Properties", "Portlet")" data-toggle="modal"><i class="icon-tasks"></i> Properties Modal</a>
+
+                    @Html.Partial("ArticleContent", Model as EuroCMS.Admin.entity.cms_article_revision)
+                    @{if (Model.rev_id > 0)
+                        {
+                            if (ViewBag.Urls != null)
+                            {
+                                List<string> listDetailUrls = new List<string>();
+                                listDetailUrls = (List<string>)ViewBag.Urls;
+                                if (listDetailUrls.Count > 0)
+                                {
+                                    string hostAddress = HttpContext.Current.Request.Url.Host;
+                                    <div class="control-group">
+                                        <label class="control-label" for="">Article URLS:</label>
+                                        <div class="controls">
+                                            <ul class="unstyled">
+                                                @{
+                                                    foreach (string detailUrl in listDetailUrls)
+                                                    {
+                                                        @*<li><a href="/@detailUrl" target="_blank"><i class="m-icon-swapright m-icon-blue url"></i> @hostAddress/@detailUrl</a></li>*@
+                                                        <li><a class="btn" href="http://@detailUrl" target="_blank">@detailUrl <i class="icon-external-link"></i></a></li>
+                                                    }
+                                                }
+                                            </ul>
+                                        </div>
+                                    </div>
+                                                            }
+                                                        }
+                                                    }
+                    }
+                </div>
+            </div>
+            <div id="tab_1_2" class="tab-pane">
+                <div class="row-fluid">
+                    @Html.Partial("ContentAreas", Model as EuroCMS.Admin.entity.cms_article_revision)
+                    <div class="control-group">
+                        <label class="control-label" for="before_head">Before &lt;&#47;head&gt;:</label>
+                        <div class="controls">
+                            <textarea class="m-wrap span12" rows="4" name="before_head" id="before_head">@HttpUtility.HtmlDecode(Model.before_head)</textarea>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="before_body">Before &lt;&#47;body&gt;:</label>
+                        <div class="controls">
+                            <textarea class="m-wrap span12" rows="4" name="before_body" id="before_body">@HttpUtility.HtmlDecode(Model.before_body)</textarea>
+                        </div>
+                    </div>
+                    <div class="control-group hide">
+                        <!-- omniture_code -->
+                        <label class="control-label" for="omniture_code">Omniture Code:</label>
+                        <div class="controls">
+                            <textarea class="m-wrap span12" rows="4" name="omniture_code" id="omniture_code">@HttpUtility.HtmlDecode(Model.omniture_code)</textarea>
+                        </div>
+                        <!-- // omniture_code -->
+                    </div>
+                    <div class="control-group">
+                        <!-- custom_body -->
+                        <label class="control-label" for="custom_body">Custom Body:</label>
+                        <div class="controls">
+                            <input class="m-wrap span12" type="text" name="custom_body" id="custom_body" value="@HttpUtility.HtmlDecode(Model.custom_body)" />
+                        </div>
+                        <!-- // custom_body -->
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="html_attr">Custom Html Attributes:</label>
+                        <div class="controls">
+                            <input class="m-wrap span12" type="text" name="custom_html_attr" id="html_attr" value="@HttpUtility.HtmlDecode(Model.custom_html_attr)" />
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        @Html.Partial("ArticleRelations", ViewData["article_related_revision"] as List<EuroCMS.Admin.entity.cms_asp_select_article_relateds_by_revision_Result>)
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">Tags</label>
+                        <div class="controls">
+                            <input type="hidden" id="tags" name="tags" class="span12 select2" value="@HttpUtility.HtmlDecode(Model.tag_contents)">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="tab_1_5" class="tab-pane">
+                <div class="row-fluid">
+                    <div class="control-group">
+                        <label class="control-label" for="no_index_no_follow">No Index, No Follow:</label>
+                        <div class="controls">
+                            @*
+                                <input type="hidden" value="@(Model.no_index_no_follow ? "1" : "0")" name="no_index_no_follow" id="noIndexNoFollow_status" data-act="1" data-psf="0" class="switchBt" />
+                            *@
+                            <div class="switch" data-on="success" data-off="default">
+                                @*
+                                    <input type="checkbox" class="toggle success-toggle-button" name="noIndexNoFollow_StatusSwitch" id="noIndexNoFollow_StatusSwitch" @(Model.no_index_no_follow == true ? "checked" : "") />
+                                *@
+                                <input name="no_index_no_follow"
+                                       data-act="1"
+                                       data-psf="0"
+                                       value="@(Model.no_index_no_follow ? "1" : "0")"
+                                       type="checkbox"
+                                       class="toggle success-toggle-button"
+                                       id="no_index_no_follow"
+                                       @(Model.no_index_no_follow == true ? "checked" : "") />
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="control-group">
+                        <!-- keywords -->
+                        @{
+                            var clsf = ViewData["classification_details"] as EuroCMS.Admin.entity.cms_asp_select_classification_details_Result;
+                        }
+                        <label class="control-label" for="keywords">
+                            @(clsf != null && !string.IsNullOrEmpty(clsf.keywords_text) ? clsf.keywords_text : "Meta Keywords"):
+                            @if (clsf != null && clsf.keywords_cb)
+                            {
+                                <span class="required">*</span>
+                            }
+                        </label>
+                        <div class="controls">
+                            <textarea class="m-wrap span12" rows="4" name="keywords" id="keywords">@Model.keywords</textarea>
+                        </div>
+                        <!-- // keywords -->
+                    </div>
+                    <div class="control-group">
+                        <!-- meta_description -->
+                        <label class="control-label" for="meta_description">Meta Description:</label>
+                        <div class="controls">
+                            <textarea class="m-wrap span12" rows="4" name="meta_description" id="meta_description">@HttpUtility.HtmlDecode(Model.meta_description)</textarea>
+                        </div>
+                        <!-- // meta_description -->
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="canonical_url">Canonical URL:</label>
+                        <div class="controls">
+                            <input class="m-wrap span12" type="text" name="canonical_url" id="canonical_url" value="@HttpUtility.HtmlDecode(Model.canonical_url)" />
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="meta_title">Meta Title:</label>
+                        <div class="controls">
+                            <input class="m-wrap span12" type="text" name="meta_title" id="meta_title" value="@HttpUtility.HtmlDecode(Model.meta_title)" />
+                        </div>
+                    </div>
+                </div><!--row-fluid-->
+            </div><!--tab_1_4-->
+
+                            if (Model.clsf_id > 0)
+                            {
+                                <div id="tab_1_4" class="tab-pane">
+                                    @Html.Partial("CustomValues", Model as EuroCMS.Admin.entity.cms_article_revision)
+                                </div>
+                            }
+
+                            <div class="form-actions">
+                                <div class="newFormActions">
+                                    @if (Model.rev_id > 0)
+                                    {
+                                        <a target="_blank" href="@Url.Action("PreviewRevision", new { id = Model.rev_id })" class="btn" title="Preview This Revision"><i class="icon-eye-open"></i> Preview </a>
+                                    }
+                                    <button type="submit" class="btn blue" title="Save This Article" onclick="selectionObj(); setArticleType(this);"><i class="icon-save"></i> Save </button>
+
+
+                                    @if (User.IsInRole("Administrator") || User.IsInRole("PowerUser") || User.IsInRole("Editor"))
+                                    {
+                                        //if (Model.rev_id > 0 && Model.revision_status.Equals("N"))
+                                        //{
+
+                                    @*<input type="hidden" name="forceapprove" value="true" />*@
+                                        <button onclick="setArticleType(this); selAllRelArt(this)" type="submit" name="forceapprove" value="true" class="btn green"><i class="icon-save"></i> Save & Approve </button>
+                                        //}
+                                    }
+
+                                    @*<li><button type="submit" class="btn blue" onclick="selectionObj();"><i class="icon-save"></i> Save & Close </button></li>*@
+
+                                    @if (Model.rev_id > 0)
+                                    {
+                                        <a class="btn" href="@Url.Action("Index", "ArticleFile", new { ArticleId = @Model.article_id, RevisionId = @Model.rev_id })" title="Go To Article Files Page"><i class="icon-picture"></i> Article Files</a>
+                                    }
+                                    @*<li><button type="button" class="btn red" title="Cancel Changes" onclick="discardChanges('@Url.Action("Index")'),false;"><i class="icon-remove"></i> Cancel</button></li>*@
+                                </div>
+                            </div><!--form-actions-->
+
+                            }
+        <div id="tab_1_3" class="tab-pane">
+            @if (ViewData["article_revision_detail"] != null)
+            {
+                @Html.Partial("ArticleCurrentStatus", ViewData["article_revision_detail"] as EuroCMS.Admin.entity.cms_asp_admin_select_article_revision_details_Result);
+            }
+            <div class="row-fluid hide" title="Revision Name">
+                <div class="portlet box grey">
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i>Revision Name</div>
+                        <div class="tools">
+                            <a href="javascript:;" class="expand"></a>
+                        </div>
+                    </div>
+                    <div class="portlet-body dn">
+                        <div class="control-group">
+                            <label class="control-label" for="rev_name">Revision Name:</label>
+                            <div class="controls">
+                                <input class="m-wrap span12" type="text" name="rev_name" id="rev_name" value="@HttpUtility.HtmlDecode(Model.rev_name)" />
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="rev_note">Revision Notes:</label>
+                            <div class="controls">
+                                <textarea class="m-wrap span12" name="rev_note" id="rev_note">@HttpUtility.HtmlDecode(Model.rev_note)</textarea>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="">Revision Flags:</label>
+                            <div class="controls">
+                                <label class="smallWrap">
+                                    <input type="checkbox" @(Model.rev_flag_1 == true ? "checked=checked" : "") id="rev_flag_1" name="rev_flag_1" value="true" />
+                                    Not Completed
+                                </label>
+                                <label class="smallWrap">
+                                    <input type="checkbox" @(Model.rev_flag_2 == true ? "checked=checked" : "") id="rev_flag_2" name="rev_flag_2" value="true" />
+                                    Revise Later
+                                </label>
+                                <label class="smallWrap">
+                                    <input type="checkbox" @(Model.rev_flag_3 == true ? "checked=checked" : "") id="rev_flag_3" name="rev_flag_3" value="true" />
+                                    Check Ext.Links
+                                </label>
+                                <label class="smallWrap">
+                                    <input type="checkbox" @(Model.rev_flag_4 == true ? "checked=checked" : "") id="rev_flag_4" name="rev_flag_4" value="true" />
+                                    Custom Flag 1
+                                </label>
+                                <label class="smallWrap">
+                                    <input type="checkbox" @(Model.rev_flag_5 == true ? "checked=checked" : "") id="rev_flag_5" name="rev_flag_5" value="true" />
+                                    Custom Flag 2
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @if (ViewData["article_revisions"] != null)
+            {
+                @Html.Partial("ArticleRevisionList", ViewData["article_revisions"] as List<EuroCMS.Admin.entity.cms_asp_admin_select_article_revision_list_Result>);
+            }
+        </div><!--tab_1_3-->
+
+    </div>
+
+
+
+</div><!--tab-->
+@section ModalSelectArticle { @Html.Partial("ModalSelectArticle", ViewData["ZoneGroups"] as List<EuroCMS.Admin.entity.cms_zone_groups>) }
+
+<div id="selectZone" class="modal hide" tabindex="-1" data-width="760">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+        <h3>Select Zone:</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row-fluid">
+            <form class="form">
+                <div class="control-group">
+                    <label class="control-label" for="zGroup">Zone Group:</label>
+                    <div class="controls">
+                        @Html.GroupDropList("ZoneGroupID", ViewBag.ZoneGroups as List<GroupDropListItem>, "-1", new { @class = "zGroup span12 m-wrap", @onchange = "getZoneList(this)" }, "All Zone Groups")
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="zone">Zone:</label>
+                    <div class="controls">
+                        <select tabindex="1" size="6" data-placeholder="Choose a Category" multiple="multiple" class="zone span12 m-wrap" onchange="removeSelected(this);"></select>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" data-dismiss="modal" class="btn">Close</button>
+        <button type="button" class="btn blue" id="saveClose">Save & Close</button>
+    </div>
+</div>
+
+<a id="openModal" data-toggle="modal" href="#addObject" class="btn icn-only margin-bottom-10 hide"><i class="icon-plus"></i> Add</a>
+
+<div id="addObject" class="modal hide" tabindex="-1" data-width="760">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+        <h3>Select Zone:</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row-fluid">
+            <ul class="nav nav-tabs new-tabs">
+                <li class="active"><a href="#tab_1_1">Portlet</a></li>
+                <li><a href="#tab_1_2">Menu</a></li>
+                <li><a href="#tab_1_3">Plugins</a></li>
+                <li><a href="#tab_1_4">BreadCrumbs</a></li>
+                <li><a href="#tab_1_5">Custom Contents</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" data-dismiss="modal" class="btn">Close</button>
+        <button type="button" class="btn blue" id="saveClose">Save & Close</button>
+    </div>
+</div>

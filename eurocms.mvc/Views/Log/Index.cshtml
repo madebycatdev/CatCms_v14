@@ -1,0 +1,29 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Activity Log Reports</h2>
+
+<p>
+   <b> Search / View Activity Log : </b>
+    Use this option to browse through your activity log by defining any search criteria. If you don't define any criteria, all activities will be shown.
+</p>
+
+<label for="keyword"> Keyword: </label>
+<input type="text" name="keyword" id="keyword" />
+<br />
+<label for="publisher">  Publisher: </label>
+
+<br />
+<label for="publisher">  Activity Type: </label>
+
+<input type="checkbox" name="reverse" id="reverse" />
+<br />
+<label for="date_between">  Date Between: </label>
+<input type="checkbox" name="date_between" id="date_betwween" />
+
+<input type="text" name="begin_date" id="begin_date" />
+AND
+<input type="text" name="end_date" id="end_date" />
+
+<input type="submit" value="Search Activities" />

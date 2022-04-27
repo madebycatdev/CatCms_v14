@@ -1,0 +1,62 @@
+﻿@model List<EuroCMS.Admin.entity.cms_asp_config_select_config_parameters_Result>
+ 
+<!-- BEGIN SAMPLE TABLE PORTLET-->
+<p>
+    <a class="btn blue openModal" href="@Url.Action("Create")">Create New Configuration Value <i class="icon-circle-arrow-right"></i></a>
+</p>  
+
+<div class="row-fluid">
+    <div class="span12">
+        <div class="portlet box grey">
+            <div class="portlet-title">
+                <div class="caption"><i class="icon-reorder"></i>Configuration Values</div>
+            </div>
+            <div class="portlet-body">
+                <div class="no-more-tables">
+					<table class="table table-striped table-hover">
+						<thead>
+							<tr>
+								<th>#</th>
+								<th>Parameter Name</th>
+								<th>Parameter Value</th>
+								<th>Updated</th>
+								<th>Actions</th>
+							</tr>
+						</thead>
+						<tbody>
+								@if(Model.Count > 0)
+								{
+									int i = 1;
+									foreach (var config in Model)
+									{ 
+										<tr>
+											<td data-title="#"> @i </td>
+											<td data-title="Parameter Name"> @config.config_name </td>
+											<td data-title="Parameter Value">
+												<input type="text" class="span12" readonly="readonly" value="@(System.Configuration.ConfigurationManager.AppSettings["EuroCMS.WS"] == "remote" ? config.config_value_remote : config.config_value_local)" name="config_value" /> </td>
+											<td data-title="Updated"> @config.updated </td>
+											<td data-title="Actions"> 
+												<a href="@Url.Action("Edit", new { id= @config.config_id})" class="btn icn-only openModal" title="Edit Configuration"><i class="icon-pencil"></i></a>
+												@using (Html.BeginForm("Delete", "Configuration", new { id = config.config_id }))
+												{ 
+													@Html.AntiForgeryToken()
+													<button type="submit" data-message="Are you sure want to delete this Configuration Item?" class="btn icn-only red" onclick="return deleteObject(this);"><i class="icon-trash"></i></button>
+												}
+											</td>
+										</tr>
+										i++;
+									}
+							   }
+							   else
+							   {
+									<tr><td colspan="4">No Result Found!</td></tr>
+							   }
+						</tbody>
+					</table>
+				</div>
+			</div>
+        </div>
+    </div>
+</div>
+<!-- END SAMPLE TABLE PORTLET-->
+ 

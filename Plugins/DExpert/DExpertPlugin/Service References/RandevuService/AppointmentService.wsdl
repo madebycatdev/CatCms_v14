@@ -1,0 +1,427 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="AppointmentService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsp:Policy wsu:Id="BasicHttpBinding_IService_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:TransportBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:TransportToken>
+              <wsp:Policy>
+                <sp:HttpsToken RequireClientCertificate="false" />
+              </wsp:Policy>
+            </sp:TransportToken>
+            <sp:AlgorithmSuite>
+              <wsp:Policy>
+                <sp:Basic256 />
+              </wsp:Policy>
+            </sp:AlgorithmSuite>
+            <sp:Layout>
+              <wsp:Policy>
+                <sp:Strict />
+              </wsp:Policy>
+            </sp:Layout>
+          </wsp:Policy>
+        </sp:TransportBinding>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="https://diatest.d-teknoloji.com.tr/Dexp_Appointment/AppointmentService.svc?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="https://diatest.d-teknoloji.com.tr/Dexp_Appointment/AppointmentService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="https://diatest.d-teknoloji.com.tr/Dexp_Appointment/AppointmentService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/D_Expert_AppointmentWService_Lib" />
+      <xsd:import schemaLocation="https://diatest.d-teknoloji.com.tr/Dexp_Appointment/AppointmentService.svc?xsd=xsd3" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IService_Test_InputMessage">
+    <wsdl:part name="parameters" element="tns:Test" />
+  </wsdl:message>
+  <wsdl:message name="IService_Test_OutputMessage">
+    <wsdl:part name="parameters" element="tns:TestResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetCities_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetCities" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetCities_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetCitiesResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_SendSms_InputMessage">
+    <wsdl:part name="parameters" element="tns:SendSms" />
+  </wsdl:message>
+  <wsdl:message name="IService_SendSms_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SendSmsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_ControlSms_InputMessage">
+    <wsdl:part name="parameters" element="tns:ControlSms" />
+  </wsdl:message>
+  <wsdl:message name="IService_ControlSms_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ControlSmsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetTowns_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetTowns" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetTowns_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetTownsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetProducts_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetProducts" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetProducts_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetProductsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetProductDetail_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetProductDetail" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetProductDetail_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetProductDetailResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetContactChannels_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetContactChannels" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetContactChannels_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetContactChannelsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_HoldSession_InputMessage">
+    <wsdl:part name="parameters" element="tns:HoldSession" />
+  </wsdl:message>
+  <wsdl:message name="IService_HoldSession_OutputMessage">
+    <wsdl:part name="parameters" element="tns:HoldSessionResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_CreateAppointment_InputMessage">
+    <wsdl:part name="parameters" element="tns:CreateAppointment" />
+  </wsdl:message>
+  <wsdl:message name="IService_CreateAppointment_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CreateAppointmentResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_CancelAppointment_InputMessage">
+    <wsdl:part name="parameters" element="tns:CancelAppointment" />
+  </wsdl:message>
+  <wsdl:message name="IService_CancelAppointment_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CancelAppointmentResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_CreateContactForm_InputMessage">
+    <wsdl:part name="parameters" element="tns:CreateContactForm" />
+  </wsdl:message>
+  <wsdl:message name="IService_CreateContactForm_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CreateContactFormResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_getSuitableDates_InputMessage">
+    <wsdl:part name="parameters" element="tns:getSuitableDates" />
+  </wsdl:message>
+  <wsdl:message name="IService_getSuitableDates_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getSuitableDatesResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_getSuitableHours_InputMessage">
+    <wsdl:part name="parameters" element="tns:getSuitableHours" />
+  </wsdl:message>
+  <wsdl:message name="IService_getSuitableHours_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getSuitableHoursResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetAppointment_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAppointment" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetAppointment_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAppointmentResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_UpdateAppointment_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateAppointment" />
+  </wsdl:message>
+  <wsdl:message name="IService_UpdateAppointment_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateAppointmentResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetExpertiseAim_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetExpertiseAim" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetExpertiseAim_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetExpertiseAimResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_CreateSurvey_InputMessage">
+    <wsdl:part name="parameters" element="tns:CreateSurvey" />
+  </wsdl:message>
+  <wsdl:message name="IService_CreateSurvey_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CreateSurveyResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetOTPStatus_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetOTPStatus" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetOTPStatus_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetOTPStatusResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetProductsByAim_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetProductsByAim" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetProductsByAim_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetProductsByAimResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IService">
+    <wsdl:operation name="Test">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/Test" message="tns:IService_Test_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/TestResponse" message="tns:IService_Test_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCities">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/GetCities" message="tns:IService_GetCities_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/GetCitiesResponse" message="tns:IService_GetCities_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SendSms">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/SendSms" message="tns:IService_SendSms_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/SendSmsResponse" message="tns:IService_SendSms_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ControlSms">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/ControlSms" message="tns:IService_ControlSms_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/ControlSmsResponse" message="tns:IService_ControlSms_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTowns">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/GetTowns" message="tns:IService_GetTowns_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/GetTownsResponse" message="tns:IService_GetTowns_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetProducts">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/GetProducts" message="tns:IService_GetProducts_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/GetProductsResponse" message="tns:IService_GetProducts_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetProductDetail">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/GetProductDetail" message="tns:IService_GetProductDetail_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/GetProductDetailResponse" message="tns:IService_GetProductDetail_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetContactChannels">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/GetContactChannels" message="tns:IService_GetContactChannels_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/GetContactChannelsResponse" message="tns:IService_GetContactChannels_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="HoldSession">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/HoldSession" message="tns:IService_HoldSession_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/HoldSessionResponse" message="tns:IService_HoldSession_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateAppointment">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/CreateAppointment" message="tns:IService_CreateAppointment_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/CreateAppointmentResponse" message="tns:IService_CreateAppointment_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CancelAppointment">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/CancelAppointment" message="tns:IService_CancelAppointment_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/CancelAppointmentResponse" message="tns:IService_CancelAppointment_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateContactForm">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/CreateContactForm" message="tns:IService_CreateContactForm_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/CreateContactFormResponse" message="tns:IService_CreateContactForm_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getSuitableDates">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/getSuitableDates" message="tns:IService_getSuitableDates_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/getSuitableDatesResponse" message="tns:IService_getSuitableDates_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getSuitableHours">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/getSuitableHours" message="tns:IService_getSuitableHours_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/getSuitableHoursResponse" message="tns:IService_getSuitableHours_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAppointment">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/GetAppointment" message="tns:IService_GetAppointment_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/GetAppointmentResponse" message="tns:IService_GetAppointment_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateAppointment">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/UpdateAppointment" message="tns:IService_UpdateAppointment_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/UpdateAppointmentResponse" message="tns:IService_UpdateAppointment_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetExpertiseAim">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/GetExpertiseAim" message="tns:IService_GetExpertiseAim_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/GetExpertiseAimResponse" message="tns:IService_GetExpertiseAim_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateSurvey">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/CreateSurvey" message="tns:IService_CreateSurvey_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/CreateSurveyResponse" message="tns:IService_CreateSurvey_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetOTPStatus">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/GetOTPStatus" message="tns:IService_GetOTPStatus_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/GetOTPStatusResponse" message="tns:IService_GetOTPStatus_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetProductsByAim">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/GetProductsByAim" message="tns:IService_GetProductsByAim_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/GetProductsByAimResponse" message="tns:IService_GetProductsByAim_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_IService" type="tns:IService">
+    <wsp:PolicyReference URI="#BasicHttpBinding_IService_policy" />
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Test">
+      <soap:operation soapAction="http://tempuri.org/IService/Test" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCities">
+      <soap:operation soapAction="http://tempuri.org/IService/GetCities" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendSms">
+      <soap:operation soapAction="http://tempuri.org/IService/SendSms" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ControlSms">
+      <soap:operation soapAction="http://tempuri.org/IService/ControlSms" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTowns">
+      <soap:operation soapAction="http://tempuri.org/IService/GetTowns" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProducts">
+      <soap:operation soapAction="http://tempuri.org/IService/GetProducts" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProductDetail">
+      <soap:operation soapAction="http://tempuri.org/IService/GetProductDetail" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetContactChannels">
+      <soap:operation soapAction="http://tempuri.org/IService/GetContactChannels" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="HoldSession">
+      <soap:operation soapAction="http://tempuri.org/IService/HoldSession" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateAppointment">
+      <soap:operation soapAction="http://tempuri.org/IService/CreateAppointment" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CancelAppointment">
+      <soap:operation soapAction="http://tempuri.org/IService/CancelAppointment" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateContactForm">
+      <soap:operation soapAction="http://tempuri.org/IService/CreateContactForm" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getSuitableDates">
+      <soap:operation soapAction="http://tempuri.org/IService/getSuitableDates" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getSuitableHours">
+      <soap:operation soapAction="http://tempuri.org/IService/getSuitableHours" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAppointment">
+      <soap:operation soapAction="http://tempuri.org/IService/GetAppointment" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateAppointment">
+      <soap:operation soapAction="http://tempuri.org/IService/UpdateAppointment" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetExpertiseAim">
+      <soap:operation soapAction="http://tempuri.org/IService/GetExpertiseAim" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateSurvey">
+      <soap:operation soapAction="http://tempuri.org/IService/CreateSurvey" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetOTPStatus">
+      <soap:operation soapAction="http://tempuri.org/IService/GetOTPStatus" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProductsByAim">
+      <soap:operation soapAction="http://tempuri.org/IService/GetProductsByAim" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="AppointmentService">
+    <wsdl:port name="BasicHttpBinding_IService" binding="tns:BasicHttpBinding_IService">
+      <soap:address location="https://diatest.d-teknoloji.com.tr/Dexp_Appointment/AppointmentService.svc" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

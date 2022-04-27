@@ -1,0 +1,59 @@
+﻿@model List<EuroCMS.Admin.Common.Group<EuroCMS.Admin.entity.cms_asp_select_file_types_Result, string>>
+
+<p>
+	<a class="btn blue" href="@Url.Action("Create")">Create New File Type <i class="icon-circle-arrow-right"></i></a>
+</p>
+<div class="portlet box grey">
+	<div class="portlet-title">
+		<div class="caption"><i class="icon-reorder"></i>File Type List</div>
+	</div>
+	<div class="portlet-body">
+		<div class="no-more-tables">
+			<table class="table table-striped table-hover">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>File Type Name</th>
+						<th>Alias</th>
+						<th>Created</th>
+						<th>Updated</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					@if (Model.Count > 0)
+					{
+						int i = 1;
+						foreach (var group in Model)
+						{
+							<tr><td colspan="6"><b>@(string.IsNullOrEmpty(group.Key) ? "Not Grouped" : group.Key)</b></td></tr>
+							foreach (var fileType in group.Values)
+							{
+								<tr>
+									<td data-title="#"> @fileType.type_id </td>
+									<td data-title="File Type Name"><strong>@fileType.type_name</strong></td>
+									<td data-title="Alias"> @fileType.type_alias </td>
+									<td data-title="Created">@fileType.created</td>
+									<td data-title="Updated">@fileType.updated</td>
+									<td data-title="Actions">
+										<a href="@Url.Action("Edit",   new { id = @fileType.type_id})" class="btn icn-only" title="Edit File Type"><i class="icon-pencil"></i></a>
+										@using (Html.BeginForm("Delete", "FileType", new { id = @fileType.type_id }))
+										{
+											@Html.AntiForgeryToken()
+											<button type="submit" class="btn icn-only red" data-message="Are you sure want to delete this file type?" onclick="return deleteObject(this);"><i class="icon-trash"></i></button>
+										}
+									</td>
+								</tr>
+										i++;
+							}
+						}
+					}
+					else
+					{
+						<tr><td colspan="4">No Result Found!</td></tr>
+					}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

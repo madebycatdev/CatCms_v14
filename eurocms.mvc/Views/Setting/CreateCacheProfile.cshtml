@@ -1,0 +1,88 @@
+﻿@model System.Web.Configuration.OutputCacheProfile
+@{ Layout = null; }
+
+
+@*<div class="modal" tabindex="-1" data-width="760">*@
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+        <h3>Create/Update</h3>
+    </div>
+    @using (Html.BeginForm("UpdateCacheProfile", "Setting", FormMethod.Post, new { id = ViewContext.RouteData.Values["id"], @class = "form-horizontal" }))
+    {
+        <div class="modal-body">
+            <div class="row-fluid">
+                @Html.AntiForgeryToken()
+                <div class="control-group">
+                    <label class="smallWrap" for="Enabled">
+                        @Html.CheckBox("Enabled", Model != null ? Model.Enabled : true)
+                        Enabled
+                    </label>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="Name">Name:</label>
+                    <div class="controls">
+                        @Html.TextBox("Name", Model != null ? Model.Name : "", new { @class="m-wrap span12" })
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="Location">Location:</label>
+                    <div class="controls">
+                        @Html.DropDownList("Location", ViewData["OutputCacheLocation"] as List<SelectListItem>, Model != null ? Model.Location.ToString() : "Please Select",new { @class="m-wrap span12" })
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="Duration">Duration:</label>
+                    <div class="controls">
+                        @Html.TextBox("Duration", Model != null ? Model.Duration : 86400, new { @class="m-wrap span12" })
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="VaryByParam">VaryByParam:</label>
+                    <div class="controls">
+                        @Html.TextBox("VaryByParam", Model != null ? Model.VaryByParam : "none", new { @class="m-wrap span12" })
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="VaryByCustom">VaryByCustom:</label>
+                    <div class="controls">
+                        @Html.TextBox("VaryByCustom", Model != null ? Model.VaryByCustom : "none", new { @class="m-wrap span12" })
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="VaryByControl">VaryByControl:</label>
+                    <div class="controls">
+                        @Html.TextBox("VaryByControl", Model != null ? Model.VaryByControl : "none", new { @class="m-wrap span12" })
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="VaryByHeader">VaryByHeader:</label>
+                    <div class="controls">
+                        @Html.TextBox("VaryByHeader", Model != null ? Model.VaryByHeader : "none", new { @class="m-wrap span12" })
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="VaryByContentEncoding">VaryByContentEncoding:</label>
+                    <div class="controls">
+                        @Html.TextBox("VaryByContentEncoding", Model != null ? Model.VaryByContentEncoding : "none", new { @class="m-wrap span12" })
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="SqlDependency">SqlDependency:</label>
+                    <div class="controls">
+                        @Html.TextBox("SqlDependency", Model != null ? Model.SqlDependency : "", new { @class="m-wrap span12" })
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="NoStore">NoStore:</label>
+                    <div class="controls">
+                        @Html.CheckBox("NoStore", Model != null ? Model.NoStore : false)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" type="button"><i class="icon-remove"></i> Cancel</button> <button class="btn green" type="submit"><i class="icon-save"></i> Save</button>
+        </div>
+    }
+@*</div>*@
+

@@ -1,0 +1,23 @@
+﻿@model IList<EuroCMS.Admin.entity.cms_asp_admin_select_rss_channel_content_Result>
+@{
+    Layout = null;
+}
+
+@if (Model.Count > 0)
+{
+    foreach (var content in Model)
+    {
+        if (content.sgz_exclude.Equals("E"))
+        {
+            <option class="optionX" value="X@(content.out_type)@(content.out_id)">[X] @HttpUtility.HtmlDecode(content.out_name)</option>
+        }
+        else if (content.sgz_exclude.Equals("D"))
+        {
+            <option class="optionD" value="D@(content.out_type)@(content.out_id)">[D] @HttpUtility.HtmlDecode(content.out_name)</option>
+        }
+        else
+        {
+            <option value="Z@(content.out_type)@(content.out_id)">[Z] @HttpUtility.HtmlDecode(content.out_name)</option>
+        }
+    }
+}

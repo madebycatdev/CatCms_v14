@@ -1,0 +1,137 @@
+﻿@model EuroCMS.Admin.entity.cms_article_revision
+ 
+@{
+	var clsf = ViewData["classification_details"] as EuroCMS.Admin.entity.cms_asp_select_classification_details_Result; 
+}
+
+@if (Model != null) 
+{
+	if (clsf != null)
+		{ 
+			
+			@*<fieldset>*@
+				@*<legend>Classification Custom Values</legend>*@
+			<div>
+			@for (var i = 1; i <= 20; i++)
+			{
+				System.Reflection.PropertyInfo p = clsf.GetType().GetProperty("custom" + i + "_type");
+				object type =  p !=null? p.GetValue(clsf, null).ToString() : "";
+			
+				string text = clsf.GetType().GetProperty("custom" + i + "_text").GetValue(clsf, null).ToString();
+				bool cb = (bool)clsf.GetType().GetProperty("custom" + i + "_cb").GetValue(clsf, null);
+				object value = Model.GetType().GetProperty("custom_" + i).GetValue(Model, null);
+
+				if (!string.IsNullOrEmpty(text.Trim()))
+				{
+					if (type !=null && type.ToString() == "c") 
+					{
+						<div class="control-group">
+							<!-- @type  -->
+							<label class="control-label" for="@("custom_" + i + "")">
+								@(!string.IsNullOrEmpty(text) ? text: "Custom "+ i):
+								@if (cb)
+								{ 
+								   <span class="required">*</span> 
+								}
+							</label>
+							<div class="controls">
+								<select id="@("custom_" + i + "")" name="@("custom_" + i + "")">
+									<option value="">Please Select</option>
+									@if(ViewData["combo_values_"+ i] != null)
+									{
+										@((ViewData["combo_values_"+ i] as List<EuroCMS.Admin.entity.cms_asp_select_combo_values_Result>).InOptionComboValue(value))
+									}
+								</select>
+							</div>
+							<!-- // @type  -->
+						</div>
+					}
+					else
+					{ 
+						<div class="control-group">
+							<!-- @type  -->
+							<label class="control-label" for="@("custom_" + i + "")">
+								@(!string.IsNullOrEmpty(text) ? text: "Custom "+ i):
+								@if (cb)
+								{ 
+								   <span class="required">*</span> 
+								}
+							</label>
+							<div class="controls">
+								<textarea rows="3" class="m-wrap span12" name="@("custom_" + i + "")" id="@("custom_" + i + "")">@(value!=null?value.ToString():"")</textarea>
+							</div>
+							<!-- // @type  -->
+						</div>
+					} 
+				
+				}
+			}
+		
+			@for (var i = 1; i <= 5; i++)
+			{
+				string text = clsf.GetType().GetProperty("flag" + i + "_text").GetValue(clsf, null).ToString();
+				object value = Model.GetType().GetProperty("flag_" + i).GetValue(Model, null);
+
+				if (!string.IsNullOrEmpty(text.Trim()))
+				{ 
+					<div class="control-group">
+						<!-- @("flag_" + i + "")  -->
+						<label class="control-label" for="@("flag_" + i + "")">@(!string.IsNullOrEmpty(text) ? text: "Flag "+ i):</label>
+						<div class="controls">
+							<input type="checkbox" name="@("flag_" + i + "")" id="@("flag_" + i + "")" value="True" @( (bool)(value!=null ? value : false) == true ? "checked" : "")  />
+						</div>
+						<!-- // @("flag_" + i + "")  -->
+					</div>
+				}
+			}
+		
+			@for (var i = 1; i <= 5; i++)
+			{
+			 
+				string text = clsf.GetType().GetProperty("date" + i + "_text").GetValue(clsf, null).ToString();
+				bool cb = (bool)clsf.GetType().GetProperty("date" + i + "_cb").GetValue(clsf, null);
+			
+				System.Reflection.PropertyInfo p = Model.GetType().GetProperty("date_" + i);
+				DateTime? value = (DateTime?)p.GetValue(Model, null);
+
+				if (!string.IsNullOrEmpty(text.Trim()))
+				{ 
+					<div class="control-group">
+						<!-- @("date_" + i + "")  -->
+						<label class="control-label @(cb ? "required": "")" for="@("date_" + i + "")">
+							@(!string.IsNullOrEmpty(text) ? text: "Date "+ i):
+							@if (cb)
+							{ 
+								<span class="required">*</span> 
+							}
+						</label>
+						<div class="controls">
+							<div class="input-append date form_datetime">
+								<input id="date_@(i)" name="date_@(i)" size="16"  type="text" value="@(value != null ? value.Value.ToString(System.Globalization.CultureInfo.InvariantCulture) : "")" class="m-wrap" />
+								<span class="add-on"><i class="icon-calendar"></i></span>
+							</div>
+						</div>
+						<!-- // @("date_" + i + "")  -->
+					</div>
+				}
+			}
+			@*<div class="form-actions">
+				@if (Model.rev_id > 0)
+				{
+					<a target="_blank" href="@Url.Action("PreviewRevision", new { id = Model.rev_id })" class="btn red" title="Preview This Revision"><i class="icon-eye-open"></i> Preview </a>
+				}
+				<button type="submit" class="btn red" title="Save This Article" onclick="selectionObj();"><i class="icon-save"></i> Save </button>*@
+				@*<button type="submit" class="btn green" onclick="selectionObj();"><i class="icon-save"></i> Save & Approve </button>*@
+				@*<button type="submit" class="btn blue" onclick="selectionObj();"><i class="icon-save"></i> Save & Close </button>*@
+			 
+				@*@if (Model.rev_id > 0)
+				{
+					<a class="btn red" href="@Url.Action("Index", "ArticleFile", new { ArticleId = @Model.article_id, RevisionId = @Model.rev_id })" title="Go To Article Files Page"><i class="icon-picture"></i> Article Files</a>
+				}
+				<button type="button" class="btn red" title="Cancel Changes" onclick="discardChanges('@Url.Action("Index")'),false;"><i class="icon-remove"></i> Cancel</button>
+			</div>*@
+		</div>
+		@*</fieldset>*@
+	   
+	}
+}

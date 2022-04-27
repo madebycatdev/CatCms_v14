@@ -1,0 +1,34 @@
+﻿@model System.Web.Configuration.GlobalizationSection
+
+
+@using (Html.BeginForm("SaveGlobalization", "Setting", FormMethod.Post @*, new { @class = "form-horizontal" }*@))
+{
+    @Html.AntiForgeryToken()
+    <div class="row-fluid">
+        <div class="control-group">
+            <label for="FileEncoding">File Encoding:</label>
+            @Html.DropDownList("FileEncoding", (SelectList)ViewBag.FileEncodings, Model.ResponseEncoding.EncodingName)
+        </div>
+        <div class="control-group">
+            <label for="RequestEncoding">Request Encoding:</label>
+            @Html.DropDownList("RequestEncoding", (SelectList)ViewBag.RequestEncodings, Model.ResponseEncoding.EncodingName)
+        </div>
+        <div class="control-group">
+            <label for="ResponseEncoding">Response Encoding:</label>
+            @Html.DropDownList("ResponseEncoding", (SelectList)ViewBag.ResponseEncodings, Model.ResponseEncoding.EncodingName)
+        </div>
+        <div class="control-group">
+            <label for="Culture">Culture:</label>
+            @Html.DropDownList("Culture", ViewBag.Cultures as List<SelectListItem>, Model.Culture)
+        </div>
+        <div class="control-group">
+            <label for="UICulture">UI Culture:</label>
+            @Html.DropDownList("UICulture", ViewBag.UICultures as List<SelectListItem>, Model.Culture)
+        </div>
+    </div>
+    <div class="form-actions">
+        <button type="submit" value="Save" class="btn green"><i class="icon-save"></i> Save</button>
+    </div>
+
+
+}

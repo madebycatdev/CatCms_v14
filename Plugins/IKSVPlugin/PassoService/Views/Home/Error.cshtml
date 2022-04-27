@@ -1,0 +1,43 @@
+﻿@{
+    ViewBag.Title = "signin";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section RooterClass
+{
+    <router class="signin"></router>
+}
+<div class="col-12 px-0 row mx-0 mobil left flex-md-row-reverse d-none d-lg-flex"
+     style="background-image: url('assets/img/signin-lalekart-pattern.jpg');">
+    <div class="col-8 col-md-4 pl-0 pr-2 pr-lg-4 d-flex">
+        <h4 class="font-mono boxed multi-line align-self-center p-2 pr-2 m-0 large-text my-4">
+        </h4>
+    </div>
+</div>
+<section class="py-0" id="signin">
+    <div class="row mx-0">
+        <div class="col-12 d-flex d-lg-none px-0">
+            <img class="w-100" src="@Url.Content("~/assets/img/login-image-mobil.png")">
+        </div>
+        <div class="d-none d-lg-flex px-0 left">
+            <img class="w-100" src="@Url.Content("~/assets/img/login-image.png")">
+        </div>
+        <div class="col d-flex flex-row-reverse align-items-lg-center justify-content-center justify-content-lg-start right">
+
+            <div class="form-container my-4 my-lg-3">
+                <h5 class="text-30 mb-0">
+                    Bir Hata Oluştu!
+                </h5>
+                <div class="text-30 mb-0 mt-5 ml-5">
+                    <a href="@Url.Content("~/uye-girisi")" class="btn orange">
+                        ÜYE GİRİŞİ
+                    </a>
+                </div>
+                <div class="text-30 mb-0 mt-5 ml-5">
+                    <a href="/" class="btn blue">
+                        ANA SAYFA
+                    </a>
+                </div>
+
+            </div>
+        </div>
+</section>

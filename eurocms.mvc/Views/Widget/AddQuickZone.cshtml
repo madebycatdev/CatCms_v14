@@ -1,0 +1,102 @@
+﻿@model List<EuroCMS.Model.WidgetConfig>
+@{
+    EuroCMS.Model.CmsDbContext dbContext = new EuroCMS.Model.CmsDbContext();
+    List<EuroCMS.Model.ZoneGroup> listZoneGroup = dbContext.ZoneGroups.ToList();
+    List<EuroCMS.Model.Template> listTemplate = dbContext.Templates.Where(s => s.Status == "A").ToList();
+    List<EuroCMS.Model.Language> languages = dbContext.Languages.ToList();
+
+    if (Model != null && Model.Count > 0)
+    {
+        @Html.HiddenFor(x => x[0].WidgetUserID)
+        <input type="hidden" name="zone_group_id" value=@Model.Where(x => x.ParamKey == "ZoneGroup").FirstOrDefault().ParamValue />
+        <input type="hidden" name="LangId" value=@Model.Where(x => x.ParamKey == "Language").FirstOrDefault().ParamValue />
+        <input type="hidden" name="template_id" value=@(Model.Where(x => x.ParamKey == "Template").FirstOrDefault().ParamValue ) />
+        <input type="hidden" name="zone_status" value="A" />
+
+    }
+    <input id="WidgetType" name="WidgetType" type="hidden" value="QuickZone" />
+     
+        <div class="row-fluid">
+            <div class="control-group">
+                <label class="control-label" for="headline">ZoneGroup : </label>
+                <div class="controls">
+                    @{
+                        string zgid = Model.Where(x => x.ParamKey == "ZoneGroup").FirstOrDefault().ParamValue;
+                        EuroCMS.Model.ZoneGroup zg = listZoneGroup.Where(x => x.Id.ToString() == zgid).FirstOrDefault();
+                    }
+                    <span>@(zg != null ? HttpUtility.HtmlDecode(zg.Name) : string.Empty)</span>
+                </div>
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="control-group">
+                <label class="control-label" for="headline">Template : </label>
+                <div class="controls">
+                    @{
+                        string tid = Model.Where(x => x.ParamKey == "Template").FirstOrDefault().ParamValue;
+                        EuroCMS.Model.Template t = listTemplate.Where(x => x.Id.ToString() == tid).FirstOrDefault();
+                    }
+                    <span>@( t != null ? HttpUtility.HtmlDecode(t.Name) : string.Empty)</span>
+                </div>
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="control-group">
+                <label class="control-label" for="headline">Language : </label>
+                <div class="controls">
+                    @{
+                        string lid = Model.Where(x => x.ParamKey == "Language").FirstOrDefault().ParamValue;
+                        EuroCMS.Model.Language l = languages.Where(x => x.ID.ToString() == lid).FirstOrDefault();
+                    }
+                    <span>@(l != null ? HttpUtility.HtmlDecode(l.Name) : string.Empty)</span>
+                </div>
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="control-group">
+                <label class="control-label" for="zone_name">Zone Name:</label>
+                <div class="controls">
+                    <input type="text" name="zone_name" id="zone_name" class="m-wrap span12" value="" onblur="getAlias(this, this, false, 'zone')" />
+                </div>
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="control-group">
+                <label class="control-label" for="site_name">Zone Alias:</label>
+                <div class="controls">
+                    <input type="text" name="site_alias" id="zone_alias" class="getAlias m-wrap span12" value="" onblur="getAlias(zone_name, this, true, 'zone')">
+                </div>
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="control-group">
+                <label class="control-label" for="zone_name_display">Display Name:</label>
+                <div class="controls">
+                    <input type="text" name="zone_name_display" id="zone_name_display" class="m-wrap span12" value="" />
+                </div>
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="control-group">
+                <!-- summary -->
+                <label class="control-label" for="summary">Container #1</label>
+            </div>
+            <div class="control-group" id="editor">
+                <div class="controls">
+                    <div class="type_H">
+                        <!-- article 1 -->
+                        <textarea class="htmlEditor span12" id="article_1" name="article_1"></textarea>
+                        <!-- article 1 -->
+                    </div>
+                </div>
+            </div>
+        </div> 
+}
+<div class="form-actions">
+    <button type="submit" class="btn green" title="Save This Zone"><i class="icon-save"></i> Save</button> 
+</div>
+<script>
+    $(document).ready(function () {
+        $('#dvPanelTitle@((Model == null || Model.Count == 0) ? "" : Model.FirstOrDefault().WidgetUserID.ToString())').html('<i class="icon-reorder"></i>Quick Zone');
+    });
+</script>

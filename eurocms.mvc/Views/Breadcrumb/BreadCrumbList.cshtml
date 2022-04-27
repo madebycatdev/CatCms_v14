@@ -1,0 +1,19 @@
+﻿@model IList<EuroCMS.Admin.entity.cms_asp_select_breadcrumb_Result>
+@{ Layout = null; }
+@if(Model.Count > 0)
+{
+    int i = 1;
+    <ul>
+    @foreach (var breadcrumb in Model)
+    { 
+        <li>
+            <a onclick="return iB(@breadcrumb.breadcrumb_id,'@breadcrumb.breadcrumb_name'),false;" href='javascript:void(0);'><img src='@Url.Content("~/Content/img/icon_article.gif")' />@breadcrumb.breadcrumb_name</a>
+        </li>            
+        i++;
+    }
+    </ul>
+}
+else
+{
+    <p>Please create a breadcrumb before add</p>
+}

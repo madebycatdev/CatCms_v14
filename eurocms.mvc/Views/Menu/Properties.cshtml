@@ -1,0 +1,151 @@
+﻿@model EuroCMS.Admin.Models.MenuPropertyView
+
+@{
+    ViewBag.Title = "Properties";
+    Layout = null;
+}
+
+@using (Html.BeginForm("Properties", "Menu", new { }, FormMethod.Post, new { @class = "form-horizontal", @id = "pProperties" })) 
+{ 
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+        <h3>Menu Properties:</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row-fluid">
+            <div class="control-group">
+                <label class="control-label" for="inpZoneID">Zone Name:</label>
+                <div class="controls">
+                    @Html.DropDownList("zone_id", ViewBag.Zones as List<SelectListItem>, new { @class ="m-wrap span12" })
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="menu_depth">Menu Depth:</label>
+                <div class="controls">
+                    <select name="menu_depth" id="menu_depth">
+                        <option value="1"@(Model.MenuDepth==1?" selected":"")>1</option>
+                        <option value="2"@(Model.MenuDepth==2?" selected":"")>2</option>
+                        <option value="3"@(Model.MenuDepth==3?" selected":"")>3</option>
+                        <option value="4"@(Model.MenuDepth==4?" selected":"")>4</option>
+                    </select>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inpOrderID">Item Ordering:</label>
+                <div class="controls">
+                    <select name="inpOrderID" id="inpOrderID">
+                        <option value="0"@(Model.ItemOrdering==0?" selected":"")>Article Start Date ASC</option>
+                        <option value="14"@(Model.ItemOrdering==14?" selected":"")>Article Start Date DESC</option>
+                        <option value="15"@(Model.ItemOrdering==15?" selected":"")>Article Create Date ASC</option>
+                        <option value="16"@(Model.ItemOrdering==16?" selected":"")>Article Create Date DESC</option>
+                        <option value="1"@(Model.ItemOrdering==1?" selected":"")>Article Last Update</option>
+        	            <option value="2"@(Model.ItemOrdering==2?" selected":"")>Article Headline</option>
+                        <option value="3"@(Model.ItemOrdering==3?" selected":"")>Article Order Asc</option>
+                        <option value="11"@(Model.ItemOrdering==11?" selected":"")>Article Order Desc</option>
+                        <option value="4"@(Model.ItemOrdering==4?" selected":"")>Article Custom Date 1 DESC</option>
+                        <option value="12"@(Model.ItemOrdering==12?" selected":"")>Article Custom Date 1 ASC</option>
+                        <option value="5"@(Model.ItemOrdering==5?" selected":"")>Article Custom Date 2 DESC</option>
+                        <option value="13"@(Model.ItemOrdering==13?" selected":"")>Article Custom Date 2 ASC</option>
+                        <option value="6"@(Model.ItemOrdering==6?" selected":"")>Article Custom Flag 1</option>
+                        <option value="7"@(Model.ItemOrdering==7?" selected":"")>Article Custom Flag 2</option>
+                        <option value="8"@(Model.ItemOrdering==8?" selected":"")>Article Custom Flag 3</option>
+                        <option value="9"@(Model.ItemOrdering==9?" selected":"")>Article Custom Flag 4</option>
+                        <option value="10"@(Model.ItemOrdering==10?" selected":"")>Article Custom Flag 5</option>
+                    </select>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inpPagerClass">Class Name:</label>
+                <div class="controls">
+                    <input class="m-wrap span10" type="text" name="inpClass" id="inpClass" size="60" maxlength="100" value="@Model.ClassName" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inpContainer">Container Tag:</label>
+                <div class="controls">
+                    <input class="m-wrap span10" type="text" name="inpContainer" id="inpContainer" size="60" maxlength="100" value="@Model.ContainerTag" /><br />
+                    <span class="smallElement">Default: div, use NA for non-container tag</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="include_articles">Display Article IDs:</label>
+                <div class="controls">
+                    <input type="hidden" name="inpInclude" id="inpInclude" value="@Model.IncludeArticles" />
+                    @Html.DropDownList("include_articles", ViewBag.IncludeArticles as List<SelectListItem>, new { @size="4", @style="height:120px; width:99%; overflow:hidden; visibility:visible;"})
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Actions</label>
+                <div class="controls">
+                    <a onclick="openModal('includeArticle','#pProperties',this)" data-toggle="modal" href="#selectArticle" title="Add new article ID" class="changeButton btn blue"><i class=" icon-plus"></i> Add</a>
+                    <a onclick="return removeAZL('include_articles'),false;" href="#" title="Remove selected article ID" class="btn blue"><i class="icon-trash"></i> Remove</a>
+                    <a onclick="return MoveSelectOptionUp('include_articles'),false;" href="#" title="Move selected article up" class="btn blue"><i class="icon-arrow-up"></i> Move Up</a>
+                    <a onclick="return MoveSelectOptionDown('include_articles'),false;" href="#" title="Move selected article down" class="btn blue"><i class="icon-arrow-down"></i> Move Down</a>
+                    <span class="smallElement">Zone ID - Article ID # with comma (Disables zone selection, item count, ordering)</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="exclude_articles">Exclude Article IDs:</label>
+                <div class="controls">
+                    <input type="hidden" name="inpExclude" id="inpExclude" value="@Model.ExcludeArticles" />
+                    @Html.DropDownList("exclude_articles", ViewBag.ExcludeArticles  as List<SelectListItem>, new { @size="4", @style="height:120px; width:99%; overflow:hidden; visibility:visible;"})
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Action:</label>
+                <div class="controls">
+                    <a onclick="openModal('excludeArticle','#pProperties',this)" data-toggle="modal" href="#selectArticle" title="Add new article ID" class="changeButton btn blue"><i class=" icon-plus"></i> Add</a>
+                    <a onclick="return removeAZL('exclude_articles'),false;" href="#" title="Remove selected article ID" class="btn blue"><i class="icon-trash"></i> Remove</a><br />
+                    <span class="smallElement">Article ID # with comma</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inpVH">Position:</label>
+                <div class="controls">
+                    <select id="inpVH" name="inpVH">
+			            <option value="v"@(Model.Position=="v"?" selected":"")>Vertical</option>
+                        <option value="h"@(Model.Position=="h"?" selected":"")>Horizontal</option>
+                    </select>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="menu_container_tag_id">Container Tag ID:</label>
+                <div class="controls">
+                    <input type="text" value="@Model.ContainerTagId" id="menu_container_tag_id" name="menu_container_tag_id" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="eliminate_single_items">Eliminate Single <br />(Open Folder) Items:</label>
+                <div class="controls">
+                    <label>
+                        <input class="fl" type="checkbox" name="eliminate_single_items" id="eliminate_single_items" value="True"@(Model.EliminateSingle?" checked=checked":"") />
+                    </label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="remove_onlick_function">Remove Onclick Function <br />(Open Folder):</label>
+                <div class="controls">
+                    <label>
+                        <input class="fl" type="checkbox" name="remove_onlick_function" id="remove_onlick_function" value="True"@(Model.RemoveOnclikFunction?" checked=checked":"") />
+                    </label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="menu_container_tag_id">Selected Item Class:</label>
+                <div class="controls">
+                    <input type="text" value="@Model.SelectedItemClass" id="menu_selected_item_class" name="menu_selected_item_class" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="menu_not_selected_item_class">Not Selected Item Class:</label>
+                <div class="controls">
+                    <input type="text" value="@Model.NotSelectedItemClass" id="menu_not_selected_item_class" name="menu_not_selected_item_class" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" type="button">Close</button>
+        <button onclick="applyPortlet(this),false;" id="saveClose" class="btn blue" type="button">Save & Close</button>
+    </div>  
+}

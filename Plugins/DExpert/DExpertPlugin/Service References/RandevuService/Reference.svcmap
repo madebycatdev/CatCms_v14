@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="847ebc63-d5e1-4fac-b2d5-bdeadae94c54" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings>
+      <CollectionMapping TypeName="System.Collections.Generic.List`1" Category="List" />
+    </CollectionMappings>
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="https://diatest.d-teknoloji.com.tr/Dexp_Appointment/AppointmentService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="AppointmentService.xsd" MetadataType="Schema" ID="84faa2db-65bd-4aaa-9658-29387aa2920f" SourceId="1" SourceUrl="https://diatest.d-teknoloji.com.tr/Dexp_Appointment/AppointmentService.svc?xsd=xsd2" />
+    <MetadataFile FileName="AppointmentService.disco" MetadataType="Disco" ID="31ef9e4c-1b83-454c-abca-5bc61817eb47" SourceId="1" SourceUrl="https://diatest.d-teknoloji.com.tr/Dexp_Appointment/AppointmentService.svc?disco" />
+    <MetadataFile FileName="AppointmentService1.xsd" MetadataType="Schema" ID="53b46e04-60a9-4186-99dd-3226f482159b" SourceId="1" SourceUrl="https://diatest.d-teknoloji.com.tr/Dexp_Appointment/AppointmentService.svc?xsd=xsd1" />
+    <MetadataFile FileName="AppointmentService2.xsd" MetadataType="Schema" ID="674eea30-4ec4-44c2-8baa-21f87dec9906" SourceId="1" SourceUrl="https://diatest.d-teknoloji.com.tr/Dexp_Appointment/AppointmentService.svc?xsd=xsd0" />
+    <MetadataFile FileName="AppointmentService.wsdl" MetadataType="Wsdl" ID="67364df8-12b6-4e10-92e9-1e1f04ef3eea" SourceId="1" SourceUrl="https://diatest.d-teknoloji.com.tr/Dexp_Appointment/AppointmentService.svc?wsdl" />
+    <MetadataFile FileName="AppointmentService3.xsd" MetadataType="Schema" ID="935f38dc-d2db-488a-9ff1-5a11e164e735" SourceId="1" SourceUrl="https://diatest.d-teknoloji.com.tr/Dexp_Appointment/AppointmentService.svc?xsd=xsd3" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

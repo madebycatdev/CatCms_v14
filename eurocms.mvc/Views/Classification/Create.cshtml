@@ -1,0 +1,592 @@
+﻿@model EuroCMS.Admin.entity.cms_asp_select_classification_details_Result
+<div class="row-fluid">
+
+     @using (Html.BeginForm("Edit/-1", "Classification", FormMethod.Post, new { @enctype = "multipart/form-data", @id = "fileTypeProperties", @class = "form-horizontal" }))
+        {
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="c" value="" />
+            <div class="control-group">
+                <label class="control-label" for="classification_name">Classification Name:</label>
+                <div class="controls">
+                    <input type="text" maxlength="100" name="classification_name" id="classification_name" class="m-wrap span4" value="" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="structure_description">Description:</label>
+                <div class="controls">
+                    <textarea class="m-wrap span4" rows="4" name="structure_description" id="structure_description"></textarea>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="GroupID">Group:</label>
+                <div class="controls">
+                    @Html.DropDownList("GroupID", ViewBag.Groups as IEnumerable<SelectListItem>, "Not Grouped", new { @class = "m-wrap" })
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="summary_text">Summary:</label>
+                <div class="controls">
+                    <input type="text" value="Summary" maxlength="50" size="50" id="summary_text" name="summary_text" class="m-wrap span4 fl" />
+                    <label>
+                        <input type="checkbox" value="1" id="summary_cb" name="summary_cb" class="sradio fl" />
+                        <span class="smallElement">Required</span>
+                    </label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="enddate_text">End Date:</label>
+                <div class="controls">
+                    <input type="text" value="End Date" maxlength="50" size="50" id="enddate_text" name="enddate_text" class="m-wrap span4 fl" />
+                    <label>
+                        <input type="checkbox" value="1" id="enddate_cb" name="enddate_cb" class="sradio fl" />
+                        <span class="smallElement">Required</span>
+                    </label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="keywords_text">Keywords:</label>
+                <div class="controls">
+                    <input type="text" value="Keywords" maxlength="50" size="50" id="keywords_text" name="keywords_text" class="m-wrap span4 fl" />
+                    <label>
+                        <input type="checkbox" value="1" id="keywords_cb" name="keywords_cb" class="sradio fl" />
+                        <span class="smallElement">Required</span>
+                    </label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="article1_text">Article 1:</label>
+                <div class="controls">
+                    <input type="text" value="" maxlength="50" size="50" id="article1_text" name="article1_text" class="m-wrap span4 fl" />
+                    <label>
+                        <input type="checkbox" value="1" id="article1_cb" name="article1_cb" class="sradio fl" />
+                        <span class="smallElement">Required</span>
+                    </label>
+                </div>
+            </div> 
+            <div class="control-group">
+                <label class="control-label" for="article2_text">Article 2:</label>
+                <div class="controls">
+                    <input type="text" value="" maxlength="50" size="50" id="article2_text" name="article2_text" class="m-wrap span4 fl" />
+                    <label>
+                        <input type="checkbox" value="1" id="article2_cb" name="article2_cb" class="sradio fl" />
+                        <span class="smallElement">Required</span>
+                    </label>
+                </div>
+            </div>  
+            <div class="control-group">
+                <label class="control-label" for="article3_text">Article 3:</label>
+                <div class="controls">
+                    <input type="text" value="" maxlength="50" size="50" id="article3_text" name="article3_text" class="m-wrap span4 fl" />
+                    <label>
+                        <input type="checkbox" value="1" id="article3_cb" name="article3_cb" class="sradio fl" />
+                        <span class="smallElement">Required</span>
+                    </label>
+                </div>
+            </div> 
+            <div class="control-group">
+                <label class="control-label" for="article4_text">Article 4:</label>
+                <div class="controls">
+                    <input type="text" value="" maxlength="50" size="50" id="article4_text" name="article4_text" class="m-wrap span4 fl" />
+                    <label>
+                        <input type="checkbox" value="1" id="article4_cb" name="article4_cb" class="sradio fl" />
+                        <span class="smallElement">Required</span>
+                    </label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="article5_text">Article 5:</label>
+                <div class="controls">
+                    <input type="text" value="" maxlength="50" size="50" id="article5_text" name="article5_text" class="m-wrap span4 fl" />
+                    <label>
+                        <input type="checkbox" value="1" id="article5_cb" name="article5_cb" class="sradio fl" />
+                        <span class="smallElement">Required</span>
+                    </label>
+                </div>
+            </div> 
+            <div class="control-group">
+                <label class="control-label" for="custom1_text">Custom Data 1:</label>
+                <div class="controls">
+                    <input type="text" value="" maxlength="50" size="50" id="custom1_text" name="custom1_text" class="m-wrap span4 fl" />
+                    <label>
+                        <input type="checkbox" value="1" id="custom1_cb" name="custom1_cb" class="sradio fl" />
+                        <span class="smallElement">Required</span>
+                    </label>
+                    <select onchange="showElement(this,1);" class="plpop" id="custom1_type" name="custom1_type">
+                        <option value="t" selected>Textbox</option>
+                        <option value="c">Combobox</option>
+                    </select>
+
+                    <a href="#comboEditor" data-toggle="modal" class="btn red mini dn" onclick="return showComboEditor('custom1',$('#custom1_hidden').val()),false;" id="custom1_button">Set Values</a>
+                    <select class="dn" id="custom1_subcolumn" name="custom1_subcolumn">
+                        @for (int i = 0; i < 11; i++)
+                        {
+                            <option value="@i">@i</option>
+                        }
+                    </select>
+                    <input type="hidden" id="custom1_hidden" name="custom1_hidden" value="" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="custom2_text">Custom Data 2:</label>
+                <div class="controls">
+                    <input type="text" value="" maxlength="50" size="50" id="custom2_text" name="custom2_text" class="m-wrap span4 fl" />
+                    <label>
+                        <input type="checkbox" value="1" id="custom2_cb" name="custom2_cb" class="sradio fl" />
+                        <span class="smallElement">Required</span>
+                    </label>
+
+                    <select onchange="showElement(this,2);" class="plpop" id="custom2_type" name="custom2_type">
+                        <option value="t" selected>Textbox</option>
+                        <option value="c">Combobox</option>
+                   </select>
+        
+                    <a href="#comboEditor" data-toggle="modal" class="btn red mini dn" onclick="return showComboEditor('custom2',$('#custom2_hidden').val()),false;" id="custom2_button">Set Values</a>
+                    <select class="dn" id="custom2_subcolumn" name="custom2_subcolumn">
+                        @for (int i = 0; i < 11; i++)
+                        {
+                            <option value="@i">@i</option>
+                        }
+                    </select>
+                    <input type="hidden" id="custom2_hidden" name="custom2_hidden" value="">
+                </div>
+            </div> 
+            <div class="control-group">
+                <label class="control-label" for="custom3_text">Custom Data 3:</label>
+                <div class="controls">
+                    <input type="text" value="" maxlength="50" size="50" id="custom3_text" name="custom2_text" class="m-wrap span4 fl" />
+                    <label>
+                        <input type="checkbox" value="1" id="custom3_cb" name="custom3_cb" class="sradio fl" />
+                        <span class="smallElement">Required</span>
+                    </label>
+
+                    <select onchange="showElement(this,3);" class="plpop" id="custom3_type" name="custom3_type">
+                        <option value="t" selected>Textbox</option>
+                        <option value="c">Combobox</option>
+                   </select>
+        
+                    <a href="#comboEditor" data-toggle="modal" class="btn red mini dn" onclick="return showComboEditor('custom3',$('#custom3_hidden').val()),false;" id="custom3_button">Set Values</a>
+                    <select class="dn" id="custom3_subcolumn" name="custom3_subcolumn">
+                        @for (int i = 0; i < 11; i++)
+                        {
+                            <option value="@i">@i</option>
+                        }
+                    </select>
+                    <input type="hidden" id="custom3_hidden" name="custom3_hidden" value="">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="custom4_text">Custom Data 4:</label>
+                <div class="controls">
+                    <input type="text" value="" maxlength="50" size="50" id="custom4_text" name="custom4_text" class="m-wrap span4 fl" />
+                    <label>
+                        <input type="checkbox" value="1" id="custom4_cb" name="custom4_cb" class="sradio fl" />
+                        <span class="smallElement">Required</span>
+                    </label>
+
+                    <select onchange="showElement(this,4);" class="plpop" id="custom4_type" name="custom4_type">
+                        <option value="t">Textbox</option>
+                        <option value="c">Combobox</option>
+                    </select>
+
+                    <a href="#comboEditor" data-toggle="modal" class="btn red mini dn" onclick="return showComboEditor('custom4',$('#custom4_hidden').val()),false;" id="custom4_button">Set Values</a>
+                    <select class="dn" id="custom4_subcolumn" name="custom4_subcolumn">
+                        @for (int i = 0; i < 11; i++)
+                        {
+                            <option value="@i">@i</option>
+                        }
+                    </select>
+                    <input type="hidden" id="custom4_hidden" name="custom4_hidden" value="" />
+
+                </div>
+            </div> 
+            <div class="control-group">
+                <label class="control-label" for="custom5_text">Custom Data 5:</label>
+                <div class="controls">
+                    <input type="text" value="" maxlength="50" size="50" id="custom5_text" name="custom5_text" class="m-wrap span4 fl" />
+                    <label>
+                        <input type="checkbox" value="1" id="custom5_cb" name="custom5_cb" class="sradio fl" />
+                        <span class="smallElement">Required</span>
+                    </label>
+
+                    <select onchange="showElement(this,5);" class="plpop" id="custom5_type" name="custom5_type">
+                        <option value="t">Textbox</option>
+                        <option value="c">Combobox</option>
+                    </select>
+
+                    <a href="#comboEditor" data-toggle="modal" class="btn red mini dn" onclick="return showComboEditor('custom5',$('#custom5_hidden').val()),false;" id="custom5_button">Set Values</a>
+                    <select class="dn" id="custom5_subcolumn" name="custom5_subcolumn">
+                        @for (int i = 0; i < 11; i++)
+                        {
+                            <option value="@i">@i</option>
+                        }
+                    </select>
+                    <input type="hidden" id="custom5_hidden" name="custom5_hidden" value="" />
+
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="custom6_text">Custom Data 6:</label>
+                <div class="controls">
+                    <input type="text" value="" maxlength="50" size="50" id="custom6_text" name="custom6_text" class="m-wrap span4 fl" />
+                    <label>
+                        <input type="checkbox" value="1" id="custom6_cb" name="custom6_cb" class="sradio fl" />
+                        <span class="smallElement">Required</span>
+                    </label>
+
+                    <select onchange="showElement(this,6);" class="plpop" id="custom6_type" name="custom6_type">
+                        <option value="t">Textbox</option>
+                        <option value="c">Combobox</option>
+                    </select>
+
+                    <a href="#comboEditor" data-toggle="modal" class="btn red mini dn" onclick="return showComboEditor('custom6',$('#custom6_hidden').val()),false;" id="custom6_button">Set Values</a>
+                    <select class="dn" id="custom6_subcolumn" name="custom5_subcolumn">
+                        @for (int i = 0; i < 11; i++)
+                        {
+                            <option value="@i">@i</option>
+                        }
+                    </select>
+                    <input type="hidden" id="custom6_hidden" name="custom6_hidden" value="" />
+
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="custom7_text">Custom Data 7:</label>
+                <div class="controls">
+                    <input type="text" value="" maxlength="50" size="50" id="custom7_text" name="custom7_text" class="m-wrap span4 fl" />
+                    <label>
+                        <input type="checkbox" value="1" id="custom7_cb" name="custom7_cb" class="sradio fl" />
+                        <span class="smallElement">Required</span>
+                    </label>
+
+                    <select onchange="showElement(this,7);" class="plpop" id="custom7_type" name="custom7_type">
+                        <option value="t">Textbox</option>
+                        <option value="c">Combobox</option>
+                    </select>
+
+                    <a href="#comboEditor" data-toggle="modal" class="btn red mini dn" onclick="return showComboEditor('custom7',$('#custom7_hidden').val()),false;" id="custom7_button">Set Values</a>
+                    <select class="dn" id="custom7_subcolumn" name="custom7_subcolumn">
+                        @for (int i = 0; i < 11; i++)
+                        {
+                            <option value="@i">@i</option>
+                        }
+                    </select>
+                    <input type="hidden" id="custom7_hidden" name="custom7_hidden" value="" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="custom8_text">Custom Data 8:</label>
+                <div class="controls">
+                    <input type="text" value="" maxlength="50" size="50" id="custom8_text" name="custom8_text" class="m-wrap span4 fl" />
+                    <label>
+                        <input type="checkbox" value="1" id="custom8_cb" name="custom8_cb" class="sradio fl" />
+                        <span class="smallElement">Required</span>
+                    </label>
+
+                    <select onchange="showElement(this,8);" class="plpop" id="custom8_type" name="custom8_type">
+                        <option value="t">Textbox</option>
+                        <option value="c">Combobox</option>
+                    </select>
+
+                    <a href="#comboEditor" data-toggle="modal" class="btn red mini dn" onclick="return showComboEditor('custom8',$('#custom8_hidden').val()),false;" id="custom8_button">Set Values</a>
+                    <select class="dn" id="custom8_subcolumn" name="custom8_subcolumn">
+                        @for (int i = 0; i < 11; i++)
+                        {
+                            <option value="@i">@i</option>
+                        }
+                    </select>
+                    <input type="hidden" id="custom8_hidden" name="custom8_hidden" value="" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="custom9_text">Custom Data 9:</label>
+                <div class="controls">
+                    <input type="text" value="" maxlength="50" size="50" id="custom9_text" name="custom9_text" class="m-wrap span4 fl" />
+                    <label>
+                        <input type="checkbox" value="1" id="custom9_cb" name="custom9_cb" class="sradio fl" />
+                        <span class="smallElement">Required</span>
+                    </label>
+
+                    <select onchange="showElement(this,9);" class="plpop" id="custom9_type" name="custom9_type">
+                        <option value="t">Textbox</option>
+                        <option value="c">Combobox</option>
+                    </select>
+
+                    <a href="#comboEditor" data-toggle="modal" class="btn red mini dn" onclick="return showComboEditor('custom9',$('#custom9_hidden').val()),false;" id="custom9_button">Set Values</a>
+                    <select class="dn" id="custom9_subcolumn" name="custom9_subcolumn">
+                        @for (int i = 0; i < 11; i++)
+                        {
+                            <option value="@i">@i</option>
+                        }
+                    </select>
+                    <input type="hidden" id="custom9_hidden" name="custom9_hidden" value="" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="custom10_text">Custom Data 10:</label>
+                <div class="controls">
+                    <input type="text" value="" maxlength="50" size="50" id="custom10_text" name="custom10_text" class="m-wrap span4 fl" />
+                    <label>
+                        <input type="checkbox" value="1" id="custom10_cb" name="custom10_cb" class="sradio fl" />
+                        <span class="smallElement">Required</span>
+                    </label>
+
+                    <select onchange="showElement(this,10);" class="plpop" id="custom10_type" name="custom10_type">
+                        <option value="t">Textbox</option>
+                        <option value="c">Combobox</option>
+                    </select>
+
+                    <a href="#comboEditor" data-toggle="modal" class="btn red mini dn" onclick="return showComboEditor('custom10',$('#custom10_hidden').val()),false;" id="custom10_button">Set Values</a>
+                    <select class="dn" id="custom10_subcolumn" name="custom10_subcolumn">
+                        @for (int i = 0; i < 11; i++)
+                        {
+                            <option value="@i">@i</option>
+                        }
+                    </select>
+                    <input type="hidden" id="custom10_hidden" name="custom10_hidden" value="" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="custom11_text">Custom Data 11:</label>
+                <div class="controls">
+                    <input type="text" value="" maxlength="50" size="50" id="custom11_text" name="custom11_text" class="m-wrap span4 fl" />
+                    <label>
+                        <input type="checkbox" value="1" id="custom11_cb" name="custom11_cb" class="sradio fl" />
+                        <span class="smallElement">Required</span>
+                    </label>
+                    
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="custom12_text">Custom Data 12:</label>
+                <div class="controls">
+                    <input type="text" value="" maxlength="50" size="50" id="custom12_text" name="custom12_text" class="m-wrap span4 fl" />
+                    <label>
+                        <input type="checkbox" value="1" id="custom12_cb" name="custom12_cb" class="sradio fl" />
+                        <span class="smallElement">Required</span>
+                    </label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="custom13_text">Custom Data 13:</label>
+                <div class="controls">
+                    <input type="text" value="" maxlength="50" size="50" id="custom13_text" name="custom13_text" class="m-wrap span4 fl" />
+                    <label>
+                        <input type="checkbox" value="1" id="custom13_cb" name="custom13_cb" class="sradio fl" />
+                        <span class="smallElement">Required</span>
+                    </label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="custom14_text">Custom Data 14:</label>
+                <div class="controls">
+                    <input type="text" value="" maxlength="50" size="50" id="custom14_text" name="custom14_text" class="m-wrap span4 fl" />
+                    <label>
+                        <input type="checkbox" value="1" id="custom14_cb" name="custom14_cb" class="sradio fl" />
+                        <span class="smallElement">Required</span>
+                    </label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="custom15_text">Custom Data 15:</label>
+                <div class="controls">
+                    <input type="text" value="" maxlength="50" size="50" id="custom15_text" name="custom15_text" class="m-wrap span4 fl" />
+                    <label>
+                        <input type="checkbox" value="1" id="custom15_cb" name="custom15_cb" class="sradio fl" />
+                        <span class="smallElement">Required</span>
+                    </label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="custom16_text">Custom Data 16:</label>
+                <div class="controls">
+                    <input type="text" value="" maxlength="50" size="50" id="custom16_text" name="custom16_text" class="m-wrap span4 fl" />
+                    <label>
+                        <input type="checkbox" value="1" id="custom16_cb" name="custom16_cb" class="sradio fl" />
+                        <span class="smallElement">Required</span>
+                    </label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="custom17_text">Custom Data 17:</label>
+                <div class="controls">
+                    <input type="text" value="" maxlength="50" size="50" id="custom17_text" name="custom17_text" class="m-wrap span4 fl" />
+                    <label>
+                        <input type="checkbox" value="1" id="custom17_cb" name="custom17_cb" class="sradio fl" />
+                        <span class="smallElement">Required</span>
+                    </label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="custom18_text">Custom Data 18:</label>
+                <div class="controls">
+                    <input type="text" value="" maxlength="50" size="50" id="custom18_text" name="custom18_text" class="m-wrap span4 fl" />
+                    <label>
+                        <input type="checkbox" value="1" id="custom18_cb" name="custom18_cb" class="sradio fl" />
+                        <span class="smallElement">Required</span>
+                    </label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="custom19_text">Custom Data 19:</label>
+                <div class="controls">
+                    <input type="text" value="" maxlength="50" size="50" id="custom19_text" name="custom19_text" class="m-wrap span4 fl" />
+                    <label>
+                        <input type="checkbox" value="1" id="custom19_cb" name="custom19_cb" class="sradio fl" />
+                        <span class="smallElement">Required</span>
+                    </label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="custom20_text">Custom Data 20:</label>
+                <div class="controls">
+                    <input type="text" value="" maxlength="50" size="50" id="custom20_text" name="custom20_text" class="m-wrap span4 fl" />
+                    <label>
+                        <input type="checkbox" value="1" id="custom20_cb" name="custom20_cb" class="sradio fl" />
+                        <span class="smallElement">Required</span>
+                    </label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="flag1_text">Custom Flag 1:</label>
+                <div class="controls">
+                    <input type="text" value="" maxlength="50" size="50" id="flag1_text" name="flag1_text" class="m-wrap span4" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="flag2_text">Custom Flag 2:</label>
+                <div class="controls">
+                    <input type="text" value="" maxlength="50" size="50" id="flag2_text" name="flag2_text" class="m-wrap span4" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="flag3_text">Custom Flag 3:</label>
+                <div class="controls">
+                    <input type="text" value="" maxlength="50" size="50" id="flag3_text" name="flag3_text" class="m-wrap span4" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="flag4_text">Custom Flag 4:</label>
+                <div class="controls">
+                    <input type="text" value="" maxlength="50" size="50" id="flag4_text" name="flag4_text" class="m-wrap span4" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="flag5_text">Custom Flag 5:</label>
+                <div class="controls">
+                    <input type="text" value="" maxlength="50" size="50" id="flag5_text" name="flag5_text" class="m-wrap span4" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="date1_text">Custom Date 1:</label>
+                <div class="controls">
+                    <input type="text" value="" maxlength="50" size="50" id="date1_text" name="date1_text" class="m-wrap span4 fl" />
+                    <label>
+                        <input type="checkbox" value="1" id="date1_cb" name="date1_cb" class="sradio fl" />
+                        <span class="smallElement">Required</span>
+                    </label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="date2_text">Custom Date 2:</label>
+                <div class="controls">
+                    <input type="text" value="" maxlength="50" size="50" id="date2_text" name="date2_text" class="m-wrap span4 fl" />
+                    <label>
+                        <input type="checkbox" value="1" id="date2_cb" name="date2_cb" class="sradio fl" />
+                        <span class="smallElement">Required</span>
+                    </label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="date3_text">Custom Date 3:</label>
+                <div class="controls">
+                    <input type="text" value="" maxlength="50" size="50" id="date3_text" name="date3_text" class="m-wrap span4 fl" />
+                    <label>
+                        <input type="checkbox" value="1" id="date3_cb" name="date3_cb" class="sradio fl" />
+                        <span class="smallElement">Required</span>
+                    </label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="date4_text">Custom Date 4:</label>
+                <div class="controls">
+                    <input type="text" value="" maxlength="50" size="50" id="date4_text" name="date4_text" class="m-wrap span4 fl" />
+                    <label>
+                        <input type="checkbox" value="1" id="date4_cb" name="date4_cb" class="sradio fl" />
+                        <span class="smallElement">Required</span>
+                    </label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="date5_text">Custom Date 5:</label>
+                <div class="controls">
+                    <input type="text" value="" maxlength="50" size="50" id="date5_text" name="date5_text" class="m-wrap span4 fl" />
+                    <label>
+                        <input type="checkbox" value="1" id="date5_cb" name="date5_cb" class="sradio fl" />
+                        <span class="smallElement">Required</span>
+                    </label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="file_required_cb">File Required:</label>
+                <div class="controls">
+                    <input type="checkbox" onchange="showDiv(this);" value="1" id="file_required_cb" name="file_required_cb" class="sradio" />
+                    <div id="divFileTypes" class="dn">
+                        <div style="float: left; padding: 10px;">
+                            <select multiple="" ondblclick="moveSelectedOptions('allFileTypes','reqFileTypes');" size="7" id="allFileTypes" name="allFileTypes">
+                            </select>
+                        </div>
+                        <div style="float: left; clear: none; padding: 10px;">
+                            <a href="#" onclick="return moveSelectedOptions('allFileTypes','reqFileTypes'), false;" class="btn mini black icn-only"><i class="icon-forward icon-white"></i></a>
+                            <br /><br />
+                            <a href="#" onclick="return moveSelectedOptions('reqFileTypes','allFileTypes'), false;" class="btn mini black icn-only"><i class="icon-backward icon-white"></i></a>
+                        </div>
+                        <div style="float: left; clear: none; padding: 10px;">
+                            <select multiple="" ondblclick="moveSelectedOptions('reqFileTypes','allFileTypes');" size="7" id="reqFileTypes" name="reqFileTypes"></select><input type="hidden" id="reqFileTypesVal" name="reqFileTypesVal">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="file_title_required_cb">File Title Required:</label>
+                <div class="controls">
+                    <input type="checkbox" value="1" id="file_title_required_cb" name="file_title_required_cb" class="" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="file_description_required_cb">File Comment Required:</label>
+                <div class="controls">
+                    <input type="checkbox" value="1" id="file_description_required_cb" name="file_description_required_cb" class="" />
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="button" class="btn red" onclick="javascript: history.back(-1);"><i class="icon-remove"></i> Cancel</button>
+				<button type="submit" class="btn red"><i class="icon-save"></i> Save</button>
+            </div>
+        }
+
+</div>
+
+
+<div id="comboEditor" class="modal hide" tabindex="-1" data-width="760">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+        <h3>Combo Values Editor:</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row-fluid">
+            <form class="form">
+                <div class="control-group">
+                    <div class="controls">
+                        <textarea class="span12" rows="20" id="combo_editor_text" name="combo_editor_text"></textarea>
+                        <input type="hidden" id="combo_column_no" name="combo_column_no" value="custom1">
+                    </div>
+                </div>
+                
+            </form>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" data-dismiss="modal" class="btn">Close</button>
+        <button type="button" class="btn blue" id="saveClose" onclick="return saveComboValues(this),false;">Save & Close</button>
+    </div>
+</div>

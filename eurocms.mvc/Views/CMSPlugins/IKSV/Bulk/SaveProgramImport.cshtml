@@ -1,0 +1,31 @@
+﻿@{
+    ViewBag.Title = "Import";
+}
+
+
+
+<div class="portlet box grey">
+    <div class="portlet-title">
+        <div class="caption"><i class="icon-reorder"></i>Bulk Import</div>
+    </div>
+    <div class="portlet-body">
+        @using (Html.BeginForm("SaveProgramImport", "Bulk", FormMethod.Post, new { @class = "form-horizontal", @id = "zEdit", enctype = "multipart/form-data" }))
+        {
+            @Html.ValidationSummary(true)
+
+            <div class="row-fluid">
+                <div class="control-group">
+                    <label class="control-label" for="upload">Upload:</label>
+                    <div class="controls">
+                        <input class="m-wrap span5" type="file" name="upload" id="upload" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button class="btn blue">Save <i class="icon-save"></i></button>
+            </div>
+
+        }
+    </div>
+</div>

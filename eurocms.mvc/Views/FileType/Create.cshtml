@@ -1,0 +1,90 @@
+﻿<div class="tabbable tabbable-custom">
+	<div class="tab-content new-tab-content"> 
+		<div class="row-fluid">
+			@using (Html.BeginForm("Create", "FileType", FormMethod.Post, new { @class = "form-horizontal", @id = "fileTypeCreate" }))
+			{
+				@Html.ValidationSummary(true)
+				@Html.AntiForgeryToken()
+				<div class="control-group">
+					<label class="control-label" for="type_name">File Type Name:<span class="red">*</span></label>
+					<div class="controls">
+						<input type="text" name="type_name" id="type_name" class="m-wrap span12" required>
+					</div>
+				</div> 
+				
+				<div class="control-group">
+					<label class="control-label" for="structure_description">Description:</label>
+					<div class="controls">
+						<textarea name="structure_description" id="structure_description" rows="3" class="m-wrap span12"></textarea>
+					</div>
+				</div>
+				 <div class="control-group">
+					<label class="control-label" for="group_id">Group:</label>
+					<div class="controls">
+						@Html.DropDownList("group_id", ViewBag.Groups as IEnumerable<SelectListItem>, "Not Grouped", new { @class ="span12 m-wrap"})
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="type_alias">File Type Alias:<span class="red">*</span></label>
+					<div class="controls">
+						<input type="text" name="type_alias" id="type_alias" class="m-wrap span12" required>
+					</div>
+				</div> 
+				<div class="control-group">
+					<label class="control-label">File Type Items:</label>
+				</div>
+				<div class="fileWrap">
+					@for (int i = 1; i <= 1; i++)
+					{
+						<!-- File Type @i begin -->
+						<div class="fileTypeItem">
+							<div class="control-group">
+								<label class="control-label"><b class="dataFileName">File Type @i:</b></label>
+							</div>
+							<div class="control-group">
+								<div class="row-fluid margin-bottom-10">
+									<label class="control-label dataName" for="filename_@(i)">File <span class="count">@i</span> Caption;<span class="red">*</span></label>
+									<div class="controls">
+										<input type="text" name="filename_@i" id="filename_@i" class="dataNameInput m-wrap span5" maxlength="250" required>
+									</div>
+								</div>
+								<div class="row-fluid margin-bottom-10">
+									<label class="control-label dataExtension" for="fileextension_@i">File <span class="count">@i</span> Extensions:<span class="red">*</span></label>
+									<div class="controls">
+										<input type="text" name="fileextension_@i" id="fileextension_@i" class="dataExtensionInput m-wrap span4"  maxlength="100" required>
+										<small class="smallCustom">Valid file extensions seperated with commas (,)</small>
+									</div>
+								</div>
+								<div class="row-fluid margin-bottom-10">
+									<label class="control-label dataSize" for="filesize_@i">File <span class="count">@i</span> Size:</label>
+									<div class="controls">
+										<input type="text" name="filesize_@i" id="filesize_@i" class="dataSizeInput m-wrap span4" value="0" maxlength="10">
+										<small class="smallCustom">max. file size in kb.(0 : default size)</small>
+									</div>
+								</div>   
+								<div class="row-fluid margin-bottom-10">
+									<label class="control-label dataFileWh" for="filewh_@i">File <span class="count">@i</span> Width&Height:</label>
+									<div class="controls">
+										<input type="text" name="filewh_@i" id="filewh_@i" class="dataFileWhInput m-wrap span4"  maxlength="22">
+										<small class="smallCustom">max. size (width x height)</small>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- File Type @i complete --> 
+					}
+				</div>
+				<div class="control-group">
+					<div class="controls">
+						<button type="button" class="btn blue" title="Add File Type" onclick="return addFileType(this),false;"><i class="icon-plus"></i> Add New File Type</button>
+					</div>
+				</div>
+				<div class="form-actions">
+					<button type="button" class="btn" title="Cancel Changes" onclick="discardChanges('@Url.Action("Index")'),false;"><i class="icon-remove"></i> Cancel</button>
+					<button type="submit" class="btn green" title="Save This File Type"><i class="icon-save"></i> Save</button>
+				</div>
+				 
+			}
+		</div> 
+	</div>
+</div>

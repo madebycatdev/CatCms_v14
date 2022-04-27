@@ -1,0 +1,1226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://ws.euromsg.com/member" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://ws.euromsg.com/member" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://ws.euromsg.com/member">
+      <s:element name="QueryMemberID">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ServiceTicket" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Key" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Value" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="QueryMemberIDResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="QueryMemberIDResult" type="tns:EmMemberResult" />
+            <s:element minOccurs="0" maxOccurs="1" name="MemberID" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="EmMemberResult">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:EmResult" />
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="EmResult">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Code" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DetailedMessage" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="InsertMemberDemography">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ServiceTicket" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Key" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Value" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="DemograficData" type="tns:ArrayOfEmKeyValue" />
+            <s:element minOccurs="1" maxOccurs="1" name="ForceUpdate" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfEmKeyValue">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="EmKeyValue" nillable="true" type="tns:EmKeyValue" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="EmKeyValue">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Key" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Value" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="InsertMemberDemographyResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="InsertMemberDemographyResult" type="tns:EmMemberResult" />
+            <s:element minOccurs="0" maxOccurs="1" name="MemberID" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ChangeMemberPermissionByEmail">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ServiceTicket" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="EmailValue" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Status" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="EmailPermit" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="GsmPermit" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ChangeMemberPermissionByEmailResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ChangeMemberPermissionByEmailResult" type="tns:EmMemberResult" />
+            <s:element minOccurs="0" maxOccurs="1" name="MemberID" type="tns:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfString">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="UpdateMemberDemography">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ServiceTicket" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Key" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Value" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="DemograficData" type="tns:ArrayOfEmKeyValue" />
+            <s:element minOccurs="1" maxOccurs="1" name="ForceInsert" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateMemberDemographyResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UpdateMemberDemographyResult" type="tns:EmMemberResult" />
+            <s:element minOccurs="0" maxOccurs="1" name="MemberID" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="QueryMemberDemography">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ServiceTicket" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Key" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Value" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="QueryMemberDemographyResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="QueryMemberDemographyResult" type="tns:EmMemberResult" />
+            <s:element minOccurs="0" maxOccurs="1" name="DemograficData" type="tns:ArrayOfEmKeyValue" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="QuerySendLists">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ServiceTicket" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Key" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Value" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="QuerySendListsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="QuerySendListsResult" type="tns:EmMemberResult" />
+            <s:element minOccurs="0" maxOccurs="1" name="Lists" type="tns:ArrayOfEmSendList" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfEmSendList">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="EmSendList" nillable="true" type="tns:EmSendList" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="EmSendList">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="ListName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="GroupName" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="AddToSendLists">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ServiceTicket" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Key" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Value" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="SendLists" type="tns:ArrayOfEmSendList" />
+            <s:element minOccurs="1" maxOccurs="1" name="Move" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddToSendListsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AddToSendListsResult" type="tns:EmMemberResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddToWebLists">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ServiceTicket" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Key" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Value" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddToWebListsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AddToWebListsResult" type="tns:EmMemberResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddToAllLists">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ServiceTicket" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Key" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Value" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddToAllListsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AddToAllListsResult" type="tns:EmMemberResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemoveFromSendLists">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ServiceTicket" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Key" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Value" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="SendLists" type="tns:ArrayOfEmSendList" />
+            <s:element minOccurs="1" maxOccurs="1" name="DeleteIfInNoList" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemoveFromSendListsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RemoveFromSendListsResult" type="tns:EmMemberResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="QueryMemberCampaigns">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ServiceTicket" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Key" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Value" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="CampaignIds" type="tns:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="QueryMemberCampaignsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="QueryMemberCampaignsResult" type="tns:EmCampaignFuncRes" />
+            <s:element minOccurs="0" maxOccurs="1" name="CampaignList" type="tns:ArrayOfCampaignSummary" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="EmCampaignFuncRes">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:EmResult" />
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ArrayOfCampaignSummary">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="CampaignSummary" nillable="true" type="tns:CampaignSummary" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="CampaignSummary">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Id" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Subject" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DeliveryDate" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ReadTime" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DeliveryStatus" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ClickStatus" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="QueryCampaignsBetweenDates">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ServiceTicket" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Key" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Value" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="BeginDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="EndDate" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="QueryCampaignsBetweenDatesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="QueryCampaignsBetweenDatesResult" type="tns:EmMemberResult" />
+            <s:element minOccurs="0" maxOccurs="1" name="CampaignResults" type="tns:ArrayOfEmCampaignResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfEmCampaignResult">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="EmCampaignResult" nillable="true" type="tns:EmCampaignResult" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="EmCampaignResult">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="CampaignId" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CampaignName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DeliveryStatus" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DeliveryDate" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ChannelAddress" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ChannelType" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SentTime" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Subject" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CampaignMessage" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="QueryTransactionalMessagesWithDates">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ServiceTicket" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="KeyId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="EmailAddress" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PhoneNumber" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="BeginDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="EndDate" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="QueryTransactionalMessagesWithDatesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="QueryTransactionalMessagesWithDatesResult" type="tns:EmMemberResult" />
+            <s:element minOccurs="0" maxOccurs="1" name="MessageResults" type="tns:ArrayOfEmTransactionalMessageResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfEmTransactionalMessageResult">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="EmTransactionalMessageResult" nillable="true" type="tns:EmTransactionalMessageResult" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="EmTransactionalMessageResult">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="ChannelAddress" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Subject" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SentTime" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DeliveryStatus" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ChannelType" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="SendOngoingEMail">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ServiceTicket" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Key" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Value" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="DemograficData" type="tns:ArrayOfEmKeyValue" />
+            <s:element minOccurs="1" maxOccurs="1" name="ForceUpdate" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="OngoingCampaignId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SendOngoingEMailResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SendOngoingEMailResult" type="tns:EmMemberResult" />
+            <s:element minOccurs="0" maxOccurs="1" name="MemberID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="TransactionID" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SendComplexOngoingEMail">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ServiceTicket" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Key" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Value" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="DemograficData" type="tns:ArrayOfEmKeyValue" />
+            <s:element minOccurs="1" maxOccurs="1" name="ForceUpdate" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="OngoingCampaignId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="XmlData" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SendComplexOngoingEMailResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SendComplexOngoingEMailResult" type="tns:EmMemberResult" />
+            <s:element minOccurs="0" maxOccurs="1" name="MemberID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="TransactionID" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SendOngoingRecoEmail">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="request" type="tns:EmSendOngoingRecoEmailRequest" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="EmSendOngoingRecoEmailRequest">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="ServiceTicket" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Key" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Value" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CampaignId" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Subject" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DemograficData" type="tns:ArrayOfEmKeyValue" />
+          <s:element minOccurs="0" maxOccurs="1" name="BoxProducts" type="tns:ArrayOfBoxProductModel" />
+          <s:element minOccurs="0" maxOccurs="1" name="CustomParams" type="tns:ArrayOfEmKeyValue" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfBoxProductModel">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="BoxProductModel" nillable="true" type="tns:BoxProductModel" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="BoxProductModel">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="BoxName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ProductIds" type="tns:ArrayOfString" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="SendOngoingRecoEmailResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SendOngoingRecoEmailResult" type="tns:EmSendOngoingRecoEmailResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="EmSendOngoingRecoEmailResult">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:EmResult">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="MemberId" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="TransactionId" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="SendOngoingSms">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ServiceTicket" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Key" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Value" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="DemograficData" type="tns:ArrayOfEmKeyValue" />
+            <s:element minOccurs="1" maxOccurs="1" name="InsertMember" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="ForceUpdate" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="OngoingCampaignId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="GsmNo" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SendOngoingSmsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SendOngoingSmsResult" type="tns:EmMemberResult" />
+            <s:element minOccurs="0" maxOccurs="1" name="MemberID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="TransactionID" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="QueryMembersWithPermissionUpdate">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ServiceTicket" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="BeginDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="EndDate" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="QueryMembersWithPermissionUpdateResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="QueryMembersWithPermissionUpdateResult" type="tns:EmMemberResult" />
+            <s:element minOccurs="0" maxOccurs="1" name="Members" type="tns:ArrayOfEmMemberPermissionLog" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfEmMemberPermissionLog">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="EmMemberPermissionLog" nillable="true" type="tns:EmMemberPermissionLog" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="EmMemberPermissionLog">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="KeyColumnValue" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="GsmNo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="OldStatus" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="NewStatus" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="OldEmailPermit" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="NewEmailPermit" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="OldGsmPermit" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="NewGsmPermit" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="PermissionUpdateTime" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="UpdateSource" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="StatusPermissionUpdateTime" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="StatusUpdateSource" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="EmailPermitUpdateTime" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="EmailPermitUpdateSource" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="GsmPermitUpdateTime" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="GsmPermitUpdateSource" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="QueryLastPermissionUpdateOfAMember">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ServiceTicket" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Key" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Value" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="QueryLastPermissionUpdateOfAMemberResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="QueryLastPermissionUpdateOfAMemberResult" type="tns:EmMemberResult" />
+            <s:element minOccurs="0" maxOccurs="1" name="MemberPermissionDetail" type="tns:EmMemberPermissionLog" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="PushSubscription">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ServiceTicket" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PushToken" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="MemberID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="AppAlias" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Status" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="ForceUpdate" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="PushSubscriptionResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="PushSubscriptionResult" type="tns:EmMemberResult" />
+            <s:element minOccurs="1" maxOccurs="1" name="Success" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="EmMemberResult" nillable="true" type="tns:EmMemberResult" />
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="QueryMemberIDSoapIn">
+    <wsdl:part name="parameters" element="tns:QueryMemberID" />
+  </wsdl:message>
+  <wsdl:message name="QueryMemberIDSoapOut">
+    <wsdl:part name="parameters" element="tns:QueryMemberIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="InsertMemberDemographySoapIn">
+    <wsdl:part name="parameters" element="tns:InsertMemberDemography" />
+  </wsdl:message>
+  <wsdl:message name="InsertMemberDemographySoapOut">
+    <wsdl:part name="parameters" element="tns:InsertMemberDemographyResponse" />
+  </wsdl:message>
+  <wsdl:message name="ChangeMemberPermissionByEmailSoapIn">
+    <wsdl:part name="parameters" element="tns:ChangeMemberPermissionByEmail" />
+  </wsdl:message>
+  <wsdl:message name="ChangeMemberPermissionByEmailSoapOut">
+    <wsdl:part name="parameters" element="tns:ChangeMemberPermissionByEmailResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateMemberDemographySoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateMemberDemography" />
+  </wsdl:message>
+  <wsdl:message name="UpdateMemberDemographySoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateMemberDemographyResponse" />
+  </wsdl:message>
+  <wsdl:message name="QueryMemberDemographySoapIn">
+    <wsdl:part name="parameters" element="tns:QueryMemberDemography" />
+  </wsdl:message>
+  <wsdl:message name="QueryMemberDemographySoapOut">
+    <wsdl:part name="parameters" element="tns:QueryMemberDemographyResponse" />
+  </wsdl:message>
+  <wsdl:message name="QuerySendListsSoapIn">
+    <wsdl:part name="parameters" element="tns:QuerySendLists" />
+  </wsdl:message>
+  <wsdl:message name="QuerySendListsSoapOut">
+    <wsdl:part name="parameters" element="tns:QuerySendListsResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddToSendListsSoapIn">
+    <wsdl:part name="parameters" element="tns:AddToSendLists" />
+  </wsdl:message>
+  <wsdl:message name="AddToSendListsSoapOut">
+    <wsdl:part name="parameters" element="tns:AddToSendListsResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddToWebListsSoapIn">
+    <wsdl:part name="parameters" element="tns:AddToWebLists" />
+  </wsdl:message>
+  <wsdl:message name="AddToWebListsSoapOut">
+    <wsdl:part name="parameters" element="tns:AddToWebListsResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddToAllListsSoapIn">
+    <wsdl:part name="parameters" element="tns:AddToAllLists" />
+  </wsdl:message>
+  <wsdl:message name="AddToAllListsSoapOut">
+    <wsdl:part name="parameters" element="tns:AddToAllListsResponse" />
+  </wsdl:message>
+  <wsdl:message name="RemoveFromSendListsSoapIn">
+    <wsdl:part name="parameters" element="tns:RemoveFromSendLists" />
+  </wsdl:message>
+  <wsdl:message name="RemoveFromSendListsSoapOut">
+    <wsdl:part name="parameters" element="tns:RemoveFromSendListsResponse" />
+  </wsdl:message>
+  <wsdl:message name="QueryMemberCampaignsSoapIn">
+    <wsdl:part name="parameters" element="tns:QueryMemberCampaigns" />
+  </wsdl:message>
+  <wsdl:message name="QueryMemberCampaignsSoapOut">
+    <wsdl:part name="parameters" element="tns:QueryMemberCampaignsResponse" />
+  </wsdl:message>
+  <wsdl:message name="QueryCampaignsBetweenDatesSoapIn">
+    <wsdl:part name="parameters" element="tns:QueryCampaignsBetweenDates" />
+  </wsdl:message>
+  <wsdl:message name="QueryCampaignsBetweenDatesSoapOut">
+    <wsdl:part name="parameters" element="tns:QueryCampaignsBetweenDatesResponse" />
+  </wsdl:message>
+  <wsdl:message name="QueryTransactionalMessagesWithDatesSoapIn">
+    <wsdl:part name="parameters" element="tns:QueryTransactionalMessagesWithDates" />
+  </wsdl:message>
+  <wsdl:message name="QueryTransactionalMessagesWithDatesSoapOut">
+    <wsdl:part name="parameters" element="tns:QueryTransactionalMessagesWithDatesResponse" />
+  </wsdl:message>
+  <wsdl:message name="SendOngoingEMailSoapIn">
+    <wsdl:part name="parameters" element="tns:SendOngoingEMail" />
+  </wsdl:message>
+  <wsdl:message name="SendOngoingEMailSoapOut">
+    <wsdl:part name="parameters" element="tns:SendOngoingEMailResponse" />
+  </wsdl:message>
+  <wsdl:message name="SendComplexOngoingEMailSoapIn">
+    <wsdl:part name="parameters" element="tns:SendComplexOngoingEMail" />
+  </wsdl:message>
+  <wsdl:message name="SendComplexOngoingEMailSoapOut">
+    <wsdl:part name="parameters" element="tns:SendComplexOngoingEMailResponse" />
+  </wsdl:message>
+  <wsdl:message name="SendOngoingRecoEmailSoapIn">
+    <wsdl:part name="parameters" element="tns:SendOngoingRecoEmail" />
+  </wsdl:message>
+  <wsdl:message name="SendOngoingRecoEmailSoapOut">
+    <wsdl:part name="parameters" element="tns:SendOngoingRecoEmailResponse" />
+  </wsdl:message>
+  <wsdl:message name="SendOngoingSmsSoapIn">
+    <wsdl:part name="parameters" element="tns:SendOngoingSms" />
+  </wsdl:message>
+  <wsdl:message name="SendOngoingSmsSoapOut">
+    <wsdl:part name="parameters" element="tns:SendOngoingSmsResponse" />
+  </wsdl:message>
+  <wsdl:message name="QueryMembersWithPermissionUpdateSoapIn">
+    <wsdl:part name="parameters" element="tns:QueryMembersWithPermissionUpdate" />
+  </wsdl:message>
+  <wsdl:message name="QueryMembersWithPermissionUpdateSoapOut">
+    <wsdl:part name="parameters" element="tns:QueryMembersWithPermissionUpdateResponse" />
+  </wsdl:message>
+  <wsdl:message name="QueryLastPermissionUpdateOfAMemberSoapIn">
+    <wsdl:part name="parameters" element="tns:QueryLastPermissionUpdateOfAMember" />
+  </wsdl:message>
+  <wsdl:message name="QueryLastPermissionUpdateOfAMemberSoapOut">
+    <wsdl:part name="parameters" element="tns:QueryLastPermissionUpdateOfAMemberResponse" />
+  </wsdl:message>
+  <wsdl:message name="PushSubscriptionSoapIn">
+    <wsdl:part name="parameters" element="tns:PushSubscription" />
+  </wsdl:message>
+  <wsdl:message name="PushSubscriptionSoapOut">
+    <wsdl:part name="parameters" element="tns:PushSubscriptionResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddToWebListsHttpGetIn">
+    <wsdl:part name="ServiceTicket" type="s:string" />
+    <wsdl:part name="Key" type="s:string" />
+    <wsdl:part name="Value" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="AddToWebListsHttpGetOut">
+    <wsdl:part name="Body" element="tns:EmMemberResult" />
+  </wsdl:message>
+  <wsdl:message name="AddToAllListsHttpGetIn">
+    <wsdl:part name="ServiceTicket" type="s:string" />
+    <wsdl:part name="Key" type="s:string" />
+    <wsdl:part name="Value" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="AddToAllListsHttpGetOut">
+    <wsdl:part name="Body" element="tns:EmMemberResult" />
+  </wsdl:message>
+  <wsdl:message name="AddToWebListsHttpPostIn">
+    <wsdl:part name="ServiceTicket" type="s:string" />
+    <wsdl:part name="Key" type="s:string" />
+    <wsdl:part name="Value" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="AddToWebListsHttpPostOut">
+    <wsdl:part name="Body" element="tns:EmMemberResult" />
+  </wsdl:message>
+  <wsdl:message name="AddToAllListsHttpPostIn">
+    <wsdl:part name="ServiceTicket" type="s:string" />
+    <wsdl:part name="Key" type="s:string" />
+    <wsdl:part name="Value" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="AddToAllListsHttpPostOut">
+    <wsdl:part name="Body" element="tns:EmMemberResult" />
+  </wsdl:message>
+  <wsdl:portType name="MemberSoap">
+    <wsdl:operation name="QueryMemberID">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Query 32-char ID of a member based on Key and Value pair.</wsdl:documentation>
+      <wsdl:input message="tns:QueryMemberIDSoapIn" />
+      <wsdl:output message="tns:QueryMemberIDSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="InsertMemberDemography">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Insert/Update the member's demographic information. The member is defined by Key and Value pair.</wsdl:documentation>
+      <wsdl:input message="tns:InsertMemberDemographySoapIn" />
+      <wsdl:output message="tns:InsertMemberDemographySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ChangeMemberPermissionByEmail">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Update the member's channel permissions The member is defined by Email</wsdl:documentation>
+      <wsdl:input message="tns:ChangeMemberPermissionByEmailSoapIn" />
+      <wsdl:output message="tns:ChangeMemberPermissionByEmailSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateMemberDemography">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Insert/Update the member's demographic information. The member is defined by Key and Value pair.</wsdl:documentation>
+      <wsdl:input message="tns:UpdateMemberDemographySoapIn" />
+      <wsdl:output message="tns:UpdateMemberDemographySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="QueryMemberDemography">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Query the member's demographic information. The member is defined by Key and Value pair.</wsdl:documentation>
+      <wsdl:input message="tns:QueryMemberDemographySoapIn" />
+      <wsdl:output message="tns:QueryMemberDemographySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="QuerySendLists">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Query the member's send lists. The member is defined by Key and Value pair.</wsdl:documentation>
+      <wsdl:input message="tns:QuerySendListsSoapIn" />
+      <wsdl:output message="tns:QuerySendListsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddToSendLists">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Add the member defined by Key and Value pairs to Interest Lists.</wsdl:documentation>
+      <wsdl:input message="tns:AddToSendListsSoapIn" />
+      <wsdl:output message="tns:AddToSendListsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddToWebLists">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Add the member defined by Key and Value pairs to all Web Interest Lists.</wsdl:documentation>
+      <wsdl:input message="tns:AddToWebListsSoapIn" />
+      <wsdl:output message="tns:AddToWebListsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddToAllLists">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Add the member defined by Key and Value pairs to all Interest Lists.</wsdl:documentation>
+      <wsdl:input message="tns:AddToAllListsSoapIn" />
+      <wsdl:output message="tns:AddToAllListsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RemoveFromSendLists">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Removes the member from Interest Lists. The member is defined by Key and Value pair.</wsdl:documentation>
+      <wsdl:input message="tns:RemoveFromSendListsSoapIn" />
+      <wsdl:output message="tns:RemoveFromSendListsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="QueryMemberCampaigns">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Fetches the campaigns and results for the specified member.</wsdl:documentation>
+      <wsdl:input message="tns:QueryMemberCampaignsSoapIn" />
+      <wsdl:output message="tns:QueryMemberCampaignsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="QueryCampaignsBetweenDates">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Fetches the campaigns and results for the specified member between specific dates</wsdl:documentation>
+      <wsdl:input message="tns:QueryCampaignsBetweenDatesSoapIn" />
+      <wsdl:output message="tns:QueryCampaignsBetweenDatesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="QueryTransactionalMessagesWithDates">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Fetches the transactional messages and results for the specified member between specific dates</wsdl:documentation>
+      <wsdl:input message="tns:QueryTransactionalMessagesWithDatesSoapIn" />
+      <wsdl:output message="tns:QueryTransactionalMessagesWithDatesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SendOngoingEMail">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Insert/Update the member's demographic information and Sends and Ongoing E-Mail template to the Client. The member is defined by Key and Value pair.</wsdl:documentation>
+      <wsdl:input message="tns:SendOngoingEMailSoapIn" />
+      <wsdl:output message="tns:SendOngoingEMailSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SendComplexOngoingEMail">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Insert/Update the member's demographic information and Sends and Complex Ongoing E-Mail template to the Client. The member is defined by Key and Value pair.</wsdl:documentation>
+      <wsdl:input message="tns:SendComplexOngoingEMailSoapIn" />
+      <wsdl:output message="tns:SendComplexOngoingEMailSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SendOngoingRecoEmail">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Insert/Update the member's demographic information and Sends and Ongoing Reco E-Mail template to the Client. The member is defined by Key and Value pair.</wsdl:documentation>
+      <wsdl:input message="tns:SendOngoingRecoEmailSoapIn" />
+      <wsdl:output message="tns:SendOngoingRecoEmailSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SendOngoingSms">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Insert/Update the member's demographic information and Sends and Ongoing Sms template to the Client. The member is defined by Key and Value pair.</wsdl:documentation>
+      <wsdl:input message="tns:SendOngoingSmsSoapIn" />
+      <wsdl:output message="tns:SendOngoingSmsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="QueryMembersWithPermissionUpdate">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Queries the members who's permissions are updated between given date range</wsdl:documentation>
+      <wsdl:input message="tns:QueryMembersWithPermissionUpdateSoapIn" />
+      <wsdl:output message="tns:QueryMembersWithPermissionUpdateSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="QueryLastPermissionUpdateOfAMember">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Queries a member's last permission update details</wsdl:documentation>
+      <wsdl:input message="tns:QueryLastPermissionUpdateOfAMemberSoapIn" />
+      <wsdl:output message="tns:QueryLastPermissionUpdateOfAMemberSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="PushSubscription">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Query 32-char ID of a member based on Key and Value pair.</wsdl:documentation>
+      <wsdl:input message="tns:PushSubscriptionSoapIn" />
+      <wsdl:output message="tns:PushSubscriptionSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="MemberHttpGet">
+    <wsdl:operation name="AddToWebLists">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Add the member defined by Key and Value pairs to all Web Interest Lists.</wsdl:documentation>
+      <wsdl:input message="tns:AddToWebListsHttpGetIn" />
+      <wsdl:output message="tns:AddToWebListsHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddToAllLists">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Add the member defined by Key and Value pairs to all Interest Lists.</wsdl:documentation>
+      <wsdl:input message="tns:AddToAllListsHttpGetIn" />
+      <wsdl:output message="tns:AddToAllListsHttpGetOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="MemberHttpPost">
+    <wsdl:operation name="AddToWebLists">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Add the member defined by Key and Value pairs to all Web Interest Lists.</wsdl:documentation>
+      <wsdl:input message="tns:AddToWebListsHttpPostIn" />
+      <wsdl:output message="tns:AddToWebListsHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddToAllLists">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Add the member defined by Key and Value pairs to all Interest Lists.</wsdl:documentation>
+      <wsdl:input message="tns:AddToAllListsHttpPostIn" />
+      <wsdl:output message="tns:AddToAllListsHttpPostOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="MemberSoap" type="tns:MemberSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="QueryMemberID">
+      <soap:operation soapAction="http://ws.euromsg.com/member/QueryMemberID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InsertMemberDemography">
+      <soap:operation soapAction="http://ws.euromsg.com/member/InsertMemberDemography" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ChangeMemberPermissionByEmail">
+      <soap:operation soapAction="http://ws.euromsg.com/member/ChangeMemberPermissionByEmail" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateMemberDemography">
+      <soap:operation soapAction="http://ws.euromsg.com/member/UpdateMemberDemography" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="QueryMemberDemography">
+      <soap:operation soapAction="http://ws.euromsg.com/member/QueryMemberDemography" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="QuerySendLists">
+      <soap:operation soapAction="http://ws.euromsg.com/member/QuerySendLists" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddToSendLists">
+      <soap:operation soapAction="http://ws.euromsg.com/member/AddToSendLists" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddToWebLists">
+      <soap:operation soapAction="http://ws.euromsg.com/member/AddToWebLists" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddToAllLists">
+      <soap:operation soapAction="http://ws.euromsg.com/member/AddToAllLists" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveFromSendLists">
+      <soap:operation soapAction="http://ws.euromsg.com/member/RemoveFromSendLists" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="QueryMemberCampaigns">
+      <soap:operation soapAction="http://ws.euromsg.com/member/QueryMemberCampaigns" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="QueryCampaignsBetweenDates">
+      <soap:operation soapAction="http://ws.euromsg.com/member/QueryCampaignsBetweenDates" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="QueryTransactionalMessagesWithDates">
+      <soap:operation soapAction="http://ws.euromsg.com/member/QueryTransactionalMessagesWithDates" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendOngoingEMail">
+      <soap:operation soapAction="http://ws.euromsg.com/member/SendOngoingEMail" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendComplexOngoingEMail">
+      <soap:operation soapAction="http://ws.euromsg.com/member/SendComplexOngoingEMail" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendOngoingRecoEmail">
+      <soap:operation soapAction="http://ws.euromsg.com/member/SendOngoingRecoEmail" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendOngoingSms">
+      <soap:operation soapAction="http://ws.euromsg.com/member/SendOngoingSms" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="QueryMembersWithPermissionUpdate">
+      <soap:operation soapAction="http://ws.euromsg.com/member/QueryMembersWithPermissionUpdate" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="QueryLastPermissionUpdateOfAMember">
+      <soap:operation soapAction="http://ws.euromsg.com/member/QueryLastPermissionUpdateOfAMember" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PushSubscription">
+      <soap:operation soapAction="http://ws.euromsg.com/member/PushSubscription" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="MemberSoap12" type="tns:MemberSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="QueryMemberID">
+      <soap12:operation soapAction="http://ws.euromsg.com/member/QueryMemberID" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InsertMemberDemography">
+      <soap12:operation soapAction="http://ws.euromsg.com/member/InsertMemberDemography" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ChangeMemberPermissionByEmail">
+      <soap12:operation soapAction="http://ws.euromsg.com/member/ChangeMemberPermissionByEmail" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateMemberDemography">
+      <soap12:operation soapAction="http://ws.euromsg.com/member/UpdateMemberDemography" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="QueryMemberDemography">
+      <soap12:operation soapAction="http://ws.euromsg.com/member/QueryMemberDemography" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="QuerySendLists">
+      <soap12:operation soapAction="http://ws.euromsg.com/member/QuerySendLists" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddToSendLists">
+      <soap12:operation soapAction="http://ws.euromsg.com/member/AddToSendLists" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddToWebLists">
+      <soap12:operation soapAction="http://ws.euromsg.com/member/AddToWebLists" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddToAllLists">
+      <soap12:operation soapAction="http://ws.euromsg.com/member/AddToAllLists" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveFromSendLists">
+      <soap12:operation soapAction="http://ws.euromsg.com/member/RemoveFromSendLists" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="QueryMemberCampaigns">
+      <soap12:operation soapAction="http://ws.euromsg.com/member/QueryMemberCampaigns" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="QueryCampaignsBetweenDates">
+      <soap12:operation soapAction="http://ws.euromsg.com/member/QueryCampaignsBetweenDates" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="QueryTransactionalMessagesWithDates">
+      <soap12:operation soapAction="http://ws.euromsg.com/member/QueryTransactionalMessagesWithDates" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendOngoingEMail">
+      <soap12:operation soapAction="http://ws.euromsg.com/member/SendOngoingEMail" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendComplexOngoingEMail">
+      <soap12:operation soapAction="http://ws.euromsg.com/member/SendComplexOngoingEMail" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendOngoingRecoEmail">
+      <soap12:operation soapAction="http://ws.euromsg.com/member/SendOngoingRecoEmail" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendOngoingSms">
+      <soap12:operation soapAction="http://ws.euromsg.com/member/SendOngoingSms" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="QueryMembersWithPermissionUpdate">
+      <soap12:operation soapAction="http://ws.euromsg.com/member/QueryMembersWithPermissionUpdate" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="QueryLastPermissionUpdateOfAMember">
+      <soap12:operation soapAction="http://ws.euromsg.com/member/QueryLastPermissionUpdateOfAMember" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PushSubscription">
+      <soap12:operation soapAction="http://ws.euromsg.com/member/PushSubscription" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="MemberHttpGet" type="tns:MemberHttpGet">
+    <http:binding verb="GET" />
+    <wsdl:operation name="AddToWebLists">
+      <http:operation location="/AddToWebLists" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddToAllLists">
+      <http:operation location="/AddToAllLists" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="MemberHttpPost" type="tns:MemberHttpPost">
+    <http:binding verb="POST" />
+    <wsdl:operation name="AddToWebLists">
+      <http:operation location="/AddToWebLists" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddToAllLists">
+      <http:operation location="/AddToAllLists" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Member">
+    <wsdl:port name="MemberSoap" binding="tns:MemberSoap">
+      <soap:address location="http://ws.euromsg.com/liveb/member.asmx" />
+    </wsdl:port>
+    <wsdl:port name="MemberSoap12" binding="tns:MemberSoap12">
+      <soap12:address location="http://ws.euromsg.com/liveb/member.asmx" />
+    </wsdl:port>
+    <wsdl:port name="MemberHttpGet" binding="tns:MemberHttpGet">
+      <http:address location="http://ws.euromsg.com/liveb/member.asmx" />
+    </wsdl:port>
+    <wsdl:port name="MemberHttpPost" binding="tns:MemberHttpPost">
+      <http:address location="http://ws.euromsg.com/liveb/member.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

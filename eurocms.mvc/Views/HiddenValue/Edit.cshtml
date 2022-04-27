@@ -1,0 +1,44 @@
+﻿@model EuroCMS.Admin.entity.cms_asp_select_hidden_details_Result
+
+@{
+    Layout = null;
+} 
+
+@using (Html.BeginForm("Edit", "HiddenValue", FormMethod.Post, new { @class = "form-horizontal", @id = "hiddenValueEdit" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+        <h3>Edit Hidden Value:</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row-fluid">
+            <div class="control-group">
+                <label class="control-label" for="hidden_value">Hidden Value: <span class="red">*</span></label>
+                <div class="controls">
+                    <input class="span12 m-wrap" type="text" id="hidden_value" name="hidden_value" value="@Model.hidden_value">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="hidden_type">Type: <span class="red">*</span></label>
+                <div class="controls">
+                    <select class="span12 m-wrap" id="hidden_type" name="hidden_type">
+                        <option value="0" @(Model.hidden_type == (byte)0 ? "selected=selected":"")>Querystring</option>
+                        <option value="1" @(Model.hidden_type == (byte)1 ? "selected=selected":"")>Cookie</option>
+                        <option value="2" @(Model.hidden_type == (byte)2 ? "selected=selected":"")>Session</option>
+                    </select>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="hidden_desc">Description:</label>
+                <div class="controls">
+                    <textarea class="span12 m-wrap" id="hidden_desc" name="hidden_desc" rows="3">@Model.hidden_desc</textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" data-dismiss="modal" class="btn"><i class="icon-remove"></i> Close</button>
+        <button type="submit" class="btn blue"><i class="icon-save"></i> Save & Close</button>
+    </div>
+}

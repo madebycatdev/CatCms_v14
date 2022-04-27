@@ -1,0 +1,49 @@
+﻿@{
+	ViewBag.Title = "Login";
+	Layout = "~/Views/Shared/Login.cshtml";
+}
+
+<h3 class="form-title">madebycat CMS Sign-in</h3>
+ 
+@using (Html.BeginForm()) 
+{ 
+	@Html.CmsValidationSummary("Login was unsuccessful. Please correct the errors and try again.")  
+	@Html.AntiForgeryToken()
+	<div class="control-group">
+		<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
+		<label class="control-label visible-ie8 visible-ie9">Username</label>
+		<div class="controls">
+			<div class="input-icon left">
+				<i class="icon-user"></i>
+				@Html.TextBox("username", "", new { @placeholder = "Username", @class = "m-wrap placeholder-no-fix required", @autocomplete = "off" }) 
+			</div>
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label visible-ie8 visible-ie9">Password</label>
+		<div class="controls">
+			<div class="input-icon left">
+				<i class="icon-lock"></i>
+				@Html.Password("password", "", new { @placeholder = "Password", @class = "m-wrap placeholder-no-fix required", @autocomplete = "off" })  
+			</div>
+		</div>
+	</div>
+	<div class="form-actions">
+		<div class="checkWrap pull-left">
+			<label>
+				<input class="fl" type="checkbox" name="remember" value="true" />
+				<span>Remember me</span>
+			</label>
+		</div>
+		<button type="submit" class="btn red pull-right">
+			Login <i class="icon-circle-arrow-right"></i>
+		</button>            
+	</div>
+	@*
+	<p>
+		If you forgot password. Please <a href="@Url.Action("ForgotPassword")" title="Forgot Password Page">click</a>
+	</p>
+	<p>
+		If you don't have an account yet. Please <a href="@Url.Action("Register")" title="Register Page">click</a>
+	</p>*@       
+}

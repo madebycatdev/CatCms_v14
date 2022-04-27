@@ -1,0 +1,300 @@
+﻿@model System.Web.Configuration.ProfileSection
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".select-type").live("change", function () {
+            var v = $(this).val();
+
+            if (v == "Custom") {
+                $(this).next().show();
+            } else {
+                $(this).next().hide();
+                $(this).next().val(v);
+            }
+        });
+
+        $(".add-group").click(function () {
+
+        });
+
+        $(".add-field").click(function () {
+            var cloneRow = $(this).parent().prev("table").find(".cloneable:eq(0)").clone().removeClass("hide");
+
+            $(this).parent().prev("table").find(".fields").append(cloneRow);
+        });
+
+        $(".remove-field").live("click", function () {
+            $(this).parent().parent().remove();
+        });
+
+    });
+</script>
+
+@using (Html.BeginForm("SaveProfileProperties", "Setting", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <div class="row-fluid">
+        <p>
+            <label class="smallWrap" for="Enabled">
+                @Html.CheckBoxFor(t => t.Enabled)
+                Enabled
+            </label>
+        </p>
+        <p>
+            <label class="smallWrap" for="Enabled">
+                @Html.CheckBoxFor(t => t.AutomaticSaveEnabled)
+                Automatic Save Enabled
+            </label>
+        </p>
+
+        <!-- System Grouped -->
+        <div class="span12 no-margin">
+            @foreach (System.Web.Configuration.ProfileGroupSettings gSetting in Model.PropertySettings.GroupSettings)
+            {
+                if (gSetting.Name.Equals("System"))
+                {
+                    <h3>@gSetting.Name</h3>
+                    <hr />
+                    <table class="table table-striped table-hover @gSetting.Name no-margin">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th>Serialize</th>
+                                <th>Default Value</th>
+                                <th>Allow Ananymous</th>
+                            </tr>
+                        </thead>
+                        <tbody class="fields">
+                            @foreach (System.Web.Configuration.ProfilePropertySettings pSetting in gSetting.PropertySettings)
+                            {
+                                int i = 0;
+                                <tr class="cloneable">
+                                    <td>
+                                        @Html.DisplayName(pSetting.Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayName(pSetting.Type)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayName(pSetting.SerializeAs.ToString())
+                                    </td>
+                                    <td>
+                                        @Html.DisplayName(pSetting.DefaultValue)
+                                    </td>
+                                    <td>
+                                        @Html.CheckBox("AllowAnonymous[]", pSetting.AllowAnonymous, new { @disabled = "disabled" })
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                i++;
+                            }
+                        </tbody>
+                    </table>
+                }
+            }
+        </div>
+        <!-- // System Group -->
+        <!-- Grouped -->
+        <div class="span12 no-margin">
+            @foreach (System.Web.Configuration.ProfileGroupSettings gSetting in Model.PropertySettings.GroupSettings)
+            {
+                if (!gSetting.Name.Equals("System"))
+                {
+                    <h3>@gSetting.Name</h3>
+                    <hr />
+
+                    @Html.Hidden("GroupName[]", gSetting.Name)
+
+
+
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <td><b>Name</b></td>
+                                <td><b>Type</b></td>
+                                <td><b>Serialize</b></td>
+                                <td><b>Default Value</b></td>
+                                <td><b>Allow Ananymous</b></td>
+                            </tr>
+                        </thead>
+                        <tbody class="fields">
+                            <tr class="cloneable hide">
+                                <td>
+                                    @Html.TextBox(gSetting.Name + ".Name[]")
+                                </td>
+                                <td>
+                                    @Html.DropDownList(gSetting.Name + ".SelectType", ViewData["Types"] as List<SelectListItem>, "", new { @class = "" })
+
+                                    @Html.TextBox(gSetting.Name + ".Type[]", "", new { @class = "type_0", @style = "display:none" })
+                                </td>
+                                <td>
+                                    @Html.DropDownList(gSetting.Name + ".SerializeAs[]", ViewData["SerializationModes"] as List<SelectListItem>, "")
+                                </td>
+                                <td>
+                                    @Html.TextBox(gSetting.Name + ".DefaultValue[]")
+                                </td>
+                                <td>
+                                    @Html.DropDownList(gSetting.Name + ".AllowAnonymous[]",
+                                        new List<SelectListItem>
+                                        {
+                                            new SelectListItem() { Value = "true", Text = "True"},
+                                            new SelectListItem() { Value = "false", Text = "False"},
+                                        })
+                                </td>
+                                <td>
+                                    <button type="button" class="btn red remove-field">
+                                        <i class="icon-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            @foreach (System.Web.Configuration.ProfilePropertySettings pSetting in gSetting.PropertySettings)
+                            {
+                                int i = 0;
+                                <tr class="cloneable">
+                                    <td>
+                                        @Html.TextBox(gSetting.Name + ".Name[]", pSetting.Name)
+                                    </td>
+                                    <td>
+                                        @Html.DropDownList(gSetting.Name + ".SelectType", ViewData["Types"] as List<SelectListItem>, pSetting.Type, new { @class = "select-type" })
+
+                                        @Html.TextBox(gSetting.Name + ".Type[]", pSetting.Type, new { @class = "type_" + i, @style = "display:none" })
+                                    </td>
+                                    <td>
+                                        @{
+                                            var enumList = (ViewData["SerializationModes"] as List<SelectListItem>);
+                                            var sItem = enumList.Where(t => t.Selected == true).FirstOrDefault();
+                                            if (sItem != null)
+                                            { sItem.Selected = false; }
+                                            var item = enumList.Where(t => t.Value == pSetting.SerializeAs.ToString()).FirstOrDefault();
+                                            item.Selected = true;
+                                        }
+                                        @Html.DropDownList(gSetting.Name + ".SerializeAs[]", enumList)
+                                    </td>
+                                    <td>
+                                        @Html.TextBox(gSetting.Name + ".DefaultValue[]", pSetting.DefaultValue)
+                                    </td>
+                                    <td>
+                                        @Html.DropDownList(gSetting.Name + ".AllowAnonymous[]",
+                                                    new List<SelectListItem>
+                                                        { new SelectListItem() { Value = "true", Text = "True", Selected=pSetting.AllowAnonymous },
+                                                          new SelectListItem() { Value = "false", Text = "False", Selected=!pSetting.AllowAnonymous },
+                                                        }, pSetting.AllowAnonymous.ToString()
+                                                )
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn mini red remove-field">
+                                            <i class="icon-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                                i++;
+                                            }
+                        </tbody>
+                    </table>
+                                                }
+                                            }
+            <div class="span12 no-margin">
+                <button type="button" class="btn mini blue add-field">
+                    <i class="icon-plus"></i> Add Field
+                </button>
+            </div>
+        </div>
+        <!-- // Grouped -->
+        <!-- Not Grouped -->
+        <div class="span12 no-margin">
+            <h3>Not Grouped</h3>
+            <hr />
+            <table class="table table-striped table-hover no-margin">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Serialize</th>
+                        <th>Default Value</th>
+                        <th>Allow Ananymous</th>
+                    </tr>
+                </thead>
+                <tbody class="fields">
+                    <tr class="cloneable hide">
+                        <td>
+                            @Html.TextBox("Name[]")
+                        </td>
+                        <td>
+                            @Html.DropDownList("SelectType", ViewData["Types"] as List<SelectListItem>, "", new { @class = "select-type" })
+
+                            @Html.TextBox("Type[]", "", new { @class = "type_0", @style = "display:none" })
+                        </td>
+                        <td>
+                            @Html.DropDownList("SerializeAs[]", (ViewData["SerializationModes"] as List<SelectListItem>))
+                        </td>
+                        <td>
+                            @Html.TextBox("DefaultValue[]")
+                        </td>
+                        <td>
+                            @Html.DropDownList("AllowAnonymous[]",
+                                        new List<SelectListItem>
+                                       { new SelectListItem() { Value = "true", Text = "True"},
+                                        new SelectListItem() { Value = "false", Text = "False"},
+                                    }
+                                    )
+                        </td>
+                        <td>
+                            <button type="button" class="btn icn-only red remove-field"><i class="icon-trash"></i></button>
+                        </td>
+                    </tr>
+                    @foreach (System.Web.Configuration.ProfilePropertySettings pSetting in Model.PropertySettings)
+                    {
+                        int i = 0;
+                        <tr class="cloneable">
+                            <td>
+                                @Html.TextBox("Name[]", pSetting.Name)
+                            </td>
+                            <td>
+                                @Html.DropDownList("SelectType", ViewData["Types"] as List<SelectListItem>, pSetting.Type, new { @class = "select-type" })
+                                @Html.TextBox("Type[]", pSetting.Type, new { @class = "type_" + i, @style = "display:none" })
+                            </td>
+                            <td>
+                                @{
+                                    var enumList = (ViewData["SerializationModes"] as List<SelectListItem>);
+                                    var sItem = enumList.Where(t => t.Selected == true).FirstOrDefault();
+                                    if (sItem != null)
+                                    { sItem.Selected = false; }
+                                    var item = enumList.Where(t => t.Value == pSetting.SerializeAs.ToString()).FirstOrDefault();
+                                    item.Selected = true;
+                                }
+                                @Html.DropDownList("SerializeAs[]", enumList)
+                            </td>
+                            <td>
+                                @Html.TextBox("DefaultValue[]", pSetting.DefaultValue)
+                            </td>
+                            <td>
+                                @Html.DropDownList("AllowAnonymous[]",
+                                            new List<SelectListItem>
+                                                { new SelectListItem() { Value = "true", Text = "True", Selected=pSetting.AllowAnonymous },
+                                                    new SelectListItem() { Value = "false", Text = "False", Selected=!pSetting.AllowAnonymous },
+                                                }
+                                        )
+                            </td>
+                            <td>
+                                <button type="button" class="btn icn-only red remove-field"><i class="icon-trash"></i></button>
+                            </td>
+                        </tr>
+                                        i++;
+                                    }
+                </tbody>
+            </table>
+            <div class="span12 no-margin margin-bottom-10">
+                <button type="button" class="btn mini blue add-field">
+                    <i class="icon-plus"></i> Add Field
+                </button>
+            </div>
+            <!-- // Not Grouped -->
+
+            <div class="span12 no-margin">
+                <button class="btn green red" type="submit" value="Save">
+                    <i class="icon-save"></i> Save
+                </button>
+            </div>
+        </div>
+    </div>
+                                    }

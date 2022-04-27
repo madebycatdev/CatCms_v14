@@ -1,0 +1,96 @@
+﻿@model  EuroCMS.Model.PageRedirection
+
+@{
+    Layout = null;
+}
+
+<div id="domainEdit" class="modal hide row-fluid" tabindex="-1" data-width="760">
+    @using (Html.BeginForm("Edit", "Redirection", FormMethod.Post, new { @class = "form-horizontal"}))
+    {
+        @Html.ValidationSummary(true)
+        @Html.AntiForgeryToken()
+
+        string fromURL = Model.RedirectFrom.Trim();
+        string targetURL = Model.RedirectTo.Trim();
+        UriBuilder uriBuilder = new UriBuilder(fromURL);
+        UriBuilder uriBuilderTarget = new UriBuilder(targetURL);
+        Uri fromUri = uriBuilder.Uri;
+        Uri targetUri = uriBuilderTarget.Uri;
+
+        <input type="hidden" id="domain_id" value="@Model.ID" />
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+            <h3>Edit Redirections:</h3>
+        </div>
+        <div class="modal-body">
+            <!--Yeni HTML-->
+            <h3>Source</h3>
+            <div class="control-group">
+                <label class="control-label" for="redirectRequestProtocol">Protocol:</label>
+                <div class="controls">
+                    <select class="span2 m-wrap" name="redirectRequestProtocol" id="editRedirectRequestProtocol" data-placeholder="Choose a Category" tabindex="1" required>
+                        <option value="">Select...</option>
+                        <option value="http" @(fromUri.Scheme == "http" ? "selected=selected" : "")>http</option>
+                        <option value="https" @(fromUri.Scheme == "https" ? "selected=selected" : "")>https</option>
+                    </select>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="redirectRequestDomain">Domain:</label>
+                <div class="controls">
+                    @Html.DropDownList("redirectRequestDomain", ViewBag.Domains as List<SelectListItem>, "Please Select", new { @class = "span6 m-wrap", @id = "editRedirectRequestDomain", @placeholder = "Choose a Category", @tabindex = "2", @required = "required" })
+                    <select class="span6 m-wrap" name="redirectRequestType" id="editRedirectRequestType" data-placeholder="Choose a Category" tabindex="2" required>
+                        <option value="">Select...</option>
+                        <option value="Domain" data-attr="readonly" @(fromUri.PathAndQuery.Replace("/","").Trim() == "" ? "selected=selected" : "")>Domain</option>
+                        <option value="Domain with Mirroring" data-attr="readonly" @(fromUri.PathAndQuery.Contains("*") ? "selected=selected" : "")>Domain with Mirroring</option>
+                        <option value="Url" data-attr="required" @(fromUri.PathAndQuery.Replace("/", "").Trim() != "" && !fromUri.PathAndQuery.Contains("*") ? "selected=selected" : "")>Url</option>
+                    </select>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="redirectRequestUrl">Url:</label>
+                <div class="controls">
+                    <input class="m-wrap span6" type="text" name="redirectRequestUrl" id="editRedirectRequestUrl" value="@(fromUri.PathAndQuery.Trim() == "/" ? "" : (fromUri.PathAndQuery.Trim().StartsWith("/") ? fromUri.PathAndQuery.Trim().Substring(1, fromUri.PathAndQuery.Trim().Length - 1) : fromUri.PathAndQuery.Trim()))" tabindex="6" readonly />
+                </div>
+            </div>
+            <h3>Target</h3>
+            <div class="control-group">
+                <label class="control-label" for="redirectTargetProtocol">Protocol:</label>
+                <div class="controls">
+                    <select class="span2 m-wrap" name="redirectTargetProtocol" id="editRedirectTargetProtocol" data-placeholder="Choose a Category" tabindex="7" required>
+                        <option value="">Select...</option>
+                        <option value="http" @(targetUri.Scheme == "http" ? "selected=selected" : "")>http</option>
+                        <option value="https" @(targetUri.Scheme == "https" ? "selected=selected" : "")>https</option>
+                    </select>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="redirectTargetDomain">Domain:</label>
+                <div class="controls">
+                    <input class="span6 m-wrap" name="redirectTargetDomain" id="editRedirectDomain" data-placeholder="Choose a Category" value="@(targetUri.Host)" tabindex="8" required>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="redirectTargetUrl">Url:</label>
+                <div class="controls">
+                    <input class="m-wrap span6" type="text" name="redirectTargetUrl" id="editRedirectTargetUrl" value="@(targetUri.PathAndQuery.Trim() == "/" ? "" : targetUri.PathAndQuery.Trim())" tabindex="9" required readonly />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="redirectType">Redirect Type:</label>
+                <div class="controls">
+                    <select class="span4 m-wrap" name="redirectType" id="redirectType" data-placeholder="Choose a Category" tabindex="10" required>
+                        <option value="">Select...</option>
+                        <option value="301" @(Model.RedirectType == "301" ? "selected=selected" : "")>Permamnent (301)</option>
+                        <option value="302" @(Model.RedirectType == "302" ? "selected=selected" : "")>Temporary (302)</option>
+                    </select>
+                </div>
+            </div>
+            <!--/Yeni HTML-->
+        </div>
+        <div class="modal-footer">
+            <button type="button" data-dismiss="modal" class="btn"><i class="icon-remove"></i> Close</button>
+            <button type="submit" class="btn green" id="saveClose"><i class="icon-save"></i> Save & Close</button>
+        </div>
+    }
+</div>

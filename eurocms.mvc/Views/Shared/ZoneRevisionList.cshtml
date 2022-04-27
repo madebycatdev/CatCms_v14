@@ -1,0 +1,99 @@
+﻿@model IList<EuroCMS.Model.ZoneRevision>
+
+<div class="row-fluid" title="Revision History">
+    <div class="portlet box grey">
+        <div class="portlet-title">
+            <div class="caption"><i class="icon-reorder"></i>Revision List</div>
+            @*
+			<div class="tools">
+                <a href="javascript:;" class="collapse"></a>
+            </div>
+			*@
+        </div>
+        <div class="portlet-body">
+            <div class="no-more-tables">
+				<table class="table table-striped table-hover">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>Revision Name</th>
+							<th>Revised</th>
+							<th>Approved</th>
+							<th>Type</th>
+							<th>Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						@if (Model != null) 
+						{ 
+							if(Model.Count > 0)
+							{
+								int i = 1;
+								foreach (var revision in Model)
+								{
+								<tr>
+									<td data-title="#">@i.</td>
+									<td data-title="Revision Name">
+										@if (revision.ZoneStatus == "A")
+										{ 
+											<i class="icon-ok green"></i>
+										}else 
+										{
+											<i class="icon-stop red"></i>
+										}   @revision.RevisionName
+
+									</td>
+									<td data-title="Revised">@revision.RevisionDate.ToString("f") by @revision.RevisedUser.UserName</td>
+									<td data-title="Approved">
+										@(revision.Approved.HasValue ? revision.Approved.Value.ToString("f"):"") 
+									   
+										@if(@revision.ApprovedUser!=null)
+										{
+											@revision.ApprovedUser.UserName
+										}
+									</td>
+									<td data-title="Type">@revision.RevisionStatus</td>
+									<td data-title="Actions">                                  
+										@if (revision.RevisionId == Convert.ToInt64(Request["RevisionId"]))
+										{
+											<b>Currently Editing</b>
+										}
+										else
+										{
+											<a class="btn mini" href="@Url.Action("Edit", new { id= revision.ZoneId, RevisionId = revision.RevisionId })" title="Edit This Revision"><i class="icon-edit"></i> Edit </a>
+										}
+										
+										@if (revision.RevisionId > 0 && revision.RevisionStatus.Equals("N"))
+										{
+											using (Html.BeginForm("Approve", "Zone", new { id = revision.ZoneId, RevisionId = revision.RevisionId }))
+											{ 
+												@Html.AntiForgeryToken()
+												<button type="submit" class="btn mini" title="Approve This Revision"><i class="icon-flag"></i> Approve</button>
+											}
+										}
+										@if (revision.RevisionId > 0 && revision.RevisionStatus.Equals("N"))
+										{
+											using (Html.BeginForm("Discard", "Zone", new { id = revision.ZoneId, RevisionId = revision.RevisionId }))
+											{
+												@Html.AntiForgeryToken()
+												<button type="submit" class="btn mini" data-message="Are you sure want to delete this zone?" title="Discard This Revision"><i class="icon-remove"></i> Discard</button>
+											}
+										}   
+
+									</td>
+								</tr>
+									i++;
+								}
+							}else
+							{
+							<tr>
+								<td colspan="8">No Revision Found!</td>
+							</tr>
+							}
+						} 
+						</tbody>
+				</table>
+			</div>
+	   </div>
+    </div>
+</div>

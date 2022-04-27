@@ -1,0 +1,74 @@
+﻿@model List<EuroCMS.Model.Splash>
+
+<!-- BEGIN SAMPLE TABLE PORTLET-->
+<p>
+	<a class="btn blue" href="@Url.Action("Edit", new { ID = -1})">Create New Splash <i class="icon-circle-arrow-right"></i></a>
+</p>
+
+
+<div class="row-fluid">
+	<div class="span12">
+		<div class="portlet box grey">
+			<div class="portlet-title">
+				<div class="caption"><i class="icon-reorder"></i>Splash List</div>
+			</div>
+			<div class="portlet-body">
+				<table class="table table-striped table-hover iconic-table">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>Splash Name</th>
+							<th>Start Date</th>
+							<th>End Date</th>
+							<th>Created</th>
+							<th>Created by</th>
+							<th>Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						@if (Model.Count > 0)
+						{
+							int i = 1;
+							foreach (var splash in Model)
+							{
+								<tr>
+									<td> @splash.ID </td>
+									<td>
+										@if (@splash.Status == 1)
+										{
+											<i class="icon-ok green"></i>
+										}
+										else
+										{
+											<i class="icon-stop red"></i>
+										}
+
+										<strong>@splash.Name</strong>
+									</td>
+									<td>@splash.StartDate</td>
+									<td>@splash.EndDate</td>
+									<td>@splash.CreateDate.ToString("dd.MM.yyyy hh:mm:ss")</td>
+									<td>@(EuroCMS.Core.CmsHelper.GetUserName(splash.CreatedBy))</td>
+									<td>
+										<a href="@Url.Action("Edit", new { id= @splash.ID })" class="btn icn-only" title="Splash Edit"><i class="icon-pencil"></i></a>
+										@using (Html.BeginForm("Delete", "Splash", new { id = @splash.ID }))
+										{
+											@Html.AntiForgeryToken()
+											<button type="submit" class="btn icn-only red" data-message="Are you sure want to delete this splash?" onclick="return deleteObject(this);"><i class="icon-trash"></i></button>
+										}
+									</td>
+								</tr>
+										i++;
+							}
+						}
+						else
+						{
+							<tr><td colspan="7">No Result Found!</td></tr>
+						}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- END SAMPLE TABLE PORTLET-->

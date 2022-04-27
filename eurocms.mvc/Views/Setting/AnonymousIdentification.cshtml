@@ -1,0 +1,86 @@
+﻿@model System.Web.Configuration.AnonymousIdentificationSection
+
+<script type="text/ecmascript">
+    $(document).ready(function () {
+        $("input[name=Enabled]").click(function () {
+             
+            if ($(this).is(":checked")) {
+                $(".sectionGroup").show();
+            } else {
+                $(".sectionGroup").hide();
+            }
+
+        });
+    });
+</script>
+
+@using (Html.BeginForm("SaveAnonymousIdentification", "Setting", FormMethod.Post, new { @class="form-horizontal" }))
+{ 
+    @Html.AntiForgeryToken()
+    <div class="row-fluid">
+        <p>
+            <label class="smallWrap" for="Enabled">
+                @Html.CheckBox("Enabled", Model.Enabled)
+                Allow Anonymous Identification:
+            </label>
+        </p>
+        <div class="sectionGroup @(Model.Enabled ?"show":"hide")">
+           <p>
+                <label class="smallWrap" for="CookieSlidingExpiration">
+                    @Html.CheckBox("CookieSlidingExpiration", Model.CookieSlidingExpiration)
+                    Cookie Sliding Expiration:
+                </label>
+            </p>
+            <p>
+                <label class="smallWrap" for="CookieRequireSSL">
+                    @Html.CheckBox("CookieRequireSSL", Model.CookieRequireSSL)
+                    Cookie Require SSL:
+                </label>
+            </p>
+            <p>
+                <label for="CookiePath">Cookie Path:</label>
+                @Html.TextBoxFor(t => t.CookiePath)
+            </p>
+            <p>
+                    <label for="CookieName">Cookie Name:</label>
+                    @Html.TextBoxFor(t => t.CookieName)
+             </p>
+            <p>
+                    <label for="Domain">Domain:</label>
+                    @Html.TextBoxFor(t => t.Domain)
+            </p>
+            <p>
+                    <label for="CookieTimeout_TotalMinutes">Cookie Timeout:</label>
+                    @Html.TextBoxFor(t => t.CookieTimeout.TotalMinutes) <i>in minutes</i>
+            </p>
+            <p>
+                    <label for="CookieProtection">Cookie Protection:</label>
+                    @Html.DropDownList("CookieProtection",
+                        new List<SelectListItem> 
+                            { new SelectListItem() { Value = "All", Text = "All" },
+                                new SelectListItem() { Value = "Encryption", Text = "Encryption" },
+                                new SelectListItem() { Value = "None", Text = "None" },
+                                new SelectListItem() { Value = "Validation", Text = "Validation" }
+                            }, Model.CookieProtection.ToString()
+                    )
+            </p>
+            <p>
+                    <label for="Cookieless">Cookieless:</label>
+                    @Html.DropDownList("Cookieless",
+                        new List<SelectListItem> 
+                            { new SelectListItem() { Value = "UseCookies", Text = "UseCookies" },
+                                new SelectListItem() { Value = "AutoDetect", Text = "AutoDetect" },
+                                new SelectListItem() { Value = "UseDeviceProfile", Text = "UseDeviceProfile" },
+                                new SelectListItem() { Value = "UseUri", Text = "UseUri" }
+                            }, Model.Cookieless.ToString()
+                    )
+            </p>
+            
+        </div>
+        <p>
+            <button class="btn green" type="submit" value="Save">
+                <i class="icon-save"></i> Save
+            </button>
+        </p>
+    </div>
+}

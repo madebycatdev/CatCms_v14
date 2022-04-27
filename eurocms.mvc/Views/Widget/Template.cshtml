@@ -1,0 +1,341 @@
+﻿@model List<EuroCMS.Model.WidgetConfig>
+
+<style>
+    .portlet-body {
+        height: 400px;
+        overflow-y: auto;
+    }
+
+    #quickArticle label {
+        display: inline-block;
+        width: 25%;
+    }
+
+    #quickArticle .controls {
+        display: inline-block;
+        width: 70%;
+    }
+
+    #quickArticle #ClsfId, #quickArticle #Language {
+        width: 100%;
+    }
+
+    #editor .controls, #editor .toolbar, #editor .jHtmlArea {
+        width: 100%;
+    }
+
+    .portlet {
+        position: relative;
+    }
+
+    .overlayURLStructure {
+        background-color: rgba(0, 0, 0, 0.6);
+        width: 100%;
+        height: 100%;
+        z-index: 9998;
+        position: absolute;
+        /*display: inherit;*/
+        display: none;
+    }
+
+    .urlStructureLoading {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        margin: -40px 0 0 -40px;
+        z-index: 9999;
+        display: none;
+    }
+</style>
+
+@{
+    string returnUrl = string.Empty;
+    string action = string.Empty;
+    string controller = string.Empty;
+    EuroCMS.Model.CmsDbContext dbContext = new EuroCMS.Model.CmsDbContext();
+    if (Model != null && Model.Count > 0)
+    {
+        int id = Model.FirstOrDefault().WidgetUserID;
+        int widgetType = dbContext.WidgetUsers.Where(x => x.ID == id).FirstOrDefault().WidgetID;
+        if (widgetType == (int)EuroCMS.Admin.Controllers.WidgetController.Widgets.QuickArticle)
+        {
+            returnUrl = "/Cms/Home/Dashboard?r=success&aid=##ArticleID##&wid=" + id;
+            action = "Edit";
+            controller = "Article";
+        }
+        else if (widgetType == (int)EuroCMS.Admin.Controllers.WidgetController.Widgets.QuickZone)
+        {
+            returnUrl = "/Cms/Home/Dashboard?r=success&zid=##ZoneID##&wid=" + id;
+            action = "Edit";
+            controller = "Zone";
+        }
+        else if (widgetType == (int)EuroCMS.Admin.Controllers.WidgetController.Widgets.ActivityLogs)
+        {
+            returnUrl = "/Cms/Home/Dashboard?r=success&zid=##ZoneID##&wid=" + id;
+            action = "Edit";
+            controller = "Zone";
+        }
+        else if (widgetType == (int)EuroCMS.Admin.Controllers.WidgetController.Widgets.GoogleAnalytics)
+        {
+            
+        }
+    }
+}
+
+@using (Html.BeginForm(action, controller, new { id = -1, ReturnUrl = returnUrl }, FormMethod.Post, new { @name = "formQuickArticle" + (Model != null ? "-" + Model.FirstOrDefault().WidgetUserID.ToString() : ""), @class = "qaForm", @id = "formQuickArticle" + (Model != null ? "-" + Model.FirstOrDefault().WidgetUserID.ToString() : "") }))
+{
+    @Html.AntiForgeryToken()
+    @Html.CmsValidationSummary(string.Empty)
+
+    @*<form id="formQuickArticle@(Model != null ? '-' + Model.FirstOrDefault().WidgetUserID.ToString() : "")" class="qaForm">*@
+    <div class="portlet box red" id="quickArticle">
+        <img class="urlStructureLoading" src="/cms/content/img/URLStructureLoader.gif" class="hide" />
+        <div class="overlayURLStructure"> </div>
+        <div class="portlet-title">
+            <div class="caption" id="dvPanelTitle@((Model == null || Model.Count == 0) ? "" : Model.FirstOrDefault().WidgetUserID.ToString() )"><i class="icon-reorder"></i>Quick Article</div>
+            <div class="tools">
+                <a href="javascript:;" class="collapse"></a>
+            </div>
+            @if (Model != null && Model.Count > 0)
+            {
+                <div class="actions">
+                    @if (Model.Where(x => x.ParamValue == null).ToList().Count < Model.Count)
+                    {
+                        <a href="javasript:;" onclick="returnToConfig(this)" class="btn blue mini"><i class="icon-pencil"></i> Edit</a>
+                    }
+                    <button type="button" onclick="removeConfig(this)" class="btn black mini"><i class="icon-remove-sign"></i> Remove</button>
+                </div>
+            }
+        </div>
+        <div class="portlet-body">
+            @if (Request.QueryString.ToString().Contains("r=success") && Request.QueryString["wid"] == Model.FirstOrDefault().WidgetUserID.ToString())
+            {
+                @Html.Partial("~/Views/Widget/Result.cshtml")
+            }
+            else
+            {
+                if (Model == null || (Model.Where(x => x.ParamValue == null).ToList().Count == Model.Count))
+                {
+                    int wuId = Model.FirstOrDefault().WidgetUserID;
+                    int widgetType = dbContext.WidgetUsers.Where(x => x.ID == wuId).FirstOrDefault().WidgetID;
+
+                    //model null ise veya tüm paramvalue değerleri null ise
+                    if (widgetType == (int)EuroCMS.Admin.Controllers.WidgetController.Widgets.QuickArticle)
+                    {
+                        @Html.Partial("~/Views/Widget/QuickArticleConfig.cshtml", Model)
+                    }
+                    else if (widgetType == (int)EuroCMS.Admin.Controllers.WidgetController.Widgets.QuickZone)
+                    {
+                        @Html.Partial("~/Views/Widget/QuickZoneConfig.cshtml", Model)
+                    }
+                    else if (widgetType == (int)EuroCMS.Admin.Controllers.WidgetController.Widgets.ActivityLogs)
+                    {
+                        @Html.Partial("~/Views/Widget/ActivityConfig.cshtml", Model)
+                    }
+                    else if (widgetType == (int)EuroCMS.Admin.Controllers.WidgetController.Widgets.GoogleAnalytics)
+                    {
+                        @Html.Partial("~/Views/Widget/GoogleAnalytics.cshtml", Model)
+                    }
+                }
+                else
+                {
+                    @*@Html.Partial("~/Views/Widget/AddQuickArticle.cshtml", Model)*@
+                    int wuId = Model.FirstOrDefault().WidgetUserID;
+                    int widgetType = dbContext.WidgetUsers.Where(x => x.ID == wuId).FirstOrDefault().WidgetID;
+
+                    @Html.Action("GetDetails", "Widget", new { widgetUserId = Model.FirstOrDefault().WidgetUserID })
+                }
+            }
+        </div>
+    </div>
+    @*</form>*@
+}
+<script>
+    // remove selected zone id from hidden input and chosen select
+    function removeSubZone() {
+        $('#navigation_zone_id').val("0");
+        $('#navigation_zone_id2_chosen .chosen-single span').text("Select Sub Zone");
+        $('#navigation_zone_id2_chosen .chosen-drop .chosen-results li.result-selected').removeClass('result-selected');
+    }
+
+    $(".chosen-select").chosen({
+        width: "100%",
+        allow_single_deselect: true
+    }).change(function (event) {
+        openZoneDetails();
+    })
+
+    function openZoneDetails() {
+        $('.chosen-container li').each(function () {
+            $('span', this).live('click', function () {
+                $('.chosen-container').addClass('chosen-with-drop-disable');
+                var selectedIndex = $(this).next('a').attr('data-option-array-index');
+                //console.log($('.chosen-select').find('*:eq(' + selectedIndex + ')').val());
+                var selectedZone = $('.chosen-select').find('*:eq(' + selectedIndex + ')');
+                onZoneChanged(selectedZone);
+
+                $('.chosen-container li').removeClass('active');
+                $(this).parent().addClass('active');
+                $('.notuniform').parent().parent('.checker').removeClass();
+            });
+        })
+    }
+
+    function returnToConfig(val) {
+        var formId = $(val).closest('form').attr('name');
+        console.log(formId);
+        var widgetUserId = formId.substring(formId.indexOf("-") + 1)
+        $('form[name=' + formId + '] .portlet-body').html('');
+        $('form[name=' + formId + '] .urlStructureLoading').show();
+        $('form[name=' + formId + '] .overlayURLStructure').css('display', 'inherit');
+        $.ajax({
+            url: '/cms/Widget/GetConfigs',
+            data: { 'widgetUserId': widgetUserId },
+            dataType: "html",
+            success: function (data) {
+                $('form[name=' + formId + '] .portlet-body').empty();
+                $('form[name=' + formId + '] .portlet-body').html(data);
+                //<a href="javasript:;" onclick="returnToConfig(this)" class="btn green mini">Back <i class="m-icon-swapright m-icon-white"></i></a>
+                $('form[name=' + formId + '] #quickArticle .actions').empty();
+                $('form[name=' + formId + '] #quickArticle .actions').html('<button type="button" onclick="getDetails(this)" class="btn green mini">Back <i class="m-icon-swapright m-icon-white" style="margin-top:0px;"></i> </button><button type="button" onclick="removeConfig(this)" class="btn black mini"><i class="icon-remove-sign"></i> Remove</button>');
+
+                $(".chosen-select").chosen({
+                    width: "100%",
+                    allow_single_deselect: true
+                }).change(function (event) {
+                    openZoneDetails();
+                })
+                $('form[name=' + formId + '] .urlStructureLoading').hide();
+                $('form[name=' + formId + '] .overlayURLStructure').hide();
+            }
+        });
+    }
+
+     function getDetails(val) {
+         var formId = $(val).closest('form').attr('name');
+         var widgetUserId = formId.substring(formId.indexOf("-") + 1)
+         $('form[name=' + formId + '] .portlet-body').html('');
+         $('form[name=' + formId + '] .urlStructureLoading').show();
+         $('form[name=' + formId + '] .overlayURLStructure').css('display', 'inherit');
+
+         $.ajax({
+             url: '/cms/Widget/GetDetails',
+             data: { 'widgetUserId': widgetUserId },
+             dataType: "html",
+             success: function (data) {
+                 $('form[name=' + formId + '] .portlet-body').empty();
+                 $('form[name=' + formId + '] .portlet-body').html(data);
+                 $('form[name=' + formId + '] #quickArticle .actions').empty();
+                 $('form[name=' + formId + '] #quickArticle .actions').html('<a href="javasript:;" onclick="returnToConfig(this)" class="btn blue mini"><i class="icon-pencil"></i> Edit</a><button type="button" onclick="removeConfig(this)" class="btn black mini"><i class="icon-remove-sign"></i> Remove</button>');
+                 setEditor();
+                 $('form[name=' + formId + '] .urlStructureLoading').hide();
+                 $('form[name=' + formId + '] .overlayURLStructure').hide();
+             }
+         });
+     }
+
+    var configSaveResult = "";
+
+    jQuery(document).ready(function () {
+        // initiate layout and plugins
+        PortletDraggable.init();
+    });
+
+    function ConfigSaved(val) {
+        var formId = $(val).closest('form').attr('name');
+        var data = $('form[name = ' + formId + ']').serialize();
+        var url = '/cms/Widget/SaveConfig';
+        $('form[name=' + formId + '] .urlStructureLoading').show();
+        $('form[name=' + formId + '] .overlayURLStructure').css('display', 'inherit');
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: data,
+            dataType: 'json',
+            async: false,
+            success: function (result) {
+                var configSaveResult = result;
+                var widgetUserId = configSaveResult.substring(configSaveResult.indexOf("-") + 1);
+                if (formId.indexOf('-') < 0) {
+                    console.log('formId before : ' + formId);
+                    formId = formId + "-" + widgetUserId;
+                    $('form[name = ' + formId + ']').attr("name", formId + "-" + widgetUserId);
+                }
+                console.log('widgetUserId : ' + widgetUserId);
+                if (configSaveResult != "NOK") {
+                    if (widgetUserId == '') {
+                        widgetUserId = formId.substring(formId.indexOf('-') + 1);
+                        console.log('formId : ' + formId);
+                        console.log('widgetUserId : ' + widgetUserId);
+                    }
+                    $.ajax({
+                        url: '/cms/Widget/GetDetails',
+                        data: { 'widgetUserId': widgetUserId },
+                        dataType: "html",
+                        success: function (data) {
+                            $('form[name=' + formId + '] .portlet-body').empty();
+                            $('form[name=' + formId + '] .portlet-body').html(data);
+                            setEditor();
+                            $('form[name=' + formId + '] .urlStructureLoading').hide();
+                            $('form[name=' + formId + '] .overlayURLStructure').hide();
+                            $('form[name=' + formId + '] #quickArticle .actions').empty();
+                            $('form[name=' + formId + '] #quickArticle .actions').html('<a href="javasript:;" onclick="returnToConfig(this)" class="btn blue mini"><i class="icon-pencil"></i> Edit</a><a href="javasript:;" onclick="removeConfig(this)" class="btn black mini"><i class="icon-remove-sign"></i> Remove</a>');
+                        }
+                    });
+                }
+            },
+            error: function (result) {
+                alert("hata");
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        setEditor();
+    });
+
+    function setEditor() {
+        var forms = new Array();
+        $('form').each(function () {
+            var formId = $(this).attr('id');
+            if (typeof formId != 'undefined' && formId.toString().indexOf('formQuickArticle') >= 0) {
+                if (forms.indexOf(formId.toString()) < 0) {
+                    forms.push(formId.toString());
+
+
+                    jHtmlAreaInit(formId + ' #article_1');
+
+                    $(formId + ' #editor .ToolBar').css('width', '100%');
+                    $(formId + ' #editor .jHtmlArea').css('width', '100%');
+                    $(formId + ' #editor iframe').css('height', '200px');
+                    $(formId + ' #editor .type_H').css('height', '100%');
+                }
+            }
+        });
+    }
+
+    function removeConfig(val) {
+        var formName = $(val).closest('form').attr('name');
+        var data = $('form[name = ' + formName + ']').serialize();
+        var url = '/cms/Widget/RemoveConfig';
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: data,
+            dataType: 'json',
+            async: false,
+            success: function (result) {
+                window.location.reload(true);  //page reload
+            },
+            error: function (result) {
+                alert("hata");
+            }
+        });
+    }
+
+    $('.portlet').stop(function () {
+        console.log('a');
+    });
+</script>

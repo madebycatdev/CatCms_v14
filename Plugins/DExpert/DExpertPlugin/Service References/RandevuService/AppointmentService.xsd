@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/D_Expert_AppointmentWService_Lib" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/D_Expert_AppointmentWService_Lib" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="https://diatest.d-teknoloji.com.tr/Dexp_Appointment/AppointmentService.svc?xsd=xsd3" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:complexType name="ArrayOfResponseCities">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ResponseCities" nillable="true" type="tns:ResponseCities" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfResponseCities" nillable="true" type="tns:ArrayOfResponseCities" />
+  <xs:complexType name="ResponseCities">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="cityCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="cityName" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ResponseCities" nillable="true" type="tns:ResponseCities" />
+  <xs:complexType name="RequestSendSms">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="customerNameSurname" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="phoneNumber" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="RequestSendSms" nillable="true" type="tns:RequestSendSms" />
+  <xs:complexType name="Respond2">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Message" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Object" nillable="true" type="xs:anyType" />
+      <xs:element minOccurs="0" name="resultCode" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Respond2" nillable="true" type="tns:Respond2" />
+  <xs:complexType name="RequestControlSms">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="oneTimePassword" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="phoneNumber" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="RequestControlSms" nillable="true" type="tns:RequestControlSms" />
+  <xs:complexType name="ArrayOfResponseTowns">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ResponseTowns" nillable="true" type="tns:ResponseTowns" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfResponseTowns" nillable="true" type="tns:ArrayOfResponseTowns" />
+  <xs:complexType name="ResponseTowns">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="branchCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="branchName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="coordinateURL" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="townCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="townName" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ResponseTowns" nillable="true" type="tns:ResponseTowns" />
+  <xs:complexType name="ArrayOfResponseProducts">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ResponseProducts" nillable="true" type="tns:ResponseProducts" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfResponseProducts" nillable="true" type="tns:ArrayOfResponseProducts" />
+  <xs:complexType name="ResponseProducts">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ID" type="xs:int" />
+      <xs:element minOccurs="0" name="detailsUrl" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="discountPrice" type="xs:decimal" />
+      <xs:element minOccurs="0" name="discountRate" type="xs:double" />
+      <xs:element minOccurs="0" name="productCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="productName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="productPrice" type="xs:decimal" />
+      <xs:element minOccurs="0" name="productTime" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ResponseProducts" nillable="true" type="tns:ResponseProducts" />
+  <xs:complexType name="ArrayOfResponseProductDetails">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ResponseProductDetails" nillable="true" type="tns:ResponseProductDetails" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfResponseProductDetails" nillable="true" type="tns:ArrayOfResponseProductDetails" />
+  <xs:complexType name="ResponseProductDetails">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="prodcutDetail" nillable="true" type="xs:string" />
+      <xs:element xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="propertyDetails" nillable="true" type="q1:ArrayOfstring" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ResponseProductDetails" nillable="true" type="tns:ResponseProductDetails" />
+  <xs:complexType name="ArrayOfResponseContactChannels">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ResponseContactChannels" nillable="true" type="tns:ResponseContactChannels" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfResponseContactChannels" nillable="true" type="tns:ArrayOfResponseContactChannels" />
+  <xs:complexType name="ResponseContactChannels">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="contactName" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ResponseContactChannels" nillable="true" type="tns:ResponseContactChannels" />
+  <xs:complexType name="RequestHoldBranch">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="branchCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="branchName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="holdTime" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="holdTimeRange" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="RequestHoldBranch" nillable="true" type="tns:RequestHoldBranch" />
+  <xs:complexType name="RequestCreateAppointment">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="appointmentDate" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="branchCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="city" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="expertiseAim" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="expertisePackage" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="finishHour" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="finishMinute" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="isEmailSmsSubmitAccept" type="xs:int" />
+      <xs:element minOccurs="0" name="isEtrateAccept" type="xs:int" />
+      <xs:element minOccurs="0" name="isKVKKAccept" type="xs:int" />
+      <xs:element minOccurs="0" name="isSendMail" type="xs:int" />
+      <xs:element minOccurs="0" name="isSendSms" type="xs:int" />
+      <xs:element minOccurs="0" name="mail" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="phoneNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="startHour" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="startMinute" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="surname" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="varAppointmentDateFlowTr" type="xs:dateTime" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="RequestCreateAppointment" nillable="true" type="tns:RequestCreateAppointment" />
+  <xs:complexType name="RequestCancelAppointment">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="formGlobalId" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="RequestCancelAppointment" nillable="true" type="tns:RequestCancelAppointment" />
+  <xs:complexType name="RequestContactForm">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="isEmailSmsSubmitAccept" type="xs:int" />
+      <xs:element minOccurs="0" name="isKVKKAccept" type="xs:int" />
+      <xs:element minOccurs="0" name="mail" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="phoneNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="surname" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="RequestContactForm" nillable="true" type="tns:RequestContactForm" />
+  <xs:complexType name="ResponseGetAppointment">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="aimID" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="aimName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="appointmentDate" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="appointmentStatus" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="branchCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="branchName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="finishHour" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="finishMinute" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="hearInfo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="hearInfoComment" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="mail" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="packageID" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="packageName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="phone" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="prodTime" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="startHour" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="startMinute" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="txtCustomerName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="txtSurname" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="txtTown" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="txtcity" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ResponseGetAppointment" nillable="true" type="tns:ResponseGetAppointment" />
+  <xs:complexType name="RequestUpdateAppointment">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="formGlobalId" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="newAim" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="newAppointmentDate" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="newAppointmentHour" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="newBranchCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="newBranchName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="newProductName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="updateType" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="RequestUpdateAppointment" nillable="true" type="tns:RequestUpdateAppointment" />
+  <xs:complexType name="ArrayOfResponseExpertiseAim">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ResponseExpertiseAim" nillable="true" type="tns:ResponseExpertiseAim" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfResponseExpertiseAim" nillable="true" type="tns:ArrayOfResponseExpertiseAim" />
+  <xs:complexType name="ResponseExpertiseAim">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="aimID" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="aimName" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ResponseExpertiseAim" nillable="true" type="tns:ResponseExpertiseAim" />
+  <xs:complexType name="RequestCreateSurvey">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="appointmentFormId" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="contactChannelId" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="otherContact" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="RequestCreateSurvey" nillable="true" type="tns:RequestCreateSurvey" />
+</xs:schema>

@@ -1,0 +1,34 @@
+﻿@model EuroCMS.Admin.entity.cms_asp_config_select_config_parameters_Result
+
+@{
+    Layout = null;
+} 
+
+@using (Html.BeginForm("Edit", "Configuration", FormMethod.Post, new { @class = "form-horizontal", @id = "customContentEdit" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+        <h3>Edit Configuration Value:</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row-fluid">
+            <div class="control-group">
+                <label class="control-label" for="config_name">Parameter Name: <span class="red">*</span></label>
+                <div class="controls">
+                    <input class="span12 m-wrap" type="text" id="config_name" name="config_name" value="@Model.config_name" required>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="config_value">Parameter Value:</label>
+                <div class="controls">
+                    <textarea rows="6" class="span12 m-wrap" id="config_value" name="config_value" required>@(System.Configuration.ConfigurationManager.AppSettings["EuroCMS.WS"] == "remote" ? Model.config_value_remote : Model.config_value_local)</textarea>
+                </div>
+            </div>
+        </div>
+    </div> 
+    <div class="modal-footer">
+        <button type="button" data-dismiss="modal" class="btn"><i class="icon-remove"></i> Cancel</button>
+        <button type="submit" class="btn blue" id="saveClose"><i class="icon-save"></i> Save</button>
+    </div>
+}

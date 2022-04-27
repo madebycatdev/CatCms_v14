@@ -1,0 +1,46 @@
+﻿<div class="tabbable tabbable-custom">
+	<div class="tab-content new-tab-content">
+		<div class="row-fluid">
+			@using (Html.BeginForm("Create", "Language", FormMethod.Post, new { @class = "form-horizontal", @id = "languageCreate" }))
+			{
+				@Html.AntiForgeryToken()
+
+				<input type="hidden" name="CurrentObjID" id="CurrentObjID" value="-1" />
+				<div class="control-group">
+					<label class="control-label" for="lang_id">Language Prefix:<span class="red">*</span></label>
+					<div class="controls">
+						<input id="lang_id" name="lang_id" type="text" class="span12 m-wrap" maxlength="2" required>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="language">Language Name:<span class="red">*</span></label>
+					<div class="controls">
+						<input id="language" name="language" type="text" class="span12 m-wrap" onblur="getAlias(this, this, false, 'language')" required>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="site_name">Language Alias:<span class="red">*</span></label>
+					<div class="controls">
+						<input type="text" name="language_alias" id="language_alias" class="getAlias m-wrap span12" value="" onblur="getAlias(language, this, true, 'language')" required>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="lang_order">Language Order:<span class="red">*</span></label>
+					<div class="controls">
+						<input id="lang_order" name="lang_order" type="text" class="span12 m-wrap" maxlength="3" required>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="lang_xml">Language XML:</label>
+					<div class="controls">
+						<textarea id="lang_xml" name="lang_xml" rows="10" class="span12 m-wrap"></textarea>
+					</div>
+				</div>
+				<div class="form-actions">
+					<button type="button" class="btn" title="Cancel Changes" onclick="discardChanges('@Url.Action("Index")'),false;"><i class="icon-remove"></i> Cancel</button>
+					<button type="submit" class="btn green"><i class="icon-save"></i> Save & Close</button>
+				</div>
+			}
+		</div>
+	</div>
+</div> 

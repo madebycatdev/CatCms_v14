@@ -1,0 +1,108 @@
+﻿@model IList<EuroCMS.Admin.entity.cms_asp_admin_select_article_revision_list_Result>
+@*<p><a class="btn mini blue" href="#" onclick="openAcc('Revision History')">Revision History <i class=" icon-arrow-right"></i></a></p>*@
+
+<div class="row-fluid" title="Revision History">
+    <div class="portlet box grey">
+        <div class="portlet-title">
+            <div class="caption"><i class="icon-reorder"></i>Revision History</div>
+            <div class="tools">
+                <a href="javascript:;" class="collapse"></a>
+            </div>
+        </div>
+        <div class="portlet-body">
+           <div class="no-more-tables">
+				<table class="table table-striped table-hover">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th></th>
+							<th>Revision Name</th>
+							<th>Created By</th>
+							<th>Approved By</th>
+							<th>Type</th>
+							<th>Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						@if (Model != null) { 
+							if(Model.Count > 0){
+								int i = 1;
+								foreach (var revision in Model)
+								{
+								<tr>
+									<td data-title="#">@i.</td>
+									<td data-title="">  
+										@if (revision.status == (byte)1)
+										{ 
+												<i class="icon-ok green"></i>
+										}else {
+												<i class="icon-stop red"></i> 
+										}           
+									</td>
+									<td data-title="Revision Name">@revision.rev_date @revision.rev_name</td>
+									<td data-title="Created By">@revision.revised_name</td>
+									<td data-title="Approved By">@revision.approval_name </td>
+									<td data-title="Type">@revision.revision_status</td>
+									<td data-title="Actions">
+										<a class="btn mini blue" href="@Url.Action("PreviewRevision", new { id = revision.rev_id , IsRevision=true })" title="Preview This Revision" target="_blank"><i class="icon-eye-open"></i> Preview </a>
+										@if (revision.rev_id == Convert.ToInt64(Request["RevisionId"]))
+										{
+											<b>Currently Editing</b>
+										}
+										else
+										{
+											<a class="btn mini" href="@Url.Action("Edit", new { id= this.ViewContext.RouteData.Values["id"].ToString(), RevisionId = revision.rev_id })" title="Edit This Revision"><i class="icon-edit"></i> Edit </a>
+										}
+									  
+                                        @*@if (!revision.revision_status.Equals("L"))
+                                        {
+                                            using (Html.BeginForm("Compare", "Article", new { id = this.ViewContext.RouteData.Values["id"].ToString(), RevisionId = revision.rev_id }))
+                                            {
+                                                @Html.AntiForgeryToken()
+                                                <button type="submit" class="btn mini purple" title="Compare This Revision"><i class="icon-flag"></i> Compare</button>
+                                            }
+                                        }*@
+
+										@if (revision.rev_id > 0)
+                                        {
+                                           
+                                            if (User.IsInRole("Administrator") || User.IsInRole("PowerUser") || User.IsInRole("Editor") || User.IsInRole("User"))
+                                            {
+
+                                                @*using (Html.BeginForm("Compare", "Article", new { id = this.ViewContext.RouteData.Values["id"].ToString(), RevisionId = revision.rev_id }))
+                                                {
+                                                    @Html.AntiForgeryToken()
+                                                    <button type="submit" class="btn mini purple" title="Compare This Revision"><i class="icon-flag"></i> Compare</button>
+                                                }*@
+
+                                                using (Html.BeginForm("Approve", "Article", new { id = this.ViewContext.RouteData.Values["id"].ToString(), RevisionId = revision.rev_id }))
+                                                {
+													@Html.AntiForgeryToken()
+													<button type="submit" class="btn mini green" title="Approve This Revision"><i class="icon-flag"></i> Approve</button>
+												}
+											
+												using (Html.BeginForm("Discard", "Article", new { id = this.ViewContext.RouteData.Values["id"].ToString(), RevisionId = revision.rev_id }))
+												{ 
+													@Html.AntiForgeryToken()
+													<button type="submit" class="btn mini red" data-message="Are you sure want to delete this zone?" title="Discard This Revision"><i class="icon-remove"></i> Discard</button>
+                                                }
+                                            }
+                                        }
+	 
+									</td>
+								</tr>
+									i++;
+								}
+							}else
+							{
+							<tr>
+								<td colspan="8">No Revision Found!</td>
+							</tr>
+							}
+						} 
+					</tbody>
+				</table>
+			</div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,80 @@
+﻿@model PassoService.Models.Response.OrderDetail
+@{
+    ViewBag.Title = "Thanks";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-12 px-0 row mx-0 mobil left flex-md-row-reverse"
+     style="background-image: url('assets/img/@Model.product.classCode-lalekart-pattern.jpg');">
+    <div class="col-8 col-md-7 pl-0 pr-2 pr-lg-4 d-flex justify-content-md-end">
+        <h4 class="font-mono boxed multi-line align-self-center p-2 pr-4 pr-md-5 large-text">
+            @Model.product.productName Kart Üyeliği
+        </h4>
+    </div>
+    <div class="col-4 col-md-8 pr-0 d-flex d-md-none">
+        <img class="w-100 align-self-center my-2 ml-0" src="@Model.product.imageUrl" alt="">
+    </div>
+</div>
+
+<section id="welcome-page">
+    <div class="row mx-auto justify-content-center col-12 col-md-10 col-lg-10 col-xl-8 pb-5">
+        <div class="mb-5">
+            <span class="spiral"><img src="@Url.Content("~/assets/img/icon-header-spiral.svg")"></span>
+            <span class="spiral"><img src="@Url.Content("~/assets/img/icon-header-spiral.svg")"></span>
+            <span class="spiral"><img src="@Url.Content("~/assets/img/icon-header-spiral.svg")"></span>
+            <span class="spiral"><img src="@Url.Content("~/assets/img/icon-header-spiral.svg")"></span>
+            <div class="col px-0">
+                <h1 class="display-3 text-center boxed purple py-lg-3 py-2 px-lg-5 px-3 banner">
+                    HOŞ GELDİNİZ
+                </h1>
+            </div>
+        </div>
+        <div class="col-10 text-center mb-3">
+            <h5 class="text-30 mb-5">
+                Sayın @Model.userInfo.name @Model.userInfo.surname,
+            </h5>
+            @if (Model.isNewUser)
+            {
+                <p class="text-25">
+                    Üyelik işleminiz tamamlanmış, dijital Lale Kart'ınız e-posta adresinize gönderilmiştir. Kartınızın
+                    üzerindeki bilgiler ve başvuru sırasında belirlediğiniz şifreniz ile tüm İstanbul Kültür Sanat Vakfı
+                    (İKSV) etkinliklerinde indirim, öncelik ve ayrıcalıklardan yararlanmaya başlayabilirsiniz.
+                </p>
+            }
+            else
+            {
+                <p class="text-25">
+                    Üyelik yenileme işleminiz tamamlanmış, dijital Lale Kart'ınız e-posta adresinize gönderilmiştir. Kartınızın
+                    üzerindeki bilgiler ve başvuru sırasında belirlediğiniz şifreniz ile tüm İstanbul Kültür Sanat Vakfı
+                    (İKSV) etkinliklerinde indirim, öncelik ve ayrıcalıklardan yararlanmaya başlayabilirsiniz.
+                </p>
+            }
+        </div>
+        <div class="col-12 d-lg-inline-flex flex-lg-row flex-column text-center justify-content-lg-center mb-4">
+            <div class="mx-3">
+                <h6 class="text-22 boxed purple">
+                    <a href="/tr/indirimli-mekanlar">İNDİRİMLİ MEKANLAR</a>
+                </h6>
+            </div>
+            <div class="mx-3">
+                <h6 class="text-22 boxed blue">
+                    <a href="/tr/etkinlikler">ETKİNLİKLER</a>
+                </h6>
+            </div>
+            <div class="mx-3">
+                <h6 class="text-22 boxed orange">
+                    <a href="/tr/sss">SIKÇA SORULAN SORULAR</a>
+                </h6>
+            </div>
+        </div>
+        <div class="d-none d-lg-flex col-lg-4 col-xl-3">
+            <img src="@Model.product.imageUrl">
+        </div>
+    </div>
+    <span class="bg bg-left">
+        <img src="@Url.Content("~/assets/img/iksv-build.png")">
+    </span>
+    <span class="bg bg-right">
+        <img src="@Url.Content("~/assets/img/statue.png")">
+    </span>
+</section>

@@ -1,0 +1,16 @@
+﻿@model System.Web.Configuration.ProfileSection
+ 
+<div class="tabbable tabbable-custom">
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#tab_1_1">Configure Profile</a></li>
+        <li class=""><a data-toggle="tab" href="#tab_1_2">Anonymous Identification</a></li>
+    </ul>
+    <div class="tab-content">
+        <div id="tab_1_1" class="tab-pane active">
+            @Html.Partial("ProfileProperties", ViewData["ProfileProperties"] as System.Web.Configuration.AnonymousIdentificationSection)
+        </div>
+        <div id="tab_1_2" class="tab-pane">
+            @Html.Partial("AnonymousIdentification", ViewData["AnonymousIdentification"] as System.Web.Configuration.AnonymousIdentificationSection)
+        </div>
+    </div>
+</div>

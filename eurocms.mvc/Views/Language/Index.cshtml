@@ -1,0 +1,59 @@
+﻿@model IList<EuroCMS.Admin.entity.cms_asp_select_languages_Result>
+ 
+<!-- BEGIN SAMPLE FORM PORTLET-->   
+<p>
+    <a class="btn blue" href="@Url.Action("Create")">Create New Language <i class="icon-circle-arrow-right"></i></a>
+</p>
+
+<div class="row-fluid">
+    <div class="span12">
+        <div class="portlet box grey">
+            <div class="portlet-title">
+                <div class="caption"><i class="icon-reorder"></i>Language List</div>
+            </div>
+            <div class="portlet-body">
+                <a href="#languageEdit" data-toggle="modal" id="modalOpen" class="hide">Edit Language</a>
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Language Name</th>
+                            <th>Created</th>
+                            <th>Updated</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                         @if(Model.Count > 0)
+                         {
+                             int i = 1;
+                             foreach (var language in Model)
+                             { 
+                                <tr>
+                                    <td>@language.lang_id</td>
+                                    <td><strong>@Html.Raw(language.lang_name)</strong></td>
+                                    <td>@language.created</td>
+                                    <td>@language.updated</td>
+                                    <td>
+                                        <a href="@Url.Action("Edit", new { id= @language.lang_id})" class="btn icn-only" title="Edit Language"><i class="icon-pencil"></i></a>
+                                        @using (Html.BeginForm("Delete", "Language", new { id= language.lang_id }))
+                                        { 
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="btn icn-only red" data-message="Are you sure want to delete this language?" onclick="return deleteObject(this);"><i class="icon-trash"></i></button>
+                                        }
+                                    </td>
+                                </tr>
+                                 i++;
+                            }
+                        }
+                        else
+                        {
+                             <tr><td colspan="4">No Result Found!</td></tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END SAMPLE TABLE PORTLET-->

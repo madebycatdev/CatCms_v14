@@ -1,0 +1,50 @@
+﻿@model EuroCMS.Model.Tag
+ 
+<div class="row-fluid">
+    @using (Html.BeginForm("Create", "Tag", FormMethod.Post, new { @class = "form-horizontal", @id = "zgCreate" }))
+    {
+        @Html.ValidationSummary(true)
+        @Html.AntiForgeryToken()
+
+        <div class="tabbable tabbable-custom">
+            <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#tab_1_1">Basic</a></li>
+            </ul>
+            <div class="tab-content">
+                <div id="tab_1_1" class="tab-pane active">
+                    <input type="hidden" name="CurrentObjID" id="CurrentObjID" value="-1" />
+                    <div class="control-group">
+                        <label class="control-label" for="site_id">Site:<span class="red">*</span></label>
+                        <div class="controls">
+                            @Html.GroupDropList("site_id", ViewBag.Sites as List<GroupDropListItem>, Request["SiteId"] ?? "", new { @class = "span12 m-wrap required" }, "Please Select")
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label" for="tag_name">Tag Name:<span class="red">*</span></label>
+                        <div class="controls">
+                            <input type="text" name="tag_name" id="tag_name" class="m-wrap span12" value="@HttpUtility.HtmlDecode(Model.Text)" onblur="getAlias(this,this, false, 'tag')" required />
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="tag_alias">Tag Alias:</label>
+                        <div class="controls">
+                            <input type="text" name="tag_alias" id="tag_alias" class="getAlias m-wrap span12" value="@HttpUtility.HtmlDecode(Model.Alias)" onblur="getAlias(tag_name, this, true, 'tag')">
+                        </div>
+                    </div>
+                   
+					<div class="form-actions">
+						<button type="button" class="btn" onclick="discardChanges('@Url.Action("Index")'),false;"><i class="icon-remove"></i> Cancel</button>
+						<button type="submit" class="btn green"><i class="icon-save"></i> Save</button>
+					</div>
+                </div>
+                
+         
+            </div>
+        </div>
+        @*<div class="form-actions">
+            <button type="submit" class="btn green"><i class="icon-save"></i> Save</button>
+            <button type="button" class="btn red" onclick="discardChanges('@Url.Action("Index")'),false;"><i class="icon-remove"></i> Cancel</button>
+        </div>*@
+    }
+</div>

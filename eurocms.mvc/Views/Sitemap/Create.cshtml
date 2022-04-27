@@ -1,0 +1,298 @@
+﻿@using (Html.BeginForm("Create", "Sitemap", FormMethod.Post, new { @class = "form-horizontal", @id = "sitemapCreate" }))
+{
+
+    @Html.AntiForgeryToken()
+
+    <input id="h_excluded_zonegroups" type="hidden" name="excluded_zonegroups" />
+    <input id="h_excluded_zones" type="hidden" name="excluded_zones" />
+    <input id="h_excluded_articles" type="hidden" name="excluded_articles" />
+    <div class="row-fluid">
+        <div class="control-group">
+            <label class="control-label" for="enabled">Sitemap Enabled:</label>
+            <div class="controls">
+
+                @*
+                    <input type="hidden" value="@(Model != null ? Model.enabled : "N")" id="enabled_status" name="enabled" data-act="Y" data-psf="N" class="switchBt" />
+                *@
+                <div class="switch" data-on="success" data-off="danger">
+                    @*
+                        <input type="checkbox" class="toggle success-toggle-button" name="enabled_StatusSwitch" id="enabled_StatusSwitch" />
+                    *@
+                    <input name="enabled"
+                           data-act="Y"
+                           data-psf="N"
+                           value="N"
+                           type="checkbox"
+                           class="toggle success-toggle-button"
+                           id="enabled" />
+                </div>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="domain_alias">Domain:</label>
+            <div class="controls">
+                <select class="large m-wrap" id="domain_alias" name="domain_alias">
+                    @foreach (SelectListItem item in ViewBag.ParticularDomains)
+                    {
+                        if (item.Selected)
+                        {
+                            <option value="@item.Value" selected="selected">@item.Text</option>
+                        }
+                        else
+                        {
+                            <option value="@item.Value">@item.Text</option>
+                        }
+                    }
+                </select>
+                <!-- @Html.DropDownList("domain_alias", new List<SelectListItem>(ViewBag.ParticularDomains), new { @class = "large m-wrap"}) -->
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="sm_name">Sitemap Name:</label>
+            <div class="controls">
+                <input class="large m-wrap span1" type="text" value="" maxlength="50" id="sm_name" name="sm_name" required>
+            </div>
+        </div>
+        @* <div class="control-group">
+                <label class="control-label" for="not_included_sites">Include Site</label>
+                <div class="controls">
+                    <div class="span4 m-wrap">
+                        @Html.ListBox("not_included_sites", ((IEnumerable<SelectListItem>)ViewData["ExcludedSites"]), new { Multiple = "multiple", @class = "span m-wrap", @ondblclick = "return moveSelectedOptions('not_included_sites','a_included_sites'), false;" })
+                    </div>
+                    <div class="fl centerButton">
+                        <a class="btn mini icn-only" onclick="return moveSelectedOptions('not_included_sites','a_included_sites'), false;" href="#"><i class="icon-forward icon-white"></i></a><br /><br />
+                        <a class="btn mini icn-only" onclick="return moveSelectedOptions('a_included_sites','not_included_sites'), false;" href="#"><i class="icon-backward icon-white"></i></a>
+                    </div>
+                    <div class="span4 m-wrap no-margin">
+                        @Html.ListBox("a_included_sites", ((IEnumerable<SelectListItem>)ViewData["NotExcludedSites"]), new { Multiple = "multiple", @class = "span m-wrap", @ondblclick = "return moveSelectedOptions('a_included_sites','not_included_sites'), false;" })
+                    </div>
+                </div>
+            </div>*@
+        <div class="control-group">
+            <label class="control-label" for="a_included_sites">Include Site : </label>
+            <div class="controls">
+                <!--Choosen buraya-->
+                <select class="chosen-select" data-placeholder="Select a Site" name="a_included_sites" multiple required>
+                    @{
+                        if (ViewBag.Sites != null)
+                        {
+                            List<EuroCMS.Model.Site> listSite = new List<EuroCMS.Model.Site>();
+                            listSite = (List<EuroCMS.Model.Site>)ViewBag.Sites;
+                            foreach (EuroCMS.Model.Site s in listSite)
+                            {
+                                if (!string.IsNullOrEmpty(s.Name))
+                                {
+                                    <option value="@s.Id">@s.Id - @HttpUtility.HtmlDecode(s.Name)</option>
+                                }
+                            }
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label" for="sm_interval">Time to Rebuild (In Hours)</label>
+            <div class="controls">
+                <input class="span1" type="text" value="" maxlength="2" size="5" id="sm_interval" name="sm_interval" required>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="afiles">Include Files Link:</label>
+            <div class="controls">
+                @*
+                    <input type="hidden" value="@(Model != null ? Model.afiles : "N")" name="afiles" id="afiles_status" data-act="Y" data-psf="N" class="switchBt" />
+                *@
+                <div class="switch" data-on="success" data-off="danger">
+                    @*
+                        <input type="checkbox" class="toggle success-toggle-button" name="afiles_StatusSwitch" id="afiles_StatusSwitch" />
+                    *@
+                    <input name="afiles"
+                           data-act="Y"
+                           data-psf="N"
+                           value="N"
+                           type="checkbox"
+                           class="toggle success-toggle-button"
+                           id="afiles" />
+                </div>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="gzip_enabled">GZip Sitemap Enabled:</label>
+            <div class="controls">
+                @*
+                    <input type="hidden" value="@(Model != null ? Model.gzip_enabled : "N")" name="gzip_enabled" id="gzip_status" data-act="Y" data-psf="N" class="switchBt" />
+                *@
+                <div class="switch" data-on="success" data-off="danger">
+                    @*
+                        <input type="checkbox" class="toggle success-toggle-button" name="gzip_StatusSwitch" id="gzip_StatusSwitch" />
+                    *@
+                    <input name="gzip_enabled"
+                           data-act="Y"
+                           data-psf="N"
+                           value="N"
+                           type="checkbox"
+                           class="toggle success-toggle-button"
+                           id="gzip_enabled" />
+                </div>
+            </div>
+        </div>
+        @* Excludes *@
+        <div class="control-group">
+            <label class="control-label" for="excludezg">Excluded Zone Groups:</label>
+            <div class="controls">
+                <!--Choosen buraya-->
+                <select class="chosen-select" data-placeholder="Select a Zone Group" name="excluded_zonegroups" id="zone2" multiple>
+                    @{
+                        if (ViewBag.ZoneGroups != null)
+                        {
+                            List<EuroCMS.Model.ZoneGroup> listZg = new List<EuroCMS.Model.ZoneGroup>();
+                            listZg = (List<EuroCMS.Model.ZoneGroup>)ViewBag.ZoneGroups;
+                            foreach (EuroCMS.Model.ZoneGroup zg in listZg)
+                            {
+                                if (!string.IsNullOrEmpty(zg.Name))
+                                {
+                                    <option value="@zg.Id">@zg.Id - @HttpUtility.HtmlDecode(zg.Name)</option>
+                                }
+                            }
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="excludezone">Excluded Zones:</label>
+            <div class="controls">
+                <!--Choosen buraya-->
+                <select class="chosen-select" data-placeholder="Select a Zone" name="excluded_zones" id="zone2" multiple>
+                    @{
+                        if (ViewBag.Zones != null)
+                        {
+                            List<EuroCMS.Model.Zone> listZone = new List<EuroCMS.Model.Zone>();
+                            listZone = (List<EuroCMS.Model.Zone>)ViewBag.Zones;
+                            foreach (EuroCMS.Model.Zone z in listZone)
+                            {
+                                if (!string.IsNullOrEmpty(z.Name))
+                                {
+                                    <option value="@z.Id">@z.Id - @HttpUtility.HtmlDecode(z.Name)</option>
+                                }
+                            }
+                        }
+                    }
+                </select>
+
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="excludearticle">Excluded Articles:</label>
+            <div class="controls">
+                <!--Choosen buraya-->
+                <select class="chosen-select" data-placeholder="Select an Article" name="excluded_articles" id="zone2" multiple>
+                    @{
+                        if (ViewBag.Articles != null)
+                        {
+                            List<EuroCMS.Model.vArticlesZonesFull> listArticle = new List<EuroCMS.Model.vArticlesZonesFull>();
+                            listArticle = (List<EuroCMS.Model.vArticlesZonesFull>)ViewBag.Articles;
+                            foreach (EuroCMS.Model.vArticlesZonesFull a in listArticle)
+                            {
+                                if (!string.IsNullOrEmpty(a.Headline))
+                                {
+                                    <option value="@a.ZoneID-@a.ArticleID">@a.ArticleID - @HttpUtility.HtmlDecode(a.Headline)</option>
+                                }
+                            }
+                        }
+                    }
+                </select>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="form-actions">
+        @* <a class="changeButton btn blue icn-only" title="Exclude(s)" onclick="return showExcludeList(),false;"><i class="icon-list-alt"></i> Exclude(s)</a> *@
+        <button type="button" class="btn" title="Cancel Changes" onclick="discardChanges('@Url.Action("Index")'),false;"><i class="icon-remove"></i> Cancel</button>
+        <button type="submit" class="btn green" title="Save This Sitemap" onclick="selectionObj();"><i class="icon-save"></i> Save</button>
+    </div>
+
+
+    @*<div id="selectExclude" class="modal hide" tabindex="-1" data-width="760">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h3>Excluded List:</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row-fluid">
+                    <div class="form">
+                        <div class="control-group">
+                            <label class="control-label" for="search_zonegroups">Excluded Zone Group(s):</label>
+                            <div class="controls">
+                                <select id="excluded_zonegroups" name="e_zg" multiple="multiple" class="span12 m-wrap" size="2" ondblclick="return moveSelectedOptions('excluded_zonegroups', 'not_excluded_zonegroups')"></select>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="zone">Excluded Zone(s):</label>
+                            <div class="controls">
+                                <select id="excluded_zones" name="e_z" multiple="multiple" class="span12 m-wrap" size="2" ondblclick="return moveSelectedOptions('excluded_zones', 'not_excluded_zones')"></select>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="excluded_articles">Excluded Article(s):</label>
+                            <div class="controls">
+                                <select id="excluded_articles" name="e_a" multiple="multiple" class="span12 m-wrap" size="2" ondblclick="return moveSelectedOptions('excluded_articles', 'not_excluded_articles')"></select>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <span>(* Double click for remove)</span>
+                <button type="button" data-dismiss="modal" id="closeExcludes" class="btn">Cancel</button>
+                <a class="btn blue icn-only" onclick="return showIncludeList(),false;" title="Add Exclude Item"><i class="icon-list-alt"></i> Add Exclude Item</a>
+                <button type="button" class="btn green" id="saveClose" data-dismiss="modal" onclick="return saveExclude(), false;">Apply Changes</button>
+
+            </div>
+        </div>
+
+        <div id="addExclude" class="modal hide" tabindex="-1" data-width="760">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h3>Add Exclude:</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row-fluid">
+                    <div class="form">
+                        <div class="control-group">
+                            <label class="control-label" for="inc_sites">Site:</label>
+                            <div class="controls">
+                                <select id="inc_sites" name="inc_sites" class="span12 m-wrap" onchange="getZoneGroupList(this)"></select>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="not_excluded_zonegroups">Excluded Zone Group(s):</label>
+                            <div class="controls">
+                                <select id="not_excluded_zonegroups" name="not_excluded_zonegroups" multiple="multiple" class="zGroup span12 m-wrap" onchange="getZoneList(this)" ondblclick="return moveSelectedOptions('not_excluded_zonegroups','excluded_zonegroups'), false;"></select>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="not_excluded_zones">Excluded Zone(s):</label>
+                            <div class="controls">
+                                <select id="not_excluded_zones" name="not_excluded_zones" multiple="multiple" class="zone span12 m-wrap" onchange="getArticleList(this)" ondblclick="return moveSelectedOptions('not_excluded_zones','excluded_zones'), false;"></select>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="not_excluded_articles">Exclude Article(s):</label>
+                            <div class="controls">
+                                <select id="not_excluded_articles" name="not_excluded_articles" multiple="multiple" class="article span12 m-wrap" ondblclick="return moveSelectedOptions('not_excluded_articles','excluded_articles'), false;"></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <span>(* Double click for add)</span>
+                <button type="button" class="btn green" data-dismiss="modal">Save & Close</button>
+            </div>
+        </div>*@
+
+                        } 

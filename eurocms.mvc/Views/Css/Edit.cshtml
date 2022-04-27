@@ -1,0 +1,68 @@
+﻿@model EuroCMS.Admin.entity.cms_asp_select_css_history_code_Result
+ <div class="tabbable tabbable-custom">
+	<div class="tab-content new-tab-content">
+		<div class="row-fluid">
+			@using (Html.BeginForm("Edit", "Css", FormMethod.Post, new { @class = "form-horizontal", @id = "cssUpdate"}))
+			{
+				@Html.ValidationSummary(true) 
+				@Html.AntiForgeryToken()
+				<div class="control-group">
+					<label class="control-label" for="css_name">Css Name:</label>
+					<div class="controls">
+						<input type="text" name="css_name" id="css_name" class="m-wrap span12" value="@Model.css_name">
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="structure_description">Description:</label>
+					<div class="controls">
+						<textarea name="structure_description" id="structure_description" rows="3" class="m-wrap span12">@Model.structure_description</textarea>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="group_id">Group:</label>
+					<div class="controls">
+							@Html.DropDownListFor(d => d.group_id, ViewBag.Groups as IEnumerable<SelectListItem>, "Not Grouped", new { @class ="span12 m-wrap"})
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="css_type">Css Type:</label>
+					<div class="controls">
+						<select name="css_type" id="css_type" tabindex="1" class="span12 m-wrap">
+							<option value="0" @(Model.css_type.ToString() == "0"?"selected=selected":"")>Screen</option>
+							<option value="1" @(Model.css_type.ToString() == "1"?"selected='selected'":"")>Mobile</option>
+							<option value="2" @(Model.css_type.ToString() == "2"?"selected='selected'":"")>Print</option>
+						</select>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="css_code">Css Code:</label>
+					<div class="controls">
+						<textarea name="css_code" id="" rows="10" class="span12 m-wrap">@Model.css_code</textarea>
+					</div>
+				</div>
+				<div class="control-group">
+						<label class="control-label" for="css_fix">Css Fix:</label>
+						<div class="controls">
+							<textarea name="css_fix" id="" rows="10" class="span12 m-wrap">@Model.css_fix</textarea>
+						</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="css_rel_text">Rel. Text:</label>
+					<div class="controls">
+						<input type="text" name="css_rel_text" id="css_rel_text" class="m-wrap span12" value="@Model.css_rel_text">
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="css_type_text">Type Text:</label>
+					<div class="controls">
+						<input type="text" name="css_type_text" id="css_type_text" class="m-wrap span12" value="@Model.css_type_text">
+					</div>
+				</div>
+				<div class="form-actions">
+					<button type="submit" class="btn green" title="Save CSS"><i class="icon-save"></i> Save</button>
+					<button type="button" class="btn" title="Cancel Changes" onclick="discardChanges('@Url.Action("Index")'),false;"><i class="icon-remove"></i> Cancel</button>
+				</div>
+			}
+		</div>
+	</div>
+</div>

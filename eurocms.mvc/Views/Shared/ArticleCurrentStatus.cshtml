@@ -1,0 +1,24 @@
+﻿@model EuroCMS.Admin.entity.cms_asp_admin_select_article_revision_details_Result
+@using EuroCMS.Admin.Common
+
+<p><a class="btn blue mini" href="#" onclick="openAcc('Current Status')">Current Status <i class=" icon-arrow-down"></i></a></p>
+<div class="row-fluid hide" title="Current Status">
+    <div class="portlet box grey">
+        <div class="portlet-title">
+            <div class="caption"><i class="icon-reorder"></i>Current Status</div>
+        </div>
+        <div class="portlet-body">
+            @Html.RevisionFlagImg(Model.revision_status, Model.status.ToString()) @Model.revision_status.GetRevisionStatus()
+            
+            <br />
+
+            <b> Production Status: </b> Article @(Model.status.ToString() == "1"?"Active": "Passive")
+            <br />
+            <b>Article Created:</b> @Model.created by @Model.publisher_name<br />
+            <b>Last Updated:</b> @Model.rev_date<br />
+            <b>Revision Created:</b> @Model.rev_date by @Model.revised_name<br />
+            <b>Revision Approved:</b> @Model.approval_date by @Model.approval_name<br />
+        </div>
+    </div>
+</div>
+    

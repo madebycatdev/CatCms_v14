@@ -1,0 +1,54 @@
+﻿ @{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/Login.cshtml";
+}
+ 
+<h2>Create a New Account</h2>
+
+<p>
+    Use the form below to create a new account. 
+</p>
+
+<p>
+    Passwords are required to be a minimum of @Html.Encode(ViewData["PasswordLength"])  characters in length.  
+</p>
+
+@Html.ValidationSummary("Account creation was unsuccessful. Please correct the errors and try again.") 
+
+@using (Html.BeginForm()) 
+{ 
+     @Html.AntiForgeryToken()
+    <div>
+        <fieldset>
+            <legend>Account Information</legend>
+            <p>
+                <label for="username">Username:</label>
+                @Html.TextBox("username", new { @autocomplete = "off" }) 
+                @Html.ValidationMessage("username") 
+            </p>
+            <p>
+                <label for="email">Email:</label>
+                @Html.TextBox("email", new { @autocomplete = "off" }) 
+                @Html.ValidationMessage("email") 
+            </p>
+            <p>
+                <label for="password">Password:</label>
+                @Html.Password("password", new { @autocomplete = "off" }) 
+                @Html.ValidationMessage("password") 
+            </p>
+            <p>
+                <label for="confirmPassword">Confirm password:</label>
+                @Html.Password("confirmPassword", new { @autocomplete = "off" }) 
+                @Html.ValidationMessage("confirmPassword") 
+            </p>
+            <p>
+                <label for="fullname">Full Name:</label>
+                @Html.TextBox("fullname", new { @autocomplete = "off" }) 
+                @Html.ValidationMessage("fullname") 
+            </p>
+            <p>
+                <input type="submit" value="Save" />
+            </p>
+        </fieldset>
+    </div>
+}  

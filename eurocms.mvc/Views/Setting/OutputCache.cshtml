@@ -1,0 +1,43 @@
+﻿@model System.Web.Configuration.OutputCacheSection
+
+@using (Html.BeginForm("SaveCache", "Setting", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <div class="row-fluid">
+        <div class="control-group">
+            <label class="smallWrap" for="EnableOutputCache">
+                @Html.CheckBoxFor(t=>t.EnableOutputCache)
+                Enable OutputCache
+            </label>
+        </div>
+        <div class="control-group">
+            <label class="smallWrap" for="EnableFragmentCache">
+                @Html.CheckBoxFor(t=>t.EnableFragmentCache)
+                Enable Fragment Cache
+            </label>
+        </div>
+        <div class="control-group">
+            <label class="smallWrap" for="EnableKernelCacheForVaryByStar">
+                @Html.CheckBoxFor(t=>t.EnableKernelCacheForVaryByStar) 
+                Enable Kernel Cache For VaryByStar
+            </label>
+        </div>
+        <div class="control-group">
+            <label class="smallWrap" for="OmitVaryStar">
+                @Html.CheckBoxFor(t=>t.OmitVaryStar)
+                Omit VaryStar
+            </label>
+        </div>
+        <div class="control-group">
+            <label class="smallWrap" for="SendCacheControlHeader">
+                @Html.CheckBoxFor(t=>t.SendCacheControlHeader)
+                Send Cache Control Header
+            </label>
+        </div>
+        <div class="form-actions">
+            <button class="btn green" type="submit" value="Save">
+                <i class="icon-save"></i> Save
+            </button>
+        </div>
+    </div>  
+}

@@ -1,0 +1,51 @@
+﻿@model EuroCMS.Admin.entity.cms_asp_select_cc_details_Result
+
+@{
+    Layout = null;
+} 
+
+<script type="text/javascript">
+    CKEDITOR.replace('cc_edithtml');
+</script>
+
+@using (Html.BeginForm("Edit", "CustomContent", FormMethod.Post, new { @class = "form-horizontal", @id = "customContentEdit" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+        <h3>Edit Custom Content:</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row-fluid">
+            <div class="control-group">
+                <label class="control-label" for="cc_name">Custom Content Name: <span class="red">*</span></label>
+                <div class="controls">
+                    <input class="span12 m-wrap" type="text" id="cc_name" name="cc_name" value="@Model.cc_name">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="structure_description">Description:</label>
+                <div class="controls">
+                    <textarea class="span12 m-wrap" id="structure_description" name="structure_description">@Model.structure_description</textarea>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="group_id">Group:</label>
+                <div class="controls">
+                    @Html.DropDownListFor(cc=>cc.group_id, ViewBag.Groups as IEnumerable<SelectListItem>, "Not Grouped", new { @class ="large m-wrap"})
+                </div> 
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="group_id">Custom Content HTML:</label>   
+                <div class="controls">
+                    <textarea class="span12 m-wrap" id="cc_edithtml" name="cc_edithtml">@Html.Raw(Model.cc_html)</textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" data-dismiss="modal" class="btn"><i class="icon-remove"></i> Close</button>
+        <button type="submit" class="btn blue"><i class="icon-save"></i> Save & Close</button>
+    </div>
+}
+

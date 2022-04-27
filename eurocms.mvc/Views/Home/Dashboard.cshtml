@@ -1,0 +1,156 @@
+﻿@*@using (Html.BeginForm("SaveQuickArticle", "Home", FormMethod.Post))
+    {
+        @Html.ValidationSummary(true)
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="zones[]" value="@ViewBag.zone_id" />
+        <input type="hidden" name="cache_@ViewBag.zone_id" id="cache_@ViewBag.zone_id" value="true" />
+        <input type="hidden" name="rev_name" value="Structure Automaticly Created" />
+        <input type="hidden" name="status" value="1" />
+
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+            <h3>Quick Create Article:</h3>
+        </div>
+        <div class="modal-body">
+            <div class="row-fluid">
+                <div class="control-group">
+                    <label class="control-label" for="headline">Headline:</label>
+                    <div class="controls">
+                        <input class="span12" type="text" name="headline" id="headline" />
+                    </div>
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="control-group">
+                    <label class="control-label" for="alias">Alias:</label>
+                    <div class="controls">
+                        <input class="span12" type="text" name="alias_@ViewBag.zone_id" id="alias" maxlength="300" />
+                    </div>
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="control-group no-margin">
+                    @if (ViewBag.Warning != null)
+                    {
+                        <div class="alert no-margin">
+                            @ViewBag.Warning
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" data-dismiss="modal" class="btn"><i class="icon-remove"></i> Close</button>
+            <button type="submit" class="btn blue"><i class="icon-save"></i> Save & Close</button>
+        </div>
+    }*@
+<style>
+    #addWidgets {
+        float: right;
+        margin-bottom: 20px;
+        display: block;
+    }
+</style>
+<div class="btn-group" id="addWidgets">
+    <button class="btn green dropdown-toggle" id="btnWidgets" data-toggle="dropdown"><i class="icon-plus"></i> Add Widgets <i class="icon-angle-down"></i></button>
+    <ul class="dropdown-menu">
+        <li><a href="/cms/widget/addwidget?widgetId=1">Quick Article</a></li>
+        <li><a href="/cms/widget/addwidget?widgetId=2">Quick Zone</a></li>
+        <li><a href="/cms/widget/addwidget?widgetId=3">Google Analytics</a></li>
+        <li><a href="/cms/widget/addwidget?widgetId=4">Activity Logs</a></li>
+    </ul>
+</div>
+<div class="clear"></div>
+@{
+    List<EuroCMS.Model.WidgetConfig> wcList = ViewBag.wcList as List<EuroCMS.Model.WidgetConfig>;
+    List<EuroCMS.Model.WidgetUser> wuList = ViewBag.wuList as List<EuroCMS.Model.WidgetUser>;
+    <div class="row-fluid ui-sortable" id="sortable_portlets">
+        @if (wuList == null || wuList.Count == 0)
+        {
+            //show none
+        }
+        else
+        {
+            //seçili olanları göster
+            if (wuList != null && wuList.Count > 0)
+            {
+                for (int i = 0; i < wuList.Count; i++)
+                {
+                    string tagStart = "<div class=\"span6 column sortable\">";
+                    string tagEnd = " </div> ";
+
+                    if (i == (wuList.Count + 1) / 2 || i == 0)
+                    {
+                        @Html.Raw(tagStart)
+                    }
+
+                    List<EuroCMS.Model.WidgetConfig> allConfigs = wcList.Where(x => x.WidgetUserID == wuList[i].ID).ToList();
+                    if (allConfigs != null && allConfigs.Count > 0)
+                    {
+                        if (wuList[i].WidgetID == (int)EuroCMS.Admin.Controllers.WidgetController.Widgets.QuickArticle)
+                        {
+                            @Html.Partial("~/Views/Widget/Template.cshtml", allConfigs)
+                        }
+                        else if (wuList[i].WidgetID == (int)EuroCMS.Admin.Controllers.WidgetController.Widgets.QuickZone)
+                        {
+                            @Html.Partial("~/Views/Widget/Template.cshtml", allConfigs)
+                        }
+                        else if (wuList[i].WidgetID == (int)EuroCMS.Admin.Controllers.WidgetController.Widgets.ActivityLogs)
+                        {
+                            @Html.Partial("~/Views/Widget/Template.cshtml", allConfigs)
+                        } 
+                    }
+                    else
+                    {
+                        if (wuList[i].WidgetID == (int)EuroCMS.Admin.Controllers.WidgetController.Widgets.QuickArticle)
+                        {
+                            List<EuroCMS.Model.WidgetConfig> newList = new List<EuroCMS.Model.WidgetConfig>();
+                            newList.Add(new EuroCMS.Model.WidgetConfig { ParamKey = "Zones", WidgetUserID = wuList[i].ID });
+                            newList.Add(new EuroCMS.Model.WidgetConfig { ParamKey = "ClassificationID", WidgetUserID = wuList[i].ID });
+                            newList.Add(new EuroCMS.Model.WidgetConfig { ParamKey = "LanguageID", WidgetUserID = wuList[i].ID });
+                            @Html.Partial("~/Views/Widget/Template.cshtml", newList)
+                        }
+                        else if (wuList[i].WidgetID == (int)EuroCMS.Admin.Controllers.WidgetController.Widgets.QuickZone)
+                        {
+                            @*@Html.Partial("~/Views/Widget/QuickZone.cshtml", allConfigs)*@
+                            List<EuroCMS.Model.WidgetConfig> newList = new List<EuroCMS.Model.WidgetConfig>();
+                            newList.Add(new EuroCMS.Model.WidgetConfig { ParamKey = "ZoneGroup", WidgetUserID = wuList[i].ID });
+                            newList.Add(new EuroCMS.Model.WidgetConfig { ParamKey = "Language", WidgetUserID = wuList[i].ID });
+                            newList.Add(new EuroCMS.Model.WidgetConfig { ParamKey = "Template", WidgetUserID = wuList[i].ID });
+                            @Html.Partial("~/Views/Widget/Template.cshtml", newList)
+                        }
+                        else if (wuList[i].WidgetID == (int)EuroCMS.Admin.Controllers.WidgetController.Widgets.ActivityLogs)
+                        {
+                            List<EuroCMS.Model.WidgetConfig> newList = new List<EuroCMS.Model.WidgetConfig>();
+                            newList.Add(new EuroCMS.Model.WidgetConfig { ParamKey = "Users", WidgetUserID = wuList[i].ID });
+                            newList.Add(new EuroCMS.Model.WidgetConfig { ParamKey = "ActivityDays", WidgetUserID = wuList[i].ID });
+                            @Html.Partial("~/Views/Widget/Template.cshtml", newList)
+                        }
+                        else if (wuList[i].WidgetID == (int)EuroCMS.Admin.Controllers.WidgetController.Widgets.GoogleAnalytics)
+                        {
+                            List<EuroCMS.Model.WidgetConfig> newList = new List<EuroCMS.Model.WidgetConfig>();
+                            newList.Add(new EuroCMS.Model.WidgetConfig { ParamKey = "Analytics", WidgetUserID = wuList[i].ID }); 
+                            @Html.Partial("~/Views/Widget/Template.cshtml", newList)
+                        }
+                    }
+
+                    if (i == (wuList.Count - 1) / 2 || i == wuList.Count - 1)
+                    {
+                        @Html.Raw(tagEnd)
+                    }
+
+                    @*  </div>  *@
+                }
+            }
+        }
+    </div>
+}
+
+<script>
+    $(document).ready(function myfunction() {
+        var liWidth = $('#addWidgets ul').outerWidth();
+        var btnWidth = $('#btnWidgets').outerWidth();
+
+        $('#addWidgets ul').css('margin-left', -1 * (liWidth - btnWidth));
+    });
+</script>
