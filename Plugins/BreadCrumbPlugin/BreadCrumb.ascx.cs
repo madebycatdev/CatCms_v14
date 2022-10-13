@@ -1,9 +1,9 @@
-﻿using EuroCMS.Core;
+﻿
+using EuroCMS.Core;
 using EuroCMS.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -28,7 +28,7 @@ namespace EuroCMS.Plugin
         public void LoadModel()
         {
 
-            CmsDbContext dbContext = new CmsDbContext();
+            Model.CmsDbContext dbContext = new Model.CmsDbContext();
 
             Dictionary<string, object> ArticleDetails = (Dictionary<string, object>)Page.Items["Article_Details"];
 

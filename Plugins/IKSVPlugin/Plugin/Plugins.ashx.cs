@@ -3,10 +3,11 @@ using EuroCMS.Model;
 using EuroCMS.Plugin.IKSV.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
-using System.Runtime.InteropServices;
+using System.Net;
 using System.Web;
 using System.Web.Script.Serialization;
 using System.Web.UI;
@@ -72,6 +73,9 @@ namespace EuroCMS.Plugin.IKSV
                     break;
                 case "chart":
                     result = chart(context);
+                    break;
+                case "iksvchart":
+                    result = iksvChart(context);
                     break;
                 case "iksvarchive":
                     result = iksvarchive(context);
@@ -636,7 +640,6 @@ namespace EuroCMS.Plugin.IKSV
                     zone_ids = zoneid.Split(',').ToList();
                 }
 
-
                 if (!string.IsNullOrEmpty(context.Request.Form["lang"]))
                 {
                     lang = context.Request.Form["lang"].Trim();
@@ -766,6 +769,201 @@ namespace EuroCMS.Plugin.IKSV
                 return jss.Serialize(new { status = false, message = "İşlem sırasında hata oluştu. Hata : " + ex.Message, data = "" });
             }
         }
+
+        public List<chart> getFilms(CmsDbContext dbContext, int program, bool mainPage,
+            bool paralel, string place, int month, int year, string session, HttpContext context, int dayF, string lang
+            )
+        {
+            var charts = new List<chart>();
+
+            var programArticle = dbContext.vArticlesZonesFulls.FirstOrDefault(f => f.ArticleID == program && f.Status == 1 && f.StartDate < DateTime.Now && (f.EndDate.Value > DateTime.Now || !f.EndDate.HasValue));
+
+            if (programArticle != null)
+            {
+                string zone = programArticle.Article2.Trim();
+
+                if (!string.IsNullOrEmpty(zone))
+                {
+                    var programs = new List<vArticlesZonesFull>();
+                    var articles = dbContext.vArticlesZonesFulls.Where(w => w.ZoneID.ToString() == zone && w.Status == 1 && w.ClassificationID == etkinlikClassification).ToList();
+
+                    if (mainPage)
+                    {
+                        articles = articles.Where(w => w.Flag1 == false).ToList();
+                    }
+
+                    if (paralel)
+                    {
+                        articles = articles.Where(w => w.Flag3 == false).ToList();
+                    }
+
+                    var subArticles = articles.Where(w => !string.IsNullOrEmpty(w.Custom9)).ToList();
+                    if (subArticles != null)
+                    {
+                        var subArticlesIds = subArticles.Select(s => s.ArticleID).Distinct().ToList();
+                        articles = articles.Where(w => !subArticlesIds.Contains(w.ArticleID)).ToList();
+                    }
+
+                    foreach (var article in articles)
+                    {
+                        var eventPrograms = dbContext.vArticlesZonesFulls.Where(w => w.ZoneID == article.ZoneID && w.Status == 1 && w.ClassificationID == etkinlikProgramClassification && w.LanguageID == lang).OrderBy(o => o.Date1).ToList();
+                        eventPrograms = eventPrograms.Where(w => w.Custom10 == article.ArticleID.ToString()).ToList();
+
+
+                        if (eventPrograms != null)
+                        {
+                            programs.AddRange(eventPrograms);
+                        }
+                    }
+
+                    //filtre alanı
+                    if (!string.IsNullOrEmpty(place))
+                    {
+                        place = HttpUtility.UrlDecode(HttpUtility.HtmlDecode(place));
+                        //programs = programs.Where(w => w.events.Any(p => p.place == place)).ToList();
+                        programs = programs.Where(w => w.Custom1.Equals(place)).ToList();
+                    }
+
+                    if (!string.IsNullOrEmpty(session))
+                    {
+                        programs = programs.Where(w => w.Date1.Value.ToShortTimeString() == session).ToList();
+                    }
+
+                    if (!string.IsNullOrEmpty(context.Request.Form["day"]))
+                    {
+                        dayF = Convert.ToInt32(context.Request.Form["day"].Trim());
+                        programs = programs.Where(w => (int)w.Date1.Value.DayOfWeek == (dayF - 1)).ToList();
+                    }
+
+                    if (month > 0)
+                    {
+                        programs = programs.Where(w => (int)w.Date1.Value.Month == month).ToList();
+                    }
+
+                    if (year > 0)
+                    {
+                        programs = programs.Where(w => (int)w.Date1.Value.Year == year).ToList();
+                    }
+
+                    //filtre alanı end
+
+                    programs = programs.OrderBy(o => o.Date1).ToList();
+
+                    if (programs != null)
+                    {
+                        DateTimeFormatInfo dtfi = CultureInfo.CreateSpecificCulture(lang).DateTimeFormat;
+                        var firstDay = programs.FirstOrDefault().Date1.Value;
+                        var lastDay = programs.LastOrDefault().Date1.Value;
+                        var dayCount = Math.Ceiling((lastDay - firstDay).TotalDays);
+                        if (firstDay.ToShortDateString() == lastDay.ToShortDateString() && dayCount == 0)
+                        {
+                            dayCount = 1;
+                        }
+                        for (int i = 0; i <= dayCount; i++)
+                        {
+                            var chart = new chart();
+                            List<chartItem> events = new List<chartItem>();
+
+                            var day = firstDay.AddDays(i);
+                            var dayEvents = programs.Where(w => w.Date1.Value.ToShortDateString() == day.ToShortDateString()).ToList();
+                            foreach (var item in dayEvents)
+                            {
+                                var eventarticle = articles.FirstOrDefault(f => f.ArticleID.ToString() == item.Custom10 && f.Status == 1);
+                                if (eventarticle != null)
+                                {
+                                    var file = dbContext.Files.FirstOrDefault(f => f.ArticleId == eventarticle.ArticleID && f.FileTypeId == 15);
+                                    var eventItem = new chartItem();
+                                    eventItem.headline = eventarticle.Headline;
+                                    eventItem.alias = eventarticle.ArticleZoneAlias;
+                                    eventItem.thumb = (file != null ? file.ArticleId + "_" + file.File1 : "");
+                                    eventItem.place = item.Custom1;
+                                    eventItem.ticket = item.Custom2;
+                                    eventItem.flag1 = item.Flag1;
+                                    eventItem.activity = eventarticle.Flag1;
+                                    eventItem.date = item.Date1.Value.Day + " " + dtfi.GetMonthName(item.Date1.Value.Month) + " " + dtfi.GetDayName(item.Date1.Value.DayOfWeek) + " " + item.Date1.Value.ToShortTimeString();
+                                    events.Add(eventItem);
+                                }
+                            }
+
+                            chart.day = String.Format("{0:dd}", day);
+                            chart.month = day.Month.ToString();
+                            chart.monthString = dtfi.GetMonthName(day.Month);
+                            chart.year = day.Year.ToString();
+                            chart.date = dtfi.GetMonthName(day.Month) + " " + dtfi.GetDayName(day.DayOfWeek);
+                            chart.events = events;
+                            chart.status = (events.Count > 0 ? true : false);
+                            chart.fullDate = day;
+
+                            charts.Add(chart);
+                        }
+                    }
+                }
+            }
+
+            return charts;
+        }
+
+        public string iksvChart(HttpContext context)
+        {
+            CmsDbContext dbContext = new CmsDbContext();
+            string
+                lang = "TR",
+                title = "",
+                summary = "",
+                place = "",
+                category = "",
+                session = "";
+
+            var idList = new List<int>();
+
+            bool mainPage = false, paralel = false;
+
+            try
+            {
+                if (!string.IsNullOrEmpty(context.Request.Form["lang"]))
+                {
+                    lang = context.Request.Form["lang"].Trim();
+                }
+                else
+                {
+                    context.Response.Write(jss.Serialize("lang boş gönderilemez"));
+                    context.Response.End();
+                }
+
+                if (!string.IsNullOrEmpty(context.Request.Form["programFilm"]))
+                    idList.Add(Convert.ToInt32(context.Request.Form["programFilm"].Trim()));
+
+                if (!string.IsNullOrEmpty(context.Request.Form["programAltkat"]))
+                    idList.Add(Convert.ToInt32(context.Request.Form["programAltkat"].Trim()));
+
+                if (!string.IsNullOrEmpty(context.Request.Form["programBienal"]))
+                    idList.Add(Convert.ToInt32(context.Request.Form["programBienal"].Trim()));
+
+                if (!string.IsNullOrEmpty(context.Request.Form["programBienalFilm"]))
+                    idList.Add(Convert.ToInt32(context.Request.Form["programBienalFilm"].Trim()));
+
+                if (!string.IsNullOrEmpty(context.Request.Form["programCaz"]))
+                    idList.Add(Convert.ToInt32(context.Request.Form["programCaz"].Trim()));
+
+                if (!string.IsNullOrEmpty(context.Request.Form["programTiyatro"]))
+                    idList.Add(Convert.ToInt32(context.Request.Form["programTiyatro"].Trim()));
+
+                if (!string.IsNullOrEmpty(context.Request.Form["programMusic"]))
+                    idList.Add(Convert.ToInt32(context.Request.Form["programMusic"].Trim()));
+
+                if (!string.IsNullOrEmpty(context.Request.Form["programSalon"]))
+                    idList.Add(Convert.ToInt32(context.Request.Form["programSalon"].Trim()));
+
+
+                return jss.Serialize("");
+            }
+            catch (Exception ex)
+            {
+                CmsHelper.SaveErrorLog(ex, "Plugin hatası : chart", false);
+                return jss.Serialize(new { status = false, message = "İşlem sırasında hata oluştu. Hata : " + ex.Message, data = "" });
+            }
+        }
+
 
         public string chart(HttpContext context)
         {
@@ -1849,14 +2047,46 @@ namespace EuroCMS.Plugin.IKSV
 
         public string events(HttpContext context)
         {
-            //CmsDbContext dbContext = new CmsDbContext();
             List<int> zone_ids = new List<int>();
-            string musicZone = "", filmZone = "", cazzZone = "", tiyatroZone = "", bienalZone = "", salonZone = "", tasarimZone = "", altkatZone = "", lang = "", place = "", category = "", section = "", tag = "", order = "", session = "";
+            string musicZone = "",
+                filmZone = "",
+                cazzZone = "",
+                tiyatroZone = "",
+                bienalZone = "",
+                bienalFilmZone = "",
+                salonZone = "",
+                tasarimZone = "",
+                altkatZone = "",
+                lang = "",
+                place = "",
+                category = "",
+                section = "",
+                tag = "",
+                order = "",
+                session = "";
+
             int pageCount = 0;
-            int itemCount = 0, currentPage = 0, programMusic = 0, programFilm = 0, programTiyatro = 0, programCazz = 0, programSalon = 0, programBienal = 0, programTasarim = 0, programAltkat = 0, month = 0, year = 0, dayNo = 0, day = 0;
-            bool activity = false, paralel = false, getAll = true, highlight = false, getNew = false;
+            int itemCount = 0,
+                currentPage = 0,
+                programMusic = 0,
+                programFilm = 0,
+                programTiyatro = 0,
+                programCazz = 0,
+                programSalon = 0,
+                programBienal = 0,
+                programBienalFilm = 0,
+                programTasarim = 0,
+                programAltkat = 0,
+                month = 0,
+                year = 0,
+                dayNo = 0,
+                day = 0;
 
-
+            bool activity = false,
+                paralel = false,
+                getAll = true,
+                highlight = false,
+                getNew = false;
 
             OutputCachedPage page = new OutputCachedPage(new OutputCacheParameters
             {
@@ -2019,6 +2249,12 @@ namespace EuroCMS.Plugin.IKSV
                     programBienal = Convert.ToInt32(context.Request.Form["programBienal"].Trim());
                 }
 
+                //bienal
+                if (!string.IsNullOrEmpty(context.Request.Form["programBienalFilm"]))
+                {
+                    programBienalFilm = Convert.ToInt32(context.Request.Form["programBienalFilm"].Trim());
+                }
+
                 //tiyatro
                 if (!string.IsNullOrEmpty(context.Request.Form["programTiyatro"]))
                 {
@@ -2097,6 +2333,18 @@ namespace EuroCMS.Plugin.IKSV
                         if (bienalData != null)
                         {
                             bienalZone = bienalData.Article2.Trim();
+                        }
+                    }
+
+                    //bienal film
+                    if (programBienalFilm > 0)
+                    {
+                        vArticlesZonesFull bienalFilmData = null;
+                        bienalFilmData = dbContext.vArticlesZonesFulls.FirstOrDefault(f => f.ArticleID == programBienalFilm);
+
+                        if (bienalFilmData != null)
+                        {
+                            bienalFilmZone = bienalFilmData.Article2.Trim();
                         }
                     }
 
@@ -2581,6 +2829,137 @@ namespace EuroCMS.Plugin.IKSV
 
                     #endregion
 
+                    #region bienal film
+                    if (!string.IsNullOrEmpty(bienalFilmZone))
+                    {
+                        var bienalFilmZoneId = Convert.ToInt32(bienalFilmZone);
+                        var eventDatas = dbContext.vArticlesZonesFulls.Where(w => w.ZoneID == bienalFilmZoneId
+                        && w.Status == 1
+                        && w.ClassificationID != etkinlikKategoriClassification)
+                            .ToList();
+
+                        //bienalZone festival data
+                        articles = eventDatas
+                            .Where(w => w.ClassificationID == etkinlikClassification &&
+                             w.Flag1 == activity)
+                            .ToList();
+
+                        var articleIds = articles
+                            .Select(s => s.ArticleID)
+                            .ToList();
+
+                        var files = dbContext
+                            .Files
+                            .Where(f => articleIds.Contains(f.ArticleId))
+                            .ToList();
+
+                        foreach (var article in articles)
+                        {
+                            List<Program> programList = new List<Program>();
+                            var listItem = new EventDataModel();
+                            List<vArticlesZonesFull> programs = null;
+
+                            programs = eventDatas
+                                .Where(w => w.ZoneID == article.ZoneID &&
+                                w.Status == 1 &&
+                                w.ClassificationID == etkinlikProgramClassification)
+                                .OrderBy(o => o.Date1)
+                                .ToList();
+
+                            programs = programs
+                                .Where(w => w.Custom10 == article.ArticleID
+                                .ToString())
+                                .ToList();
+
+                            foreach (var program in programs)
+                            {
+                                var programListItem = new Program();
+                                programListItem.description = program.Article1;
+                                programListItem.date = program.Date1.Value;
+                                programListItem.dateString = program.Date1.Value.ToString();
+                                programListItem.time = program.Date1.Value.ToShortTimeString();
+                                programListItem.dateFormettedString = program.Date1.Value.Day + " " + dtfi.GetMonthName(program.Date1.Value.Month) + " " + program.Date1.Value.Year;
+                                programListItem.place = program.Custom1.ToString();
+                                programListItem.ticketUrl = program.Custom2.Trim().ToString();
+                                programListItem.longitude = program.Custom3.ToString();
+                                programListItem.latitude = program.Custom4.ToString();
+                                programListItem.flag1 = program.Flag1;
+                                programList.Add(programListItem);
+                            }
+
+                            var programNow = programs
+                                .Where(w => w.Date1 > DateTime.Now)
+                                .ToList()
+                                .FirstOrDefault();
+
+                            if (programNow != null)
+                            {
+                                listItem.date = programNow.Date1.ToString();
+                                listItem.place = programNow.Custom1.Trim().ToString();
+                                listItem.dateFormatted = programNow.Date1.Value;
+                                listItem.date = programNow.Date1.Value.Day + " " + dtfi.GetMonthName(programNow.Date1.Value.Month) + " " + programNow.Date1.Value.Year;
+                            }
+
+                            //sonradan eklenen kısım
+                            else
+                            {
+                                programNow = programs.FirstOrDefault();
+                                listItem.dateFormatted = programNow.Date1.Value;
+                            }
+
+                            listItem.articleId = article.ArticleID;
+                            listItem.headline = article.Headline;
+                            listItem.zone = article.ZoneName;
+                            listItem.zoneId = article.ZoneID;
+
+                            listItem.programs = programList;
+                            listItem.order = article.AzOrder;
+                            listItem.category = (article.Flag1 ? (lang == "tr" ? "Yan Etkinlik" : "Side Event") : (lang == "tr" ? "Bienal" : "Biennial"));
+                            listItem.thumb = article.Custom1;
+                            listItem.activity = article.Flag1;
+                            listItem.tags = article.TagContents;
+                            listItem.tagIds = article.TagIds;
+                            listItem.section = article.Custom10;
+                            listItem.director = article.Custom2;
+                            listItem.flag1 = article.Flag1;
+                            listItem.flag2 = article.Flag2;
+                            listItem.flag3 = article.Flag3;
+                            listItem.flag4 = article.Flag4;
+                            listItem.flag5 = article.Flag5;
+
+                            List<ArticleFileItem> fileList = new List<ArticleFileItem>();
+
+                            var articleFiles = files.Where(w => w.ArticleId == article.ArticleID).ToList();
+                            foreach (var file in articleFiles)
+                            {
+                                var eventFile = new ArticleFileItem();
+                                eventFile.id = file.FileId;
+                                eventFile.articleid = file.ArticleId;
+                                eventFile.type = file.FileTypeId;
+                                eventFile.title = file.Title;
+                                eventFile.commnent = file.Comment;
+                                eventFile.file1 = file.File1;
+                                eventFile.file2 = file.File2;
+                                eventFile.file3 = file.File3;
+                                eventFile.file4 = file.File4;
+                                eventFile.file5 = file.File5;
+                                eventFile.file6 = file.File6;
+                                eventFile.file7 = file.File7;
+                                eventFile.file8 = file.File8;
+                                eventFile.file9 = file.File9;
+                                eventFile.file10 = file.File10;
+                                eventFile.order = file.FileOrder;
+                                fileList.Add(eventFile);
+
+                            }
+
+                            listItem.files = fileList;
+                            listItem.alias = article.DomainName.Trim() + "/" + article.ArticleZoneAlias;
+
+                            list.Add(listItem);
+                        }
+                    }
+                    #endregion
                     #region bienal
 
                     if (!string.IsNullOrEmpty(bienalZone))
@@ -3070,6 +3449,7 @@ namespace EuroCMS.Plugin.IKSV
                                 programListItem.ticketUrl = program.Custom2.Trim().ToString();
                                 programListItem.longitude = program.Custom3.ToString();
                                 programListItem.latitude = program.Custom4.ToString();
+                                programListItem.endDate = program.Date2;
                                 programListItem.flag1 = program.Flag1;
                                 programListItem.flag2 = program.Flag2;
                                 programListItem.flag3 = program.Flag3;
@@ -3085,14 +3465,20 @@ namespace EuroCMS.Plugin.IKSV
                                 listItem.date = programNow.Date1.ToString();
                                 listItem.place = programNow.Custom1.Trim().ToString();
                                 listItem.dateFormatted = programNow.Date1.Value;
+                                listItem.endDateFormatted = programNow.Date2;
 
                                 listItem.date = programNow.Date1.Value.Day + " " + dtfi.GetMonthName(programNow.Date1.Value.Month) + " " + programNow.Date1.Value.Year;
+                                if (programNow.Date2.HasValue)
+                                {
+                                    listItem.endDate = programNow.Date2.Value.Day + " " + dtfi.GetMonthName(programNow.Date2.Value.Month) + " " + programNow.Date2.Value.Year;
+                                }
                             }
                             //sonradan eklenen kısım
                             else
                             {
                                 programNow = programs.FirstOrDefault();
                                 listItem.dateFormatted = programNow.Date1.Value;
+                                listItem.endDateFormatted = programNow.Date2;
                             }
                             listItem.articleId = article.ArticleID;
                             listItem.headline = article.Headline;
@@ -3249,7 +3635,7 @@ namespace EuroCMS.Plugin.IKSV
 
         public string lalekartEvents(HttpContext context)
         {
-            List<int> zoneGroupIds = new List<int>(){ 28, 38, 53, 63, 103, 119, 156, 177, 599 };
+            List<int> zoneGroupIds = new List<int>() { 28, 38, 53, 63, 103, 119, 156, 177, 599 };
             etkinlikClassification = 4;
             int zone_id = 599, pageCount = 0, itemCount = 0, currentPage = 0, month = 0, year = 0;
             string lang = string.Empty, order = string.Empty, session = string.Empty, eventType = string.Empty;
@@ -4191,12 +4577,6 @@ namespace EuroCMS.Plugin.IKSV
                         }
 
                         List<vArticlesZonesFull> articles = new List<vArticlesZonesFull>();
-
-
-                        //foreach (var tagId in articleTags)
-                        //{
-                        //    articles.AddRange(articlesWithCat.Where(w => w.TagIds.Split(',').ToList().Contains(tagId.ToString())).ToList());
-                        //}
 
                         articles = articles.Distinct().ToList();
 

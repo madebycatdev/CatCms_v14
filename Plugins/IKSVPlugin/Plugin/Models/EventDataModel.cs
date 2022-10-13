@@ -1,12 +1,9 @@
-﻿using EuroCMS.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace EuroCMS.Plugin.IKSV.Models
 {
-   
+
     public class EventDataModel
     {
         public int articleId { get; set; }
@@ -14,8 +11,10 @@ namespace EuroCMS.Plugin.IKSV.Models
         public string zone { get; set; }
         public int zoneId { get; set; }
         public string date { get; set; }
+        public string endDate { get; set; }
         public string time { get; set; }
         public DateTime dateFormatted { get; set; }
+        public DateTime? endDateFormatted { get; set; }
         public string place { get; set; }
         public List<ArticleFileItem> files { get; set; }
         public List<Program> programs { get; set; }
@@ -30,7 +29,7 @@ namespace EuroCMS.Plugin.IKSV.Models
         public string director { get; set; }
         public string day { get; set; }
         public string dayString { get; set; }
-        public string monthString{ get; set; }
+        public string monthString { get; set; }
         public string month { get; set; }
         public int year { get; set; }
         public bool flag1 { get; set; }
@@ -45,6 +44,7 @@ namespace EuroCMS.Plugin.IKSV.Models
 
         public string description { get; set; }
         public DateTime date { get; set; }
+        public DateTime? endDate { get; set; }
         public string dateString { get; set; }
         public string dateFormettedString { get; set; }
         public string place { get; set; }
@@ -65,8 +65,6 @@ namespace EuroCMS.Plugin.IKSV.Models
 
     }
 
-  
-
     public class chart
     {
         public string day { get; set; }
@@ -84,6 +82,8 @@ namespace EuroCMS.Plugin.IKSV.Models
         public int articleId { get; set; }
         public string headline { get; set; }
         public string date { get; set; }
+        public DateTime date1 { get; set; }
+        public string enddate { get; set; }
         public string place { get; set; }
         public string alias { get; set; }
         public string thumb { get; set; }

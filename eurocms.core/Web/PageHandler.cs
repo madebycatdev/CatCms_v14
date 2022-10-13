@@ -1,30 +1,22 @@
-﻿using EuroCMS.Data;
-using EuroCMS.Core;
+﻿using EuroCMS.Core;
+using EuroCMS.Data;
+using EuroCMS.Helper;
+using EuroCMS.Model;
 using System;
-using System.CodeDom;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Caching;
-using System.Web.Compilation;
 using System.Web.Security;
 using System.Web.SessionState;
 using System.Web.UI;
-using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
 using System.Xml;
-using Microsoft.Practices.EnterpriseLibrary.Data;
-using EuroCMS.Model;
-using EuroCMS.Helper;
 
 namespace EuroCMS.Web
 {
