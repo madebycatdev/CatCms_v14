@@ -1,13 +1,12 @@
 ﻿using EuroCMS.Core;
 using EuroCMS.Model;
 using EuroCMS.Plugin.IKSV.Models;
+using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
-using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
-using System.Net;
 using System.Web;
 using System.Web.Script.Serialization;
 using System.Web.UI;
@@ -905,19 +904,8 @@ namespace EuroCMS.Plugin.IKSV
 
         public string iksvChart(HttpContext context)
         {
-            CmsDbContext dbContext = new CmsDbContext();
-            string
-                lang = "TR",
-                title = "",
-                summary = "",
-                place = "",
-                category = "",
-                session = "";
-
+            string lang = "TR";
             var idList = new List<int>();
-
-            bool mainPage = false, paralel = false;
-
             try
             {
                 if (!string.IsNullOrEmpty(context.Request.Form["lang"]))
@@ -954,8 +942,13 @@ namespace EuroCMS.Plugin.IKSV
                 if (!string.IsNullOrEmpty(context.Request.Form["programSalon"]))
                     idList.Add(Convert.ToInt32(context.Request.Form["programSalon"].Trim()));
 
+                var client = new RestClient("http://iksvapi/api");
 
-                return jss.Serialize("");
+                var request = new RestRequest($"programEvents/{string.Join(",", idList)}/{lang}");
+                request.Method = Method.POST;
+
+                var response = client.Get<object>(request);
+                return response.Content;
             }
             catch (Exception ex)
             {
