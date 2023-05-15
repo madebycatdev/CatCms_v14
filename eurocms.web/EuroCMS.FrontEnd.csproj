@@ -589,6 +589,10 @@
       <Project>{cc2672c6-ec5c-4fa8-9429-e446488a6b48}</Project>
       <Name>Plugin</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Plugins\KaleSeramik\KalePlugin\KalePlugin.csproj">
+      <Project>{c9f6abf5-f475-409a-a7f2-58c290d6eac8}</Project>
+      <Name>KalePlugin</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

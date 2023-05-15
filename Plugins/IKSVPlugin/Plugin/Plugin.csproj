@@ -123,6 +123,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\ArticleFileItem.cs" />
+    <Compile Include="Models\GetSequentialResult.cs" />
     <Compile Include="Models\EventDataModel.cs" />
     <Compile Include="Models\GetArticleModel.cs" />
     <Compile Include="Models\IksvDbContext.cs" />

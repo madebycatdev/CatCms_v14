@@ -6,14 +6,9 @@ using EuroCMS.Plugin.Kale.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Runtime.Remoting.Messaging;
-using System.Runtime.Serialization;
+using System.Net;
 using System.Text;
 using System.Web;
 using System.Web.Script.Serialization;
@@ -60,6 +55,9 @@ namespace EuroCMS.Plugin.Kale
 
         public void ProcessRequest(HttpContext context)
         {
+            ServicePointManager.Expect100Continue = true;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
             context.Response.ContentType = "text/json";
 
 
@@ -335,12 +333,12 @@ namespace EuroCMS.Plugin.Kale
                         case "gettowns":
                             result = GetTowns(city_id);
                             break;
-                        //case "getarticles":
-                        //    result = GetArticles(context);
-                        //    break;
-                        //case "getredirections":
-                        //    result = GetRedirections(context);
-                        //    break;
+                            //case "getarticles":
+                            //    result = GetArticles(context);
+                            //    break;
+                            //case "getredirections":
+                            //    result = GetRedirections(context);
+                            //    break;
                     }
                 }
                 else

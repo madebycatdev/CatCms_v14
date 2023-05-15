@@ -94,7 +94,7 @@ namespace EuroCMS.FrontEnd.p
 
         public string getarticle(HttpContext context)
         {
-          
+
             CmsDbContext dbContext = new CmsDbContext();
             JavaScriptSerializer jss = new JavaScriptSerializer();
             jss.MaxJsonLength = int.MaxValue;
@@ -141,7 +141,7 @@ namespace EuroCMS.FrontEnd.p
                 List<articleReturn> list = new List<articleReturn>();
                 var articles = dbContext.vArticlesZonesFulls.Where(w => zone_ids.Contains(w.ZoneID.ToString()) && w.Status == 1).ToList();
 
-                
+
                 if (!string.IsNullOrEmpty(context.Request.Form["clsf_id"]))
                 {
                     clsf_id = Convert.ToInt32(context.Request.Form["clsf_id"].Trim());
@@ -480,8 +480,17 @@ namespace EuroCMS.FrontEnd.p
         private string GetSequentials(HttpContext context)
         {
             JavaScriptSerializer jss = new JavaScriptSerializer();
-            GetSequentialResult sq = new GetSequentialResult { Code = "10", Message = "Unknown Error!", Status = "NOK" };
-            bool isLoop = !string.IsNullOrEmpty(context.Request.Form["isLoop"]) && context.Request.Form["isLoop"].Trim().ToLower().Contains("true") ? true : false;
+            GetSequentialResult sq = new GetSequentialResult
+            {
+                Code = "10",
+                Message = "Unknown Error!",
+                Status = "NOK"
+            };
+
+            bool isLoop = !string.IsNullOrEmpty(
+                context.Request.Form["isLoop"])
+                && context.Request.Form["isLoop"].Trim().ToLower().Contains("true") ? true : false;
+
             try
             {
                 #region Get Current Article
@@ -1107,7 +1116,7 @@ namespace EuroCMS.FrontEnd.p
             catch (Exception ex)
             {
                 //, ErrorMessage = ex.Message + " - " + ex.StackTrace
-                SendMailResult sr = new SendMailResult { Code = "14", Message = "Process Failed", ErrorMessage="Send mail exception",Status = "NOK" };
+                SendMailResult sr = new SendMailResult { Code = "14", Message = "Process Failed", ErrorMessage = "Send mail exception", Status = "NOK" };
                 CmsHelper.SaveErrorLog(ex, "Cannot send mail", false);
                 string jsonResult = JsonConvert.SerializeObject(sr);
                 return jsonResult;
@@ -1394,7 +1403,7 @@ namespace EuroCMS.FrontEnd.p
             }
             catch (Exception ex)
             {
-                SendMailResult sr = new SendMailResult { Code = "14", Message = "Process Failed", ErrorMessage="send mail exception", Status = "NOK" };// ErrorMessage = ex.Message + " - " + ex.InnerException.Message,
+                SendMailResult sr = new SendMailResult { Code = "14", Message = "Process Failed", ErrorMessage = "send mail exception", Status = "NOK" };// ErrorMessage = ex.Message + " - " + ex.InnerException.Message,
                 CmsHelper.SaveErrorLog(ex, "Cannot send mail", false);
                 string jsonResult = JsonConvert.SerializeObject(sr);
                 return jsonResult;
@@ -1620,7 +1629,7 @@ namespace EuroCMS.FrontEnd.p
             {
 
                 listSearchDecode = dbContext.vArticlesZonesFulls.Where(vaz => vaz.ZoneStatus == "A" && vaz.Status == 1 && vaz.IsPage == true && vaz.LanguageID == lang && vaz.ZoneGroupSiteId == siteId && vaz.ArticleType != 2 && vaz.ArticleType != 3 && vaz.ArticleType != 4 && vaz.ArticleType != 7 && vaz.ArticleType != 8 && vaz.IsPage).Select(s => new SearchDecode { ArticleId = s.ArticleID, Headline = s.Headline, Summary = s.Summary, Article1 = s.Article1, Article2 = s.Article2, Article3 = s.Article3, Article4 = s.Article4, Article5 = s.Article5 }).ToList();
-                listSearchDecode = listSearchDecode.Where(sd => SearchTextExtension(sd.Headline,lang).Contains(lowSearchText) ||
+                listSearchDecode = listSearchDecode.Where(sd => SearchTextExtension(sd.Headline, lang).Contains(lowSearchText) ||
                                                                 SearchTextExtension(sd.Summary, lang).Contains(lowSearchText) ||
                                                                 SearchTextExtension(sd.Article1, lang).Contains(lowSearchText) ||
                                                                 SearchTextExtension(sd.Article2, lang).Contains(lowSearchText) ||

@@ -80,13 +80,13 @@ namespace EuroCMS.Web
 
         protected void Application_BeginRequest(object sender, EventArgs e)
         {
-            string domainKey = ConfigurationManager.AppSettings["EuroCMS.Key"] ?? "";
-            EuroCMS.Core.CmsHelper.UnlockCMS(domainKey, Request.Url.Host);
-            if (!EuroCMS.Core.CmsHelper.CheckLicence())
-            {
-                Response.Write("Invalid CMS License!" + Environment.NewLine);
-                Response.End();
-            }
+            //string domainKey = ConfigurationManager.AppSettings["EuroCMS.Key"] ?? "";
+            //EuroCMS.Core.CmsHelper.UnlockCMS(domainKey, Request.Url.Host);
+            //if (!EuroCMS.Core.CmsHelper.CheckLicence())
+            //{
+            //    Response.Write("Invalid CMS License!" + Environment.NewLine);
+            //    Response.End();
+            //}
         }
     }
 }

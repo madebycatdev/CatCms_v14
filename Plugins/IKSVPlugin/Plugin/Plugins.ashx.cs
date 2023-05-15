@@ -100,10 +100,327 @@ namespace EuroCMS.Plugin.IKSV
                 case "reservationcheck":
                     result = reservationcheck(context);
                     break;
+                case "getsequentialurls":
+                    result = GetSequentials(context);
+                    break;
             }
 
             context.Response.Write(result);
         }
+
+        private string GetSequentials(HttpContext context)
+        {
+            JavaScriptSerializer jss = new JavaScriptSerializer();
+            GetSequentialResult sq = new GetSequentialResult
+            {
+                Code = "10",
+                Message = "Unknown Error!",
+                Status = "NOK"
+            };
+
+            bool isLoop = !string.IsNullOrEmpty(
+                context.Request.Form["isLoop"])
+                && context.Request.Form["isLoop"].Trim().ToLower().Contains("true") ? true : false;
+
+            try
+            {
+                #region Get Current Article
+                int currentArticleId = -1, fileTypeId = -1;
+                try
+                {
+                    fileTypeId = Convert.ToInt32(!string.IsNullOrEmpty(context.Request.Form["fileTypeId"]) ? context.Request.Form["fileTypeId"].Trim() : "-1");
+
+                    currentArticleId = Convert.ToInt32(context.Request.Form["currentarticle"]);
+                }
+                catch (Exception ex)
+                {
+                    currentArticleId = -1;
+                    sq = new GetSequentialResult { Code = "13", Message = "currentarticle is not in correct format", Status = "NOK" };
+                    CmsHelper.SaveErrorLog(ex, "currentarticle or filetypeid is not in correct format", false);
+                }
+                #endregion
+                if (currentArticleId == -1)
+                {
+                    //articleId gönderilmeli
+                    sq = new GetSequentialResult { Code = "13", Message = "currentarticle is not in correct format", Status = "NOK" };
+                }
+                else
+                {
+                    //articleId geldi 
+                    #region Order In Geldi
+                    //go on
+                    #region Get Zone Id
+                    int zoneorClsfId = -1;
+                    bool isZone = true;
+                    try
+                    {
+                        if (!string.IsNullOrEmpty(context.Request.Form["zoneid"]))
+                        {
+                            isZone = true;
+                            zoneorClsfId = Convert.ToInt32(context.Request.Form["zoneid"]);
+                        }
+                        else if (!string.IsNullOrEmpty(context.Request.Form["clsfid"]))
+                        {
+                            isZone = false;
+                            zoneorClsfId = Convert.ToInt32(context.Request.Form["clsfid"]);
+                        }
+                        else
+                        {
+                            //hata
+                            sq = new GetSequentialResult { Code = "14", Message = "zoneid is not in correct format", Status = "NOK" };
+                            return jss.Serialize(sq);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        zoneorClsfId = -1;
+                        sq = new GetSequentialResult { Code = "14", Message = "zoneid is not in correct format", Status = "NOK" };
+                        CmsHelper.SaveErrorLog(ex, "zoneid is not in correct format", false);
+                    }
+                    #endregion
+                    if (zoneorClsfId == -1)
+                    {
+                        sq = new GetSequentialResult { Code = "14", Message = "zoneid is not in correct format", Status = "NOK" };
+                    }
+                    else
+                    {
+
+                        //filtercolumn
+                        string filterColumn = (!string.IsNullOrEmpty(context.Request.Form["filtercolumn"])) ? context.Request.Form["filtercolumn"] : string.Empty;
+                        filterColumn = filterColumn.Trim();
+
+                        string filterColumnValue = (!string.IsNullOrEmpty(context.Request.Form["filtercolumnvalue"])) ? context.Request.Form["filtercolumnvalue"] : string.Empty;
+                        filterColumnValue = filterColumnValue.Trim();
+
+                        //zoneId alındı
+                        #region Get OrderColumn & OrderType
+                        string orderColumn = (!string.IsNullOrEmpty(context.Request.Form["ordercolumn"])) ? context.Request.Form["ordercolumn"] : string.Empty;
+                        orderColumn = orderColumn.Trim();
+                        if (string.IsNullOrEmpty(orderColumn))
+                        {
+                            orderColumn = "Headline";
+                        }
+
+                        string orderType = (!string.IsNullOrEmpty(context.Request.Form["ordertype"])) ? context.Request.Form["ordertype"] : string.Empty;
+                        orderType = orderType.Trim().ToLower();
+                        if (string.IsNullOrEmpty(orderType))
+                        {
+                            orderType = "desc";
+                        }
+                        else
+                        {
+                            if (orderType != "desc" && orderType != "asc")
+                            {
+                                orderType = "desc";
+                            }
+                        }
+                        #endregion
+
+                        CmsDbContext dbContext = new CmsDbContext();
+                        vArticlesZonesFull vArticle = dbContext.vArticlesZonesFulls.Where(x => x.ArticleID == currentArticleId).FirstOrDefault();
+
+                        if (vArticle == null)
+                        {
+                            sq = new GetSequentialResult { Code = "16", Message = "Current article not found", Status = "NOK" };
+                        }
+                        else
+                        {
+                            //article bulundu
+                            List<vArticlesZonesFull> articleZonesList = new List<vArticlesZonesFull>();
+                            byte val = Convert.ToByte("1");
+                            if (isZone)
+                            {
+                                articleZonesList = dbContext.vArticlesZonesFulls.Where(x => x.ZoneID == zoneorClsfId && x.Status == val && x.IsPage).ToList();
+                            }
+                            else
+                            {
+                                articleZonesList = dbContext.vArticlesZonesFulls.Where(x => x.ClassificationID == zoneorClsfId && x.Status == val && x.IsPage).ToList();
+                            }
+
+                            if (!string.IsNullOrEmpty(context.Request.Form["classificationid"]))
+                            {
+                                var classification = Convert.ToInt32(context.Request.Form["classificationid"]);
+                                if (classification > 0)
+                                {
+                                    articleZonesList = articleZonesList.Where(w => w.ClassificationID == classification).ToList();
+                                }
+                            }
+
+
+                            string filterColumnName = filterColumn; //string.Empty;
+                            try
+                            {
+                                if (!string.IsNullOrEmpty(filterColumnName) && !string.IsNullOrEmpty(filterColumnValue))
+                                {
+                                    articleZonesList = articleZonesList.Where(x => x.GetType().GetProperty(filterColumnName).GetValue(x, null).ToString() == filterColumnValue).ToList();
+                                }
+                                else
+                                {
+                                    sq = new GetSequentialResult { Code = "12", Message = "There is no such filter column and value.", Status = "NOK" };
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                sq = new GetSequentialResult { Code = "12", Message = "There is no such filter column", Status = "NOK" };
+                            }
+
+
+
+
+
+
+                            string columnName = orderColumn; //string.Empty;
+
+
+                            try
+                            {
+                                columnName = vArticle.GetType().GetProperties().Where(x => x.GetCustomAttributesData()[0].ConstructorArguments[0].Value.ToString() == orderColumn).FirstOrDefault().Name;
+                            }
+                            catch (Exception ex)
+                            {
+                                //CmsHelper.SaveErrorLog(ex, "There is no such column", false);
+                                sq = new GetSequentialResult { Code = "12", Message = "There is no such column", Status = "NOK" };
+                            }
+                            if (string.IsNullOrEmpty(columnName))
+                            {
+                                sq = new GetSequentialResult { Code = "12", Message = "There is no such column.", Status = "NOK" };
+                            }
+                            else
+                            {
+                                if (orderType == "asc")
+                                {
+                                    articleZonesList = articleZonesList.OrderBy(x => x.GetType().GetProperty(columnName).GetValue(x, null)).ToList();
+                                }
+                                else
+                                {
+                                    articleZonesList = articleZonesList.OrderByDescending(x => x.GetType().GetProperty(columnName).GetValue(x, null)).ToList();
+                                }
+
+                                #region Index
+                                int index = articleZonesList.IndexOf(vArticle);
+                                if (index < 0)
+                                {
+                                    if (isZone)
+                                    {
+                                        sq = new GetSequentialResult { Code = "17", Message = "Current article does not belong to the specified zone", Status = "NOK" };
+                                    }
+                                    else
+                                    {
+                                        sq = new GetSequentialResult { Code = "17", Message = "Current article does not belong to the specified classification", Status = "NOK" };
+                                    }
+                                }
+                                else
+                                {
+                                    //article zone'a bağlı; index alındı
+                                    if (index == 0)
+                                    {
+                                        //ilk item - previous yok
+                                        sq = new GetSequentialResult();
+                                        sq.Code = "100";
+                                        sq.Message = "Success";
+                                        sq.Status = "OK";
+                                        sq.Next = CmsHelper.GetArticleAliasOrURL(articleZonesList[index + 1].ArticleID, zoneorClsfId.ToString());
+                                        sq.NextHeadline = articleZonesList[index + 1].Headline;
+
+                                        if (fileTypeId > 0)
+                                        {
+                                            int nextArticleId = articleZonesList[index + 1].ArticleID;
+                                            ArticleFile nextArticleFile = new ArticleFile();
+                                            nextArticleFile = dbContext.Files.Where(s => s.ArticleId == nextArticleId && s.FileTypeId == fileTypeId).FirstOrDefault();
+                                            sq.NextFile1 = nextArticleFile != null ? ("i/content/" + nextArticleId.ToString() + "_" + nextArticleFile.File1) : "";
+                                        }
+
+                                        if (isLoop)
+                                        {
+                                            sq.Previous = CmsHelper.GetArticleAliasOrURL(articleZonesList.LastOrDefault().ArticleID, zoneorClsfId.ToString());
+                                            sq.PrevHeadline = articleZonesList.LastOrDefault().Headline;
+                                            if (fileTypeId > 0)
+                                            {
+                                                int prevArticleId = articleZonesList.LastOrDefault().ArticleID;
+                                                ArticleFile prevArticleFile = new ArticleFile();
+                                                prevArticleFile = dbContext.Files.Where(s => s.ArticleId == prevArticleId && s.FileTypeId == fileTypeId).FirstOrDefault();
+                                                sq.PrevFile1 = prevArticleFile != null ? ("i/content/" + prevArticleId.ToString() + "_" + prevArticleFile.File1) : "";
+                                            }
+                                        }
+                                        sq.Current = index + 1;
+                                        sq.Total = articleZonesList.Count;
+
+                                    }
+                                    else if (index == articleZonesList.Count - 1)
+                                    {
+                                        //son item
+                                        sq = new GetSequentialResult();
+                                        sq.Code = "100";
+                                        sq.Message = "Success";
+                                        sq.Status = "OK";
+                                        sq.Previous = CmsHelper.GetArticleAliasOrURL(articleZonesList[index - 1].ArticleID, zoneorClsfId.ToString());
+                                        sq.PrevHeadline = articleZonesList[index - 1].Headline;
+                                        if (fileTypeId > 0)
+                                        {
+                                            int prevArticleId = articleZonesList[index - 1].ArticleID;
+                                            ArticleFile prevArticleFile = new ArticleFile();
+                                            prevArticleFile = dbContext.Files.Where(s => s.ArticleId == prevArticleId && s.FileTypeId == fileTypeId).FirstOrDefault();
+                                            sq.PrevFile1 = prevArticleFile != null ? ("i/content/" + prevArticleId.ToString() + "_" + prevArticleFile.File1) : "";
+                                        }
+
+                                        if (isLoop)
+                                        {
+                                            sq.Next = CmsHelper.GetArticleAliasOrURL(articleZonesList.FirstOrDefault().ArticleID, zoneorClsfId.ToString());
+                                            sq.NextHeadline = articleZonesList.FirstOrDefault().Headline;
+                                            if (fileTypeId > 0)
+                                            {
+                                                int nextArticleId = articleZonesList.LastOrDefault().ArticleID;
+                                                ArticleFile nextArticleFile = new ArticleFile();
+                                                nextArticleFile = dbContext.Files.Where(s => s.ArticleId == nextArticleId && s.FileTypeId == fileTypeId).FirstOrDefault();
+                                                sq.NextFile1 = nextArticleFile != null ? ("i/content/" + nextArticleId.ToString() + "_" + nextArticleFile.File1) : "";
+                                            }
+                                        }
+                                        sq.Current = index + 1;
+                                        sq.Total = articleZonesList.Count;
+
+                                    }
+                                    else
+                                    {
+                                        //diğer itemler
+                                        sq = new GetSequentialResult();
+                                        sq.Code = "100";
+                                        sq.Message = "Success";
+                                        sq.Status = "OK";
+                                        sq.Next = CmsHelper.GetArticleAliasOrURL(articleZonesList[index + 1].ArticleID, zoneorClsfId.ToString());
+                                        sq.NextHeadline = articleZonesList[index + 1].Headline;
+                                        sq.Previous = CmsHelper.GetArticleAliasOrURL(articleZonesList[index - 1].ArticleID, zoneorClsfId.ToString());
+                                        sq.PrevHeadline = articleZonesList[index - 1].Headline;
+                                        sq.Current = index + 1;
+                                        sq.Total = articleZonesList.Count;
+
+                                        if (fileTypeId > 0)
+                                        {
+                                            int prevArticleId = articleZonesList[index - 1].ArticleID, nextArticleId = articleZonesList[index + 1].ArticleID;
+                                            ArticleFile prevArticleFile = new ArticleFile();
+                                            ArticleFile nextArticleFile = new ArticleFile();
+                                            prevArticleFile = dbContext.Files.Where(s => s.ArticleId == prevArticleId && s.FileTypeId == fileTypeId).FirstOrDefault();
+                                            nextArticleFile = dbContext.Files.Where(s => s.ArticleId == nextArticleId && s.FileTypeId == fileTypeId).FirstOrDefault();
+                                            sq.PrevFile1 = prevArticleFile != null ? ("i/content/" + prevArticleId.ToString() + "_" + prevArticleFile.File1) : "";
+                                            sq.NextFile1 = nextArticleFile != null ? ("i/content/" + nextArticleId.ToString() + "_" + nextArticleFile.File1) : "";
+                                        }
+                                    }
+                                }
+                                #endregion
+                            }
+                        }
+                    }
+                    #endregion
+                }
+            }
+            catch (Exception ex)
+            {
+                CmsHelper.SaveErrorLog(ex, string.Empty, false);
+                sq = new GetSequentialResult { Code = "11", Message = "Process Failed! - GetSequentials exception ", Status = "NOK" };
+            }
+
+            return jss.Serialize(sq);
+        }
+
         public string tagRelatedEventsSalon(HttpContext context)
         {
             //CmsDbContext dbContext = new CmsDbContext();
@@ -350,9 +667,7 @@ namespace EuroCMS.Plugin.IKSV
             try
             {
                 if (!string.IsNullOrEmpty(context.Request.Form["lang"]))
-                {
                     lang = context.Request.Form["lang"].Trim();
-                }
                 else
                 {
                     context.Response.Write(jss.Serialize("lang boş gönderilemez"));
@@ -360,10 +675,8 @@ namespace EuroCMS.Plugin.IKSV
                 }
 
                 //festivaller datası
-                if (!string.IsNullOrEmpty(context.Request.Form["program"]))
-                {
+                if (!string.IsNullOrEmpty(context.Request.Form["program"])) //1187
                     program = Convert.ToInt32(context.Request.Form["program"].Trim());
-                }
                 else
                 {
                     context.Response.Write(jss.Serialize("program boş gönderilemez"));
@@ -371,81 +684,123 @@ namespace EuroCMS.Plugin.IKSV
                 }
 
                 if (!string.IsNullOrEmpty(context.Request.Form["activity"]))
-                {
                     activity = Convert.ToBoolean(context.Request.Form["activity"].Trim());
 
-                }
+                //var page = new OutputCachedPage(new OutputCacheParameters
+                //{
+                //    Duration = duration,
+                //    Location = OutputCacheLocation.Server,
+                //    VaryByParam = "plugin;program;lang;activity"
+                //});
 
-                OutputCachedPage page = new OutputCachedPage(new OutputCacheParameters
-                {
-                    Duration = duration, // saniye
-                    Location = OutputCacheLocation.Server,
-                    VaryByParam = "plugin;program;lang;activity"
-                });
-
-
-                page.ProcessRequest(HttpContext.Current);
+                //page.ProcessRequest(HttpContext.Current);
                 context.Response.Charset = "utf-8";
                 context.Response.ContentType = "text/json";
 
                 using (CmsDbContext dbContext = new CmsDbContext())
                 {
-                    var programArticle = dbContext.vArticlesZonesFulls.FirstOrDefault(f => f.ArticleID == program && f.Status == 1 && f.StartDate < DateTime.Now && (f.EndDate.Value > DateTime.Now || !f.EndDate.HasValue));
+                    var programArticle = dbContext.vArticlesZonesFulls
+                        .FirstOrDefault(f => f.ArticleID == program && f.Status == 1 && f.StartDate < DateTime.Now && (f.EndDate.Value > DateTime.Now || !f.EndDate.HasValue));
+
                     if (programArticle != null)
                     {
                         zone = programArticle.Article2.Trim();
                         zoneid = Convert.ToInt32(zone);
                         var festivalArticle = dbContext.vArticlesZonesFulls.FirstOrDefault(f => f.NavigationZoneID == zoneid && f.Status == 1);
+
                         title = (festivalArticle != null ? festivalArticle.Headline : "");
                         summary = (festivalArticle != null ? festivalArticle.Summary : "");
                         if (!string.IsNullOrEmpty(zone))
                         {
                             var programs = new List<vArticlesZonesFull>();
-                            var eventDatas = dbContext.vArticlesZonesFulls.Where(w => w.ZoneID == zoneid && w.Status == 1 && w.LanguageID == lang).ToList();
-                            var articles = eventDatas.Where(w => w.ClassificationID == etkinlikClassification && w.Flag1 == activity).ToList();
+                            var eventDatas = dbContext.vArticlesZonesFulls
+                                .Where(w => w.ZoneID == zoneid &&
+                                w.Status == 1 &&
+                                w.LanguageID == lang)
+                                .ToList();
+
+                            var articles = eventDatas
+                                .Where(w => w.ClassificationID == etkinlikClassification &&
+                                w.Flag1 == activity)
+                                .ToList();
+
                             foreach (var article in articles)
                             {
-                                var eventPrograms = eventDatas.Where(w => w.ZoneID == article.ZoneID && w.ClassificationID == etkinlikProgramClassification).OrderBy(o => o.Date1).ToList();
-                                eventPrograms = eventPrograms.Where(w => w.Custom10 == article.ArticleID.ToString()).ToList();
+                                var eventPrograms = eventDatas
+                                    .Where(w => w.ZoneID == article.ZoneID &&
+                                    w.ClassificationID == etkinlikProgramClassification)
+                                    .OrderBy(o => o.Date1)
+                                    .ToList();
+
+                                eventPrograms = eventPrograms
+                                    .Where(w => w.Custom10 == article.ArticleID.ToString())
+                                    .ToList();
+
                                 if (eventPrograms != null)
-                                {
                                     programs.AddRange(eventPrograms);
-                                }
                             }
 
                             programs = programs.OrderBy(o => o.Date1).ToList();
+
+                            var tempDayEvents = new List<string>();
+
                             if (programs != null)
                             {
-                                List<programchart> charts = new List<programchart>();
-                                DateTimeFormatInfo dtfi = CultureInfo.CreateSpecificCulture(lang).DateTimeFormat;
+                                var charts = new List<programchart>();
+                                var dtfi = CultureInfo.CreateSpecificCulture(lang).DateTimeFormat;
                                 var firstDay = programs.FirstOrDefault().Date1.Value;
                                 var lastDay = programs.LastOrDefault().Date1.Value;
                                 var dayCount = (lastDay - firstDay).TotalDays;
                                 var selected = false;
-                                var sessions = programs.Select(s => s.Date1.Value.ToShortTimeString()).Distinct().OrderBy(o => o).ToList();
-
+                                var sessions = programs
+                                    .Select(s => s.Date1.Value.ToShortTimeString())
+                                    .Distinct()
+                                    .OrderBy(o => o)
+                                    .ToList();
 
                                 for (int i = 0; i <= dayCount; i++)
                                 {
                                     var chart = new programchart();
                                     List<programchartItem> events = new List<programchartItem>();
-
                                     var day = firstDay.AddDays(i);
-                                    var dayEvents = programs.Where(w => w.Date1.Value.ToShortDateString() == day.ToShortDateString()).ToList();
-                                    var places = dayEvents.Select(s => s.Custom1).Distinct().OrderBy(o => o).ToList();
-                                    foreach (var place in places)
+
+                                    if (day.Day == 17)
                                     {
-                                        programchartItem chartItem = new programchartItem();
+                                        string c = string.Empty;
+                                    }
+                                    var dayEvents = programs
+                                        .Where(w =>
+                                         w.Date1.Value.ToShortDateString() == day.ToShortDateString())
+                                        .ToList();
+                                    var places = dayEvents
+                                        .Select(s => s.Custom1)
+                                        .Distinct()
+                                        .OrderBy(o => o)
+                                        .ToList();
+
+                                    foreach (var place in places)//fransiz kultur merkezi
+                                    {
+                                        var chartItem = new programchartItem();
                                         chartItem.place = place;
                                         chartItem.details = new List<programchartdetail>();
-                                        foreach (var session in sessions)
+                                        foreach (var session in sessions) //16:00
                                         {
-                                            programchartdetail detail = new programchartdetail();
+                                            var detail = new programchartdetail();
                                             detail.status = false;
-                                            var eventSession = dayEvents.FirstOrDefault(f => f.Custom1 == place && f.Date1.Value.ToShortTimeString() == session);
+
+                                            var eventSessionL = dayEvents
+                                             .Where(f => f.Custom1 == place &&
+                                             f.Date1.Value.ToShortTimeString() == session && !f.Flag2).ToList();
+
+                                            var eventSession = dayEvents
+                                                .FirstOrDefault(f => f.Custom1 == place &&
+                                                f.Date1.Value.ToShortTimeString() == session && !f.Flag2);
+
                                             if (eventSession != null)
                                             {
-                                                var eventarticle = articles.FirstOrDefault(f => f.ArticleID.ToString() == eventSession.Custom10 && f.Status == 1);
+                                                var eventarticle = articles
+                                                    .FirstOrDefault(f => f.ArticleID
+                                                    .ToString() == eventSession.Custom10 && f.Status == 1);
                                                 if (eventarticle != null)
                                                 {
                                                     detail.articleId = eventarticle.ArticleID;
@@ -453,8 +808,10 @@ namespace EuroCMS.Plugin.IKSV
                                                     detail.ticket = eventSession.Custom2;
                                                     detail.alias = eventarticle.ArticleZoneAlias;
                                                     detail.status = true;
+
                                                 }
                                             }
+
                                             chartItem.details.Add(detail);
                                         }
                                         events.Add(chartItem);
@@ -942,9 +1299,13 @@ namespace EuroCMS.Plugin.IKSV
                 if (!string.IsNullOrEmpty(context.Request.Form["programSalon"]))
                     idList.Add(Convert.ToInt32(context.Request.Form["programSalon"].Trim()));
 
+                string zoneIds = string.Empty;
+                if (!string.IsNullOrEmpty(context.Request.Form["zone_id"]))
+                    zoneIds = context.Request.Form["zone_id"].Trim().ToString();
+
                 var client = new RestClient("http://iksvapi/api");
 
-                var request = new RestRequest($"programEvents/{string.Join(",", idList)}/{lang}");
+                var request = new RestRequest($"programEvents/{string.Join(",", idList)}/{lang}/{zoneIds}");
                 request.Method = Method.POST;
 
                 var response = client.Get<object>(request);
@@ -3856,9 +4217,15 @@ namespace EuroCMS.Plugin.IKSV
         {
             List<int> zoneIds = new List<int>() { 598, 433, 355, 315, 303, 189, 95, 59 };
 
-            //int classificationId = 3;  //3 is news Classification
-            int pageCount = 0, itemCount = 0, currentPage = 0, month = 0, year = 0;
-            string lang = string.Empty, session = string.Empty;
+            int pageCount = 0,
+                itemCount = 0,
+                currentPage = 0,
+                month = 0,
+                year = 0;
+
+            string lang = string.Empty,
+                session = string.Empty;
+
             OutputCachedPage page = new OutputCachedPage(new OutputCacheParameters
             {
                 Duration = duration, // saniye
@@ -3867,6 +4234,7 @@ namespace EuroCMS.Plugin.IKSV
             });
 
             page.ProcessRequest(HttpContext.Current);
+
             context.Response.Charset = "utf-8";
             context.Response.ContentType = "text/json";
 
@@ -3921,12 +4289,11 @@ namespace EuroCMS.Plugin.IKSV
 
                 using (CmsDbContext dbContext = new CmsDbContext())
                 {
-                    //&& w.Date2.Value > DateTime.Now 
-                    //todo: flag1 is show on lalekart news page
-                    //classificationId == w.ClassificationID &&
-                    var queryArticles = dbContext.vArticlesZonesFulls.Where(w => zoneIds.Count(x => x == w.ZoneID) > 0 && w.Flag1 && w.Status == 1 && w.LanguageAlias == lang);
+                    var queryArticles = dbContext.vArticlesZonesFulls
+                        .Where(w => zoneIds.Count(x => x == w.ZoneID) > 0 && w.Flag1 && w.Status == 1 && w.LanguageAlias == lang);
 
                     double recordCount = queryArticles.Count();
+
                     pageCount = Convert.ToInt32(Math.Ceiling(recordCount / Convert.ToDouble(itemCount)));
 
 
@@ -3950,6 +4317,7 @@ namespace EuroCMS.Plugin.IKSV
                     }
 
                     var articleIds = articles.Select(s => s.ArticleID).ToList();
+
                     var files = dbContext.Files.Where(f => articleIds.Contains(f.ArticleId)).ToList();
 
                     foreach (var article in articles)
@@ -3998,6 +4366,7 @@ namespace EuroCMS.Plugin.IKSV
                     }
 
                 }
+
                 return jss.Serialize(new { status = true, message = "İşlem başarılı. ", data = list, currentPage = currentPage, pageCount = pageCount, month = month, year = year });
             }
             catch (Exception ex)
